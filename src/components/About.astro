@@ -1,0 +1,71 @@
+---
+const goals = [
+  {
+    title: "Stay out of the way",
+    body: "Overlays are transparent, click-through, and live above the game window. Nothing alt-tabs you out of EverQuest.",
+  },
+  {
+    title: "Read-only on the game",
+    body: "PQ Companion never modifies the game client or game data. It watches your log file and your Zeal exports — that's it.",
+  },
+  {
+    title: "Zero setup",
+    body: "Point it at your EQ folder, type your character name, and the rest is automatic. No configuration files, no scripts.",
+  },
+  {
+    title: "Free &amp; open source",
+    body: "Built by players, for players. Source on GitHub. Bring your own ideas and pull requests welcome.",
+  },
+];
+---
+
+<section id="about" class="border-t border-border-subtle bg-surface/30 py-20">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="grid gap-12 md:grid-cols-2 md:items-start">
+      <div>
+        <p
+          class="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary"
+        >
+          About
+        </p>
+        <h2
+          class="text-3xl font-bold tracking-tight text-foreground md:text-4xl"
+        >
+          A companion app for classic EverQuest, in 2026.
+        </h2>
+        <p class="mt-6 text-base leading-relaxed text-muted-foreground">
+          PQ Companion is built specifically for
+          <a
+            href="https://www.projectquarm.com/"
+            target="_blank"
+            rel="noopener"
+            class="text-primary hover:text-primary-hover">Project Quarm</a
+          >, the classic-era EverQuest emulated server. It pairs with
+          <a
+            href="https://github.com/iamclint/Zeal"
+            target="_blank"
+            rel="noopener"
+            class="text-primary hover:text-primary-hover">Zeal</a
+          > to give you the kinds of out-of-game tools modern MMOs ship by
+          default — combat log parsing, target info, spell timers, and a
+          searchable database — without forcing you to alt-tab.
+        </p>
+        <p class="mt-4 text-base leading-relaxed text-muted-foreground">
+          It's a single Windows app. No browser tabs, no Discord bots, no
+          spreadsheets. Just the tools at the keyboard, while you play.
+        </p>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          goals.map((g) => (
+            <li class="rounded-lg border border-border bg-surface p-5">
+              <h3 class="text-base font-semibold text-primary" set:html={g.title} />
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground" set:html={g.body} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

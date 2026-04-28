@@ -1,0 +1,139 @@
+---
+import FeatureCard from "./FeatureCard.astro";
+
+const features = [
+  {
+    title: "Database Explorer",
+    tagline: "Search anything",
+    description:
+      "Every item, spell, NPC, and zone in the Project Quarm database — fully searchable with filters that actually work. Stat panels, resists, class restrictions, spell effects, NPC special abilities, and full zone NPC rosters.",
+    bullets: [
+      "Press Cmd+K / Ctrl+K from anywhere for global search",
+      "Filter spells by class, level range, and effect",
+      "View NPC summon, mez immunity, see-invis, and more",
+    ],
+    mediaSlug: "database-explorer",
+  },
+  {
+    title: "DPS Meter",
+    tagline: "Live combat tracking",
+    description:
+      "A transparent, always-on-top overlay that floats above the game and shows live damage output for you and your group, with fight duration, session totals, and per-combatant breakdowns.",
+    bullets: [
+      "Pop out as a standalone window above EverQuest",
+      "Per-fight and session-wide totals",
+      "Click any combatant to expand their full damage breakdown",
+    ],
+    mediaSlug: "dps-meter",
+  },
+  {
+    title: "Spell Timer Engine",
+    tagline: "Never miss a re-cast",
+    description:
+      "Tick-accurate countdown bars for every buff, debuff, mez, stun, and DoT — driven directly from your live combat log. Buffs and detrimentals get their own overlay windows so you can place them wherever you want.",
+    bullets: [
+      "Separate overlays for buffs vs. detrimentals",
+      "Auto-expires on resist, dispel, or worn-off events",
+      "Click-through transparent windows above the game",
+    ],
+    mediaSlug: "spell-timers",
+  },
+  {
+    title: "NPC Info Overlay",
+    tagline: "Know your target",
+    description:
+      "The moment you engage a mob, the overlay shows its level, class, HP, resists, and special abilities — Summon, Unmezzable, Uncharmable, See Invis, and the rest. Pulled from the database via your combat log automatically.",
+    bullets: [
+      "Auto-detects target from melee and spell events",
+      "Special-ability badges (Summon, Enrage, Flurry, etc.)",
+      "Resists, faction, and zone context at a glance",
+    ],
+    mediaSlug: "npc-info",
+  },
+  {
+    title: "Spell Checklist",
+    tagline: "Know what you're missing",
+    description:
+      "Cross-references every spell your class can learn against your Zeal-exported spellbook so you always know exactly which spells you still need to scribe.",
+    bullets: [
+      "Filters by class and level",
+      "Hides NPC-only and unobtainable spells",
+      "Updates whenever Zeal exports your spellbook",
+    ],
+    mediaSlug: "spell-checklist",
+  },
+  {
+    title: "Inventory & Key Tracker",
+    tagline: "Across all your characters",
+    description:
+      "All inventory across every character in one searchable view, including bank and shared bank. Plus a key tracker for major raid keys (Veeshan's Peak, Old Sebilis, Howling Stones, and more).",
+    bullets: [
+      "One search box across every character's inventory",
+      "Bank, shared bank, equipped — all in one view",
+      "Per-key component checklist across all alts",
+    ],
+    mediaSlug: "inventory-tracker",
+  },
+  {
+    title: "Custom Triggers",
+    tagline: "GINA-style alerts",
+    description:
+      "A regex trigger engine for any log line. Pre-built packs for enchanters (mez breaks, charm breaks, resists) and group awareness (tells, deaths). Fire on-screen text alerts. Import/export packs as JSON.",
+    bullets: [
+      "Standalone transparent overlay window",
+      "Live history feed of every trigger that fired",
+      "Share trigger packs with your guild via JSON",
+    ],
+    mediaSlug: "triggers",
+  },
+  {
+    title: "Config Backup Manager",
+    tagline: "Snapshot &amp; restore",
+    description:
+      "One-click backup and restore for every EverQuest .ini config file. Snapshot before risky changes, roll back instantly if something breaks.",
+    bullets: [
+      "Snapshots all UI, hotkey, and social config",
+      "Browse, label, and restore previous backups",
+      "Useful before patches or UI overhauls",
+    ],
+    mediaSlug: "backup-manager",
+  },
+];
+---
+
+<section id="features" class="py-20">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="mb-16 text-center">
+      <p
+        class="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary"
+      >
+        Features
+      </p>
+      <h2
+        class="text-3xl font-bold tracking-tight text-foreground md:text-4xl"
+      >
+        Everything you wish was built into the client
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
+        PQ Companion reads your combat log and Zeal exports, then turns
+        them into the tools any classic EverQuest player would actually
+        use at the keyboard.
+      </p>
+    </div>
+
+    <div class="space-y-20">
+      {
+        features.map((f, i) => (
+          <FeatureCard
+            title={f.title}
+            tagline={f.tagline}
+            description={f.description}
+            bullets={f.bullets}
+            mediaSlug={f.mediaSlug}
+            reversed={i % 2 === 1}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

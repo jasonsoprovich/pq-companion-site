@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  tagline: string;
+  description: string;
+  bullets?: string[];
+  mediaSlug: string;
+  reversed?: boolean;
+}
+
+const {
+  title,
+  tagline,
+  description,
+  bullets = [],
+  mediaSlug,
+  reversed = false,
+} = Astro.props;
+---
+
+<article
+  class:list={[
+    "grid gap-8 md:grid-cols-2 md:items-center md:gap-12",
+    reversed && "md:[&>*:first-child]:order-2",
+  ]}
+>
+  <div>
+    <p
+      class="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-primary"
+    >
+      {tagline}
+    </p>
+    <h3 class="text-2xl font-semibold text-foreground md:text-3xl">
+      {title}
+    </h3>
+    <p class="mt-4 text-base leading-relaxed text-muted-foreground">
+      {description}
+    </p>
+    {
+      bullets.length > 0 && (
+        <ul class="mt-5 space-y-2">
+          {bullets.map((b) => (
+            <li class="flex gap-3 text-sm text-muted-foreground">
+              <span class="mt-1 text-primary">▸</span>
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <div
+    class="aspect-video overflow-hidden rounded-lg border border-border bg-surface shadow-xl shadow-black/40"
+  >
+    <div
+      class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface to-surface-2"
+    >
+      <div class="px-6 text-center">
+        <div class="mx-auto mb-2 text-3xl text-primary opacity-50">▶</div>
+        <p class="text-xs text-muted-foreground">Demo placeholder</p>
+        <p class="mt-1 text-[10px] text-muted">
+          <code
+            class="rounded bg-surface-2 px-1 py-0.5 text-primary"
+            >public/media/{mediaSlug}.mp4</code
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</article>
