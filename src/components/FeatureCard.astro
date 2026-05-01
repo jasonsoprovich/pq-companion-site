@@ -40,9 +40,9 @@ const {
       bullets.length > 0 && (
         <ul class="mt-5 space-y-2">
           {bullets.map((b) => (
-            <li class="flex gap-3 text-sm text-muted-foreground">
-              <span class="mt-1 text-primary">▸</span>
-              <span>{b}</span>
+            <li class="flex items-start gap-3 text-sm leading-6 text-muted-foreground">
+              <span aria-hidden="true" class="flex-shrink-0 leading-6 text-primary">▸</span>
+              <span class="leading-6">{b}</span>
             </li>
           ))}
         </ul>
