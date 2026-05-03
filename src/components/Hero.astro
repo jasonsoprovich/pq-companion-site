@@ -1,5 +1,7 @@
 ---
+import { resolveMedia } from "../lib/media";
 
+const media = resolveMedia("hero");
 ---
 
 <section class="hero-glow relative overflow-hidden">
@@ -18,8 +20,9 @@
       </h1>
       <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
         Database explorer, DPS meter, spell timers, NPC info overlay,
-        spell checklist, and a custom trigger engine — all in one
-        lightweight, locally run app that runs alongside the game.
+        character progression, and a custom trigger engine with sound and
+        TTS alerts — all in one lightweight, locally run app that runs
+        alongside the game.
       </p>
 
       <div
@@ -48,26 +51,52 @@
       </p>
     </div>
 
-    <!-- Hero video placeholder -->
+    <!-- Hero media: drops in as image OR video at public/media/hero.{mp4,webm,png,jpg,webp,gif} -->
     <div
       class="mx-auto mt-16 aspect-video w-full max-w-5xl overflow-hidden rounded-lg border border-border bg-surface shadow-2xl shadow-black/50"
     >
-      <div
-        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface to-surface-2"
-      >
-        <div class="text-center">
-          <div class="mx-auto mb-3 text-5xl text-primary opacity-60">▶</div>
-          <p class="text-sm text-muted-foreground">
-            Hero demo video placeholder
-          </p>
-          <p class="mt-1 text-xs text-muted">
-            Drop your screenshare/MP4 in <code
-              class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-              >public/media/hero.mp4</code
-            >
-          </p>
-        </div>
-      </div>
+      {
+        media?.kind === "video" && (
+          <video
+            src={media.src}
+            autoplay
+            loop
+            muted
+            playsinline
+            class="h-full w-full object-cover"
+          />
+        )
+      }
+      {
+        media?.kind === "image" && (
+          <img
+            src={media.src}
+            alt="PQ Companion in action"
+            loading="eager"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        )
+      }
+      {
+        !media && (
+          <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface to-surface-2">
+            <div class="text-center">
+              <div class="mx-auto mb-3 text-5xl text-primary opacity-60">▶</div>
+              <p class="text-sm text-muted-foreground">
+                Hero demo placeholder
+              </p>
+              <p class="mt-1 text-xs text-muted">
+                Drop an image or video at
+                {" "}
+                <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">
+                  public/media/hero.{`{mp4,webm,png,jpg,webp,gif}`}
+                </code>
+              </p>
+            </div>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

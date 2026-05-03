@@ -1,4 +1,6 @@
 ---
+import { resolveMedia } from "../lib/media";
+
 interface Props {
   title: string;
   tagline: string;
@@ -6,6 +8,7 @@ interface Props {
   bullets?: string[];
   mediaSlug: string;
   reversed?: boolean;
+  alt?: string;
 }
 
 const {
@@ -15,7 +18,11 @@ const {
   bullets = [],
   mediaSlug,
   reversed = false,
+  alt,
 } = Astro.props;
+
+const media = resolveMedia(mediaSlug);
+const altText = alt ?? `${title} demo`;
 ---
 
 <article
@@ -53,19 +60,45 @@ const {
   <div
     class="aspect-video overflow-hidden rounded-lg border border-border bg-surface shadow-xl shadow-black/40"
   >
-    <div
-      class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface to-surface-2"
-    >
-      <div class="px-6 text-center">
-        <div class="mx-auto mb-2 text-3xl text-primary opacity-50">▶</div>
-        <p class="text-xs text-muted-foreground">Demo placeholder</p>
-        <p class="mt-1 text-[10px] text-muted">
-          <code
-            class="rounded bg-surface-2 px-1 py-0.5 text-primary"
-            >public/media/{mediaSlug}.mp4</code
-          >
-        </p>
-      </div>
-    </div>
+    {
+      media?.kind === "video" && (
+        <video
+          src={media.src}
+          autoplay
+          loop
+          muted
+          playsinline
+          class="h-full w-full object-cover"
+        />
+      )
+    }
+    {
+      media?.kind === "image" && (
+        <img
+          src={media.src}
+          alt={altText}
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      )
+    }
+    {
+      !media && (
+        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface to-surface-2">
+          <div class="px-6 text-center">
+            <div class="mx-auto mb-2 text-3xl text-primary opacity-50">▶</div>
+            <p class="text-xs text-muted-foreground">Demo placeholder</p>
+            <p class="mt-1 text-[10px] text-muted">
+              Drop an image or video at
+              {" "}
+              <code class="rounded bg-surface-2 px-1 py-0.5 text-primary">
+                public/media/{mediaSlug}.{`{mp4,webm,png,jpg,webp,gif}`}
+              </code>
+            </p>
+          </div>
+        </div>
+      )
+    }
   </div>
 </article>
