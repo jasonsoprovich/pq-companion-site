@@ -6,7 +6,7 @@ const features = [
     title: "Database Explorer",
     tagline: "Search anything",
     description:
-      "Every item, spell, NPC, and zone in the Project Quarm database — fully searchable with filters that actually work. Item icons, spell icons, click-through cross-references between scrolls and the spells they teach, NPC drops linking to source mobs, and full zone NPC rosters. Press Cmd/Ctrl-K from anywhere for global search.",
+      "Every item, spell, NPC, and zone in the Project Quarm database — fully searchable with filters that actually work. Item icons, spell icons, click-through cross-references between scrolls and the spells they teach, NPC drops linking to source mobs, and full zone NPC rosters. Press Ctrl-K from anywhere for global search.",
     bullets: [
       "Advanced item filters: race, class, level, slot, type, stat thresholds",
       "Spell filters by class and level; hides NPC-only spells",
@@ -15,12 +15,12 @@ const features = [
     mediaSlug: "database-explorer",
   },
   {
-    title: "DPS Meter & Combat Log",
+    title: "DPS & HPS Meters with Combat Log",
     tagline: "Live combat tracking",
     description:
-      "A transparent, always-on-top overlay floating above the game with live damage output for you and your group. Pet and charm damage rolls up under the owner. Boss fights stay grouped instead of fragmenting. Copy any fight or session summary to clipboard for guild chat.",
+      "A transparent, always-on-top overlay floating above the game with live damage and healing output for you and your group. Tab between DPS and HPS views. Pet and charm damage rolls up under the owner — including charm-break detection that drops the binding the moment a former pet starts hitting you. Boss fights stay grouped instead of fragmenting. Copy any fight or session summary to clipboard for guild chat.",
     bullets: [
-      "Per-fight and session-wide totals, with full combat history",
+      "Per-fight and session-wide totals for damage and healing, with full combat history",
       "Click any combatant to expand their full damage breakdown",
       "One-click copy of fight or session summary for /gu and /tell",
     ],
@@ -30,11 +30,12 @@ const features = [
     title: "Spell Timer Engine",
     tagline: "Never miss a re-cast",
     description:
-      "Tick-accurate countdown bars for every buff, debuff, mez, stun, and DoT — driven directly from your live combat log with target-aware keying. Separate overlay windows for buffs and detrimentals. Configurable audio and TTS alerts when timers cross your thresholds.",
+      "Tick-accurate countdown bars for every buff, debuff, mez, stun, and DoT — driven directly from your live combat log and keyed per spell-and-target so the same debuff on two mobs is tracked as two separate timers. Durations are extended automatically by the focus items and AAs your character actually has equipped. Separate overlay windows for buffs and detrimentals.",
     bullets: [
-      "Per-category display thresholds with per-trigger overrides",
-      "Tracking scope: just yourself, or anyone in your group",
-      "Target name shown on every row; auto-cancels on resist or dispel",
+      "Auto mode tracks every recognised land; Triggers-only mode shows just the spells you've curated",
+      "Tracking scope: Self only, Cast by me, or Anyone — plus an optional 'my class only' filter",
+      "Per-category hide thresholds keep long raid buffs out of view until they're close to expiring",
+      "Target name shown on every row; auto-cancels on resist, fade, zone, or death",
     ],
     mediaSlug: "spell-timers",
   },
@@ -90,23 +91,23 @@ const features = [
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. Built-in packs for enchanters (mez/charm breaks, debuffs, raid buffs) and group awareness (tells, deaths). Import GINA packs as JSON.",
+      "A regex trigger engine for any log line. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes plus group awareness. Import GINA shares as .xml or .gtp.",
     bullets: [
       "Drag-to-position overlay text with live test buttons",
-      "Native file picker for sound files; per-action volume control",
+      "Triggers can start spell timers — fading-soon alerts, hide thresholds, and per-character scoping",
       "Always-on event alerts for deaths, zoning, resists, and interrupts",
     ],
     mediaSlug: "triggers",
   },
   {
     title: "Customizable Overlay Dashboard",
-    tagline: "Lay it out your way",
+    tagline: "One screen, everything",
     description:
-      "A single Overlays page brings DPS, spell timers, NPC info, and triggers together with a snap-grid dashboard. Drag panels into the layout you want, resize them, and the arrangement persists across sessions. Each panel can also pop out as its own click-through, transparent window above the game.",
+      "A single Overlays page is your one-stop view of the run — DPS meter, spell timers, NPC info, and trigger alerts all in one place. Drag panels into the layout you want with a snap grid, resize them, and the arrangement persists across sessions. When you want them on top of the game, pop any panel out as its own click-through transparent window — same data, no alt-tab.",
     bullets: [
-      "Snap-grid drag-and-drop with persistent layout",
-      "Click-through transparent windows when popped out",
-      "Lock toggle and remembered window size and position per overlay",
+      "One dashboard for combat, timers, target info, and alerts at a glance",
+      "Snap-grid drag-and-drop layout that persists across sessions",
+      "Click-through transparent pop-out windows with remembered size and position",
     ],
     mediaSlug: "overlays-dashboard",
   },
@@ -114,7 +115,7 @@ const features = [
     title: "Config Backup Manager",
     tagline: "Snapshot & restore",
     description:
-      "One-click backup and restore for every EverQuest .ini config file. Snapshot before risky changes, roll back instantly if something breaks. Auto-backs up your files on a custom schedule or whenever they change.",
+      "One-click backup and restore for every Project Quarm .ini config file. Snapshot before risky changes, roll back instantly if something breaks. Auto-backs up your files on a custom schedule or whenever they change.",
     bullets: [
       "Auto-backups on a custom schedule or on file change",
       "Snapshots all UI, hotkey, and social config",

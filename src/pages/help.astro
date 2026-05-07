@@ -1,0 +1,780 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sections = [
+  { id: "getting-started", label: "Getting started" },
+  { id: "settings", label: "Settings & data sources" },
+  { id: "overlay-dashboard", label: "Overlay Dashboard" },
+  { id: "database-explorer", label: "Database Explorer" },
+  { id: "dps-meter", label: "DPS / HPS Meter & Combat Log" },
+  { id: "spell-timers", label: "Spell Timers" },
+  { id: "npc-info", label: "NPC Info Overlay" },
+  { id: "character-progression", label: "Character Progression" },
+  { id: "spell-checklist", label: "Spell Checklist" },
+  { id: "inventory-tracker", label: "Inventory & Key Tracker" },
+  { id: "triggers", label: "Custom Triggers & Alerts" },
+  { id: "backups", label: "Config Backup Manager" },
+  { id: "troubleshooting", label: "Troubleshooting" },
+  { id: "privacy", label: "Privacy & safety" },
+];
+---
+
+<BaseLayout
+  title="Help — PQ Companion"
+  description="Full reference for PQ Companion: every feature explained, with prerequisites, configuration, and common gotchas."
+>
+  <section class="hero-glow border-b border-border-subtle">
+    <div class="mx-auto max-w-6xl px-6 pb-12 pt-20 md:pt-24">
+      <p
+        class="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary"
+      >
+        Help
+      </p>
+      <h1
+        class="text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        PQ Companion reference.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-muted-foreground">
+        Every feature, every prerequisite, and the gotchas worth knowing.
+        New here? Start with the
+        <a href="/quickstart" class="text-primary hover:text-primary-hover"
+          >Quick Start</a
+        > and come back when you want detail.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid gap-12 lg:grid-cols-[16rem_1fr]">
+        <aside class="lg:sticky lg:top-24 lg:self-start">
+          <p
+            class="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-muted"
+          >
+            Contents
+          </p>
+          <nav>
+            <ul class="space-y-1.5 text-sm">
+              {
+                sections.map((s) => (
+                  <li>
+                    <a
+                      href={`#${s.id}`}
+                      class="block rounded-md px-3 py-1.5 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </aside>
+
+        <div
+          class="prose-help space-y-16 text-base leading-relaxed text-muted-foreground"
+        >
+          <section id="getting-started" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Getting started
+            </h2>
+            <p class="mt-4">
+              PQ Companion is a single Windows app that runs alongside
+              Project Quarm. It does two things: reads your combat log
+              file in real time, and reads JSON exports from
+              <a
+                href="https://github.com/iamclint/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              >. Everything else — the database, the overlays, the trigger
+              engine — is built on top of those two inputs.
+            </p>
+            <p class="mt-4">
+              The minimum viable setup is three steps: install the app,
+              point it at your Project Quarm folder in Settings, and turn
+              on the in-game combat log with
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >. That's enough for the database, DPS meter, spell timers,
+              NPC info overlay, and trigger engine to work. For the
+              spellbook, AAs, and inventory features, install Zeal too.
+            </p>
+            <p class="mt-4">
+              For step-by-step install, see the
+              <a href="/quickstart" class="text-primary hover:text-primary-hover"
+                >Quick Start</a
+              >.
+            </p>
+          </section>
+
+          <section id="settings" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Settings & data sources
+            </h2>
+            <p class="mt-4">
+              Open <strong class="text-foreground">Settings</strong> from
+              the sidebar. You'll set up two paths and a name:
+            </p>
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground"
+                    >Project Quarm folder</strong
+                  > — the directory containing
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >eqgame.exe</code
+                  >. The app finds your combat log and <code
+                    class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.ini</code
+                  > files from here.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Character name</strong>
+                  — used to pick the right log file
+                  (<code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >eqlog_&lt;Character&gt;_quarm.txt</code
+                  >) and to tag Zeal exports per character.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Zeal folder</strong>
+                  (optional) — only needed if Zeal writes its exports
+                  somewhere other than the default. The app will detect
+                  this automatically in most cases.
+                </span>
+              </li>
+            </ul>
+            <p class="mt-4">
+              The character switcher in the top-right lets you flip
+              between any character with a Zeal export. The whole app —
+              progression, inventory, spell checklist, to-dos — follows
+              the active character.
+            </p>
+          </section>
+
+          <section id="overlay-dashboard" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Overlay Dashboard
+            </h2>
+            <p class="mt-4">
+              The <strong class="text-foreground">Overlays</strong> page
+              is your one-stop view of the run. DPS meter, spell timers,
+              NPC info, and trigger alerts all live in a single snap-grid
+              dashboard so you can scan everything at once instead of
+              hopping between tabs.
+            </p>
+            <p class="mt-4">
+              Drag any panel to move it, drag a corner to resize. The
+              layout persists across sessions. Hit the lock toggle when
+              you're happy with the arrangement so you don't bump it
+              mid-fight.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pop-out windows
+            </h3>
+            <p class="mt-3">
+              Any panel can pop out as its own transparent, click-through,
+              always-on-top window above the game — same data as the
+              dashboard, just floating over EQ. Each pop-out remembers its
+              own size and position. Use the dashboard view at the desk
+              and pop the panels you actually need on top of the game when
+              you alt-tab in.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Tips
+            </h3>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  Lock the dashboard before raids so a stray drag doesn't
+                  rearrange your layout.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  Pop-outs are click-through by default — to interact
+                  (resize, move), unlock the overlay from its title bar.
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <section id="database-explorer" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Database Explorer
+            </h2>
+            <p class="mt-4">
+              A searchable database of every item, spell, NPC, and zone in
+              Project Quarm. Item and spell icons render inline; cross-
+              references between scrolls and the spells they teach, NPC
+              drops and source mobs, and zones and their NPC rosters are
+              all click-through.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Global search
+            </h3>
+            <p class="mt-3">
+              Press <kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >Ctrl + K</kbd
+              > from anywhere in the app for global search. Results group
+              by type (items, spells, NPCs, zones) so you can jump
+              straight to what you want.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Filters
+            </h3>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Items:</strong> race,
+                  class, level, slot, type, and stat thresholds (HP, mana,
+                  AC, resists, etc.).
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Spells:</strong> by
+                  class and level range. NPC-only spells are hidden by
+                  default.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Zones:</strong> tabs for
+                  connected zones, drops, ground spawns, and forage.
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <section id="dps-meter" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              DPS / HPS Meter & Combat Log
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              > in-game. The meter parses your combat log live.
+            </p>
+            <p class="mt-4">
+              Tracks per-fight and session-wide damage and healing for
+              you and your group. Tab between the DPS and HPS panels —
+              the session footer and pop-out window follow the active
+              tab. Pet and charm damage rolls up under the owner so a
+              chanter's charmed pet doesn't show as a separate
+              combatant; if a former charmed pet starts attacking you,
+              the binding is dropped automatically. Boss fights are kept
+              grouped instead of fragmenting on add-spawn or brief
+              lulls.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Sharing fights
+            </h3>
+            <p class="mt-3">
+              One-click copy of any fight or session summary to the
+              clipboard, formatted for <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/gu</code
+              > and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/tell</code
+              >. Click any combatant to expand their full damage breakdown
+              (melee, spells, procs, pet) before copying.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Combat history
+            </h3>
+            <p class="mt-3">
+              Every fight is retained in a scrollable history. Re-open a
+              fight from last night to grab a parse for a guild post, or
+              compare back-to-back pulls without losing the data. Filter
+              by combatant name, time window, or "me only", and export
+              the visible fights as CSV.
+            </p>
+          </section>
+
+          <section id="spell-timers" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Spell Timers
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              Tick-accurate countdown bars for every buff, debuff, mez,
+              stun, and DoT. Driven directly from the combat log and keyed
+              per spell-and-target, so casting Visions of Grandeur on three
+              different group members produces three separate timers.
+              Durations are extended automatically by the focus items and
+              AAs your character actually has equipped — pulled from your
+              latest Zeal export.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Buffs vs detrimentals
+            </h3>
+            <p class="mt-3">
+              Buffs and detrimentals get their own overlay windows so you
+              can put the bar you actually need to react to in your line
+              of sight. Each row shows the target name (when it isn't
+              you); timers auto-cancel on resist, fade, zone, or death.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Tracking mode
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Auto</strong> (default)
+              creates a timer for every recognised spell landing — the
+              full firehose. <strong class="text-foreground"
+                >Triggers only</strong
+              > shows just the spells you've curated through trigger packs
+              or custom triggers, for a focused overlay instead of full
+              auto-coverage.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Tracking scope
+            </h3>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Self only</strong> —
+                  buffs landing on you, nothing else.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Cast by me</strong>
+                  (default) — also includes anything you cast on others,
+                  without the noise of other players buffing each other.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Anyone</strong> — every
+                  recognised land, useful for seeing another chanter's
+                  debuff on the raid mob.
+                </span>
+              </li>
+            </ul>
+            <p class="mt-3">
+              The optional <strong class="text-foreground"
+                >Filter buffs to my class</strong
+              > toggle drops buffs your class can't cast (paladin Spiritual
+              Purity, shaman Talisman, bard songs) so an enchanter's
+              overlay isn't cluttered with raid buffs from other classes.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Display thresholds
+            </h3>
+            <p class="mt-3">
+              Hide overlay rows whose remaining time exceeds a configured
+              threshold (per-category for buffs and detrimentals, with
+              per-trigger overrides). Set to <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >0</code
+              > to always show — useful for keeping long-duration raid
+              buffs out of view until they're close to expiring.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Audio alerts
+            </h3>
+            <p class="mt-3">
+              Configurable audio and TTS alerts fire when a timer's
+              remaining time crosses thresholds you set (e.g. 30 s left,
+              10 s left). Triggers can also carry their own per-trigger
+              "fading soon" alerts — handy for one-off cooldowns or
+              specific mez/charm timers.
+            </p>
+          </section>
+
+          <section id="npc-info" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              NPC Info Overlay
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              The moment you consider a mob, the overlay shows its level,
+              class, HP, resists, body type, faction, and special
+              abilities — Summon, Unmezzable, Uncharmable, See Invis,
+              Enrage, Flurry, and so on. Pulled straight from the database
+              via your combat log, so it works for any mob the database
+              knows about.
+            </p>
+            <p class="mt-4">
+              The overlay also auto-detects your target from melee and
+              spell events, so it stays useful even if you don't
+              explicitly <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              >.
+            </p>
+          </section>
+
+          <section id="character-progression" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Character Progression
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <a
+                href="https://github.com/iamclint/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              > installed and at least one export run on this character.
+            </p>
+            <p class="mt-4">
+              A full per-character workspace driven by Zeal exports.
+              Switch characters with the global character switcher —
+              every progression sub-tab follows the active character.
+            </p>
+            <ul class="mt-4 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Stats</strong> — base
+                  HP/Mana, stat caps, worn effects, and softcap AC.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Gear</strong> —
+                  paper-doll view with bag and bank cards. Click any item
+                  for the full database entry.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">AAs</strong> — split
+                  into trained and available, with descriptions and
+                  cost-aware planning.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Spell Modifiers</strong>
+                  — every focus and worn effect that's modifying your
+                  spells, in one tab.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">To-dos</strong> —
+                  per-character checklist with subtasks for goals (epic
+                  pieces, key quests, AA targets).
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <section id="spell-checklist" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Spell Checklist
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> Zeal
+              spellbook export.
+            </p>
+            <p class="mt-4">
+              Cross-references every spell your class can learn against
+              your Zeal-exported spellbook so you always know exactly
+              which spells you still need to scribe. Filter by class and
+              level range; NPC-only and unobtainable spells are hidden by
+              default. Click any spell to jump to its full database entry.
+            </p>
+          </section>
+
+          <section id="inventory-tracker" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Inventory & Key Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> Zeal
+              inventory export.
+            </p>
+            <p class="mt-4">
+              All inventory across every character in one searchable
+              view, with item icons everywhere — equipped, bags, bank,
+              shared bank. Paper-doll layout with collapsible bag and bank
+              cards. Click any item to open its full database entry in a
+              modal without leaving the page.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Key tracker
+            </h3>
+            <p class="mt-3">
+              Per-key component checklist for VP, Sebilis, Howling Stones,
+              and the rest. Auto-detects intermediate combines (e.g. Vex
+              Thal sub-keys) as you progress, so the list updates without
+              manual ticking.
+            </p>
+          </section>
+
+          <section id="triggers" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Custom Triggers & Alerts
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              A regex trigger engine for any log line. Each trigger fires
+              one or more actions:
+            </p>
+            <ul class="mt-4 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">On-screen text</strong>
+                  with draggable position and configurable font size.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Local sound files</strong>
+                  via the native file picker, with per-action volume.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Text-to-speech</strong>
+                  for hands-busy alerts.
+                </span>
+              </li>
+            </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Triggers that drive spell timers
+            </h3>
+            <p class="mt-3">
+              A trigger can do more than fire an alert — it can also
+              start a countdown on the buff or detrimental overlay. Set a
+              timer duration, optionally a worn-off pattern that clears
+              the row before its natural expiry, and per-trigger
+              "fading soon" audio cues at any thresholds you want. Each
+              trigger can carry a per-trigger display threshold that
+              overrides the global category default.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Per-character scoping
+            </h3>
+            <p class="mt-3">
+              Triggers can be scoped to specific characters — handy for
+              class-specific packs that should only fire when you're on
+              that character. Leave the character list empty to fire for
+              any active character.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Built-in packs
+            </h3>
+            <p class="mt-3">
+              Class packs ship for all 14 classes (Bard, Beastlord,
+              Cleric, Druid, Enchanter, Magician, Monk, Necromancer,
+              Paladin, Ranger, Rogue, Shadowknight, Shaman, Warrior,
+              Wizard) plus a Group Awareness pack (incoming tells, death
+              events, zoning). Each pack bundles the relevant CC-break
+              and cast-failure alerts plus spell timers for the class's
+              core buffs, debuffs, roots, mezzes, charms, and pacify
+              lines. Always-on event alerts for deaths, zoning, resists,
+              and interrupts are independent of the trigger system.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              GINA imports
+            </h3>
+            <p class="mt-3">
+              Import GINA shares directly as
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.xml</code
+              > or
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.gtp</code
+              >. The app converts the regex patterns and action set so
+              existing community packs work without rewriting them.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Tips
+            </h3>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  Use the live test button beside each trigger to fire it
+                  without waiting for the log line — handy for tuning
+                  position, font size, and volume.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  Drag the on-screen alert to where you want it; the
+                  position persists across sessions.
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <section id="backups" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Config Backup Manager
+            </h2>
+            <p class="mt-4">
+              One-click backup and restore for every Project Quarm
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.ini</code
+              > file — UI, hotkeys, socials, the lot. Snapshot before a
+              risky UI overhaul, roll back instantly if something breaks.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Auto-backups
+            </h3>
+            <p class="mt-3">
+              Configure auto-backups on a custom schedule (e.g. once a
+              day) or on file change (every time the game writes the
+              file). Browse, label, and restore previous backups from a
+              single list.
+            </p>
+          </section>
+
+          <section id="troubleshooting" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Troubleshooting
+            </h2>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              The DPS meter / spell timers / NPC info aren't doing
+              anything
+            </h3>
+            <p class="mt-3">
+              All three read from your combat log. Check that you ran
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              > in-game (it's per-character and per-session), and that
+              Settings points to the right Project Quarm folder. The log
+              file lives in your Project Quarm folder as
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >eqlog_&lt;Character&gt;_quarm.txt</code
+              >.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              The Spell Checklist / Inventory / AAs are empty
+            </h3>
+            <p class="mt-3">
+              Those features need
+              <a
+                href="https://github.com/iamclint/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              > exports. Run Zeal at least once on the character to
+              populate the JSON, then switch to that character in PQ
+              Companion.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              I changed a config and the game broke
+            </h3>
+            <p class="mt-3">
+              Open <strong class="text-foreground">Backups</strong> and
+              restore the most recent snapshot. If you had auto-backups
+              enabled (recommended), there's almost always a clean copy
+              from before the change.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              Still stuck?
+            </h3>
+            <p class="mt-3">
+              Open an issue on
+              <a
+                href="https://github.com/jasonsoprovich/pq-companion/issues"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">GitHub</a
+              > with what you tried and any console errors.
+            </p>
+          </section>
+
+          <section id="privacy" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Privacy & safety
+            </h2>
+            <p class="mt-4">
+              PQ Companion runs entirely locally. It reads two things off
+              disk: your combat log file and your Zeal JSON exports.
+              Nothing is uploaded anywhere; there's no account, no
+              telemetry beyond auto-update checks against the GitHub
+              releases API.
+            </p>
+            <p class="mt-4">
+              The app never modifies the game client or game data. It is
+              a read-only tool — no memory injection, no packet
+              modification, no automation that interacts with the game
+              client. If you're worried about server rules, the rule of
+              thumb is: anything PQ Companion does, you could do by hand
+              with a text editor and the in-game UI; it's just a lot
+              faster.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
