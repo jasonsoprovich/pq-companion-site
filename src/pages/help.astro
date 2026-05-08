@@ -162,6 +162,16 @@ const sections = [
               progression, inventory, spell checklist, to-dos — follows
               the active character.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Master Volume
+            </h3>
+            <p class="mt-3">
+              Settings has a master volume slider that scales every
+              trigger sound, TTS utterance, event alert, and timer alert
+              on top of each action's per-trigger volume — dampen
+              everything together without losing the relative balance
+              between individual triggers.
+            </p>
           </section>
 
           <section id="overlay-dashboard" class="scroll-mt-24">
@@ -189,10 +199,30 @@ const sections = [
             <p class="mt-3">
               Any panel can pop out as its own transparent, click-through,
               always-on-top window above the game — same data as the
-              dashboard, just floating over EQ. Each pop-out remembers its
-              own size and position. Use the dashboard view at the desk
-              and pop the panels you actually need on top of the game when
-              you alt-tab in.
+              dashboard, just floating over the game. Each pop-out
+              remembers its own size and position. Use the dashboard view
+              at the desk and pop the panels you actually need on top of
+              the game when you alt-tab in.
+            </p>
+            <p class="mt-3">
+              The dashboard toolbar has a <strong
+                class="text-foreground">Pop Out All</strong
+              > button that opens every standalone overlay window in one
+              click; once any pop-outs exist it flips to <strong
+                class="text-foreground">Close All Popouts</strong
+              >.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Click-through &amp; lock
+            </h3>
+            <p class="mt-3">
+              Pop-outs default to click-through so the game keeps the
+              focus while you read them. Locking an overlay from its
+              title bar makes it click-through; <em>hovering</em>
+              anywhere over a locked overlay temporarily disables
+              passthrough so you can scroll the timer list, click a
+              per-row dismiss button, or drag the header — moving the
+              cursor away restores click-through automatically.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -208,8 +238,8 @@ const sections = [
               <li class="flex gap-3">
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
-                  Pop-outs are click-through by default — to interact
-                  (resize, move), unlock the overlay from its title bar.
+                  Use Pop Out All before a raid pull, then Close All
+                  Popouts when you're back at the desk.
                 </span>
               </li>
             </ul>
@@ -293,6 +323,28 @@ const sections = [
               lulls.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              DPS vs aDPS
+            </h3>
+            <p class="mt-3">
+              The DPS panel header has a rate-mode toggle. <strong
+                class="text-foreground">DPS</strong
+              > (default) is fight-duration DPS — total damage divided by
+              fight length, which is what raid leaders usually compare.
+              <strong class="text-foreground">aDPS</strong> is active-time
+              DPS — total damage divided by the seconds each combatant
+              was actually swinging or casting, which is fairer for DoT
+              casters, mez-duty enchanters, and anyone whose role
+              legitimately includes downtime. The column header swaps
+              between <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >DPS</code
+              > and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >aDPS</code
+              > so you always know which you're reading; the choice
+              persists across sessions and syncs to the pop-out window.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Sharing fights
             </h3>
             <p class="mt-3">
@@ -346,7 +398,22 @@ const sections = [
               Buffs and detrimentals get their own overlay windows so you
               can put the bar you actually need to react to in your line
               of sight. Each row shows the target name (when it isn't
-              you); timers auto-cancel on resist, fade, zone, or death.
+              you) and has a small dismiss <kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >×</kbd
+              > to clear that single timer when you know it's gone; the
+              header eraser still bulk-clears the lot. Timers auto-cancel
+              on resist, fade, zone, or death.
+            </p>
+            <p class="mt-3">
+              The buff overlay header has a sort-mode toggle: <strong
+                class="text-foreground">remaining</strong
+              > (default) puts the soonest-to-expire on top, while <strong
+                class="text-foreground">recent</strong
+              > pins newly-cast buffs to the top and freezes their order
+              so the list stops jumping around as time ticks down. The
+              choice syncs between the dashboard panel and the standalone
+              pop-out window.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tracking mode
@@ -598,6 +665,21 @@ const sections = [
                 </span>
               </li>
             </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Exclude patterns
+            </h3>
+            <p class="mt-3">
+              Each trigger can carry a list of exclude patterns (one
+              regex per line). When any exclude matches the same log
+              line as the primary pattern, firing is suppressed —
+              perfect for "fire on player tells, but not on pet
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >Master.</code
+              > responses or merchant/banker/trainer canned phrases."
+              The Group Awareness pack's Incoming Tell trigger ships
+              with sensible defaults; add bazaar trader names you
+              recognise to silence those too.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Triggers that drive spell timers
             </h3>
