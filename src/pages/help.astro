@@ -6,7 +6,7 @@ const sections = [
   { id: "settings", label: "Settings & data sources" },
   { id: "overlay-dashboard", label: "Overlay Dashboard" },
   { id: "database-explorer", label: "Database Explorer" },
-  { id: "dps-meter", label: "DPS / HPS Meter & Combat Log" },
+  { id: "dps-meter", label: "DPS Meter & Combat Log" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
   { id: "character-progression", label: "Character Progression" },
@@ -303,7 +303,7 @@ const sections = [
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
             >
-              DPS / HPS Meter & Combat Log
+              DPS Meter & Combat Log
             </h2>
             <p class="mt-4">
               <strong class="text-foreground">Prerequisite:</strong>
@@ -312,10 +312,8 @@ const sections = [
               > in-game. The meter parses your combat log live.
             </p>
             <p class="mt-4">
-              Tracks per-fight and session-wide damage and healing for
-              you and your group. Tab between the DPS and HPS panels —
-              the session footer and pop-out window follow the active
-              tab. Pet and charm damage rolls up under the owner so a
+              Tracks per-fight and session-wide damage for you and your
+              group. Pet and charm damage rolls up under the owner so a
               chanter's charmed pet doesn't show as a separate
               combatant; if a former charmed pet starts attacking you,
               the binding is dropped automatically. Boss fights are kept
