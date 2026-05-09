@@ -63,11 +63,11 @@ const altText = alt ?? `${title} demo`;
     {
       media?.kind === "video" && (
         <video
-          src={media.src}
-          autoplay
+          data-lazy-src={media.src}
           loop
           muted
           playsinline
+          preload="none"
           class="h-full w-full object-cover"
         />
       )
@@ -102,3 +102,29 @@ const altText = alt ?? `${title} demo`;
     }
   </div>
 </article>
+
+<script>
+  const videos = document.querySelectorAll<HTMLVideoElement>("video[data-lazy-src]");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          const src = video.dataset.lazySrc;
+          if (src && !video.src) {
+            video.src = src;
+          }
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      }
+    },
+    { rootMargin: "200px 0px", threshold: 0.1 },
+  );
+
+  for (const video of videos) {
+    observer.observe(video);
+  }
+</script>
