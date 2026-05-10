@@ -7,6 +7,7 @@ const sections = [
   { id: "overlay-dashboard", label: "Overlay Dashboard" },
   { id: "database-explorer", label: "Database Explorer" },
   { id: "dps-meter", label: "DPS Meter & Combat Log" },
+  { id: "combat-history", label: "Combat History" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
   { id: "character-progression", label: "Character Progression" },
@@ -313,34 +314,140 @@ const sections = [
             </p>
             <p class="mt-4">
               Tracks per-fight and session-wide damage for you and your
-              group. Pet and charm damage rolls up under the owner so a
-              chanter's charmed pet doesn't show as a separate
-              combatant; if a former charmed pet starts attacking you,
-              the binding is dropped automatically. Boss fights are kept
-              grouped instead of fragmenting on add-spawn or brief
-              lulls.
+              group. Each NPC is its own fight: a multi-mob pull archives
+              one entry per mob with its own combatant list and DPS
+              numbers, instead of pooling everything into one row. Pet
+              and charm damage rolls up under the owner so a chanter's
+              charmed pet doesn't show as a separate combatant; if a
+              former charmed pet starts attacking you, the binding is
+              dropped automatically.
+            </p>
+            <p class="mt-4">
+              All three damage sources Project Quarm exposes in the log
+              are captured: melee, direct spell damage, and damage-over-
+              time ticks. DoT ticks were added in v0.6 — necros, druids,
+              and shamans now show their actual damage instead of just
+              their nukes. Critical hits are tracked per combatant
+              (visible on row hover and in clipboard exports) using
+              Quarm's standalone "Scores a critical hit!" log line.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              DPS vs aDPS
+              Three DPS modes
             </h3>
             <p class="mt-3">
-              The DPS panel header has a rate-mode toggle. <strong
-                class="text-foreground">DPS</strong
-              > (default) is fight-duration DPS — total damage divided by
-              fight length, which is what raid leaders usually compare.
-              <strong class="text-foreground">aDPS</strong> is active-time
-              DPS — total damage divided by the seconds each combatant
-              was actually swinging or casting, which is fairer for DoT
-              casters, mez-duty enchanters, and anyone whose role
-              legitimately includes downtime. The column header swaps
-              between <code
-                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >DPS</code
-              > and <code
-                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >aDPS</code
-              > so you always know which you're reading; the choice
-              persists across sessions and syncs to the pop-out window.
+              The DPS panel header has a rate-mode toggle that cycles
+              through the three metrics that actually matter when you're
+              ranking damage. The current mode shows in the toggle button
+              and the column header so you always know which you're
+              reading; the choice persists across sessions and syncs to
+              the pop-out window.
+            </p>
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Personal</strong>
+                  (default) — total damage divided by <em>your</em>
+                  first-to-last span. Fair to the individual: a wizard
+                  who joined the fight late or a necro who ran OOM
+                  early isn't punished for time they weren't engaged.
+                  Matches EQLogParser's headline column. Best for
+                  judging a single player's class performance.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Raid</strong> — total
+                  damage divided by the <em>raid's</em> first-to-last
+                  span (the same denominator for every combatant in the
+                  fight). Best for ranking players against each other
+                  in one fight: it charges late joiners and OOM casters
+                  for the time they weren't contributing, so "who
+                  actually killed this boss" is the answer.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Encounter</strong> —
+                  total damage divided by the fight's wall-clock
+                  duration. Useful for comparing whole fights to each
+                  other ("did we kill this boss faster than last
+                  week?"). The metric the meter has always emitted.
+                </span>
+              </li>
+            </ul>
+            <h4
+              class="mt-6 text-base font-semibold text-foreground"
+            >
+              Worked example
+            </h4>
+            <p class="mt-3">
+              A 3-minute boss fight with three damage dealers. The Tank
+              swings the whole time, the Wizard arrives 30 seconds late,
+              the Necro runs OOM at the 2-minute mark.
+            </p>
+            <div class="mt-4 overflow-x-auto">
+              <table
+                class="w-full border-collapse text-sm text-muted-foreground"
+              >
+                <thead>
+                  <tr class="border-b border-border-subtle text-left text-xs uppercase tracking-wider text-muted">
+                    <th class="py-2 pr-4 font-semibold">Player</th>
+                    <th class="py-2 pr-4 font-semibold text-right">Damage</th>
+                    <th class="py-2 pr-4 font-semibold text-right">Personal</th>
+                    <th class="py-2 pr-4 font-semibold text-right">Raid</th>
+                    <th class="py-2 font-semibold text-right">Encounter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-border-subtle">
+                    <td class="py-2 pr-4 text-foreground">Tank</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">100,000</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">555</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">555</td>
+                    <td class="py-2 text-right tabular-nums">555</td>
+                  </tr>
+                  <tr class="border-b border-border-subtle">
+                    <td class="py-2 pr-4 text-foreground">Wizard</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">200,000</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">1,333</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">1,111</td>
+                    <td class="py-2 text-right tabular-nums">1,111</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 pr-4 text-foreground">Necro</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">150,000</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">1,250</td>
+                    <td class="py-2 pr-4 text-right tabular-nums">833</td>
+                    <td class="py-2 text-right tabular-nums">833</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-3 text-sm">
+              The Tank engaged for the full 180 s so all three numbers
+              agree. The Wizard's Personal DPS divides by their 150 s
+              window (200,000 ÷ 150) instead of the 180 s wall-clock —
+              the late entry isn't held against them. Raid mode uses
+              the 180 s raid span for everyone, so the Wizard's number
+              matches the Encounter number here. The Necro stops casting
+              at 120 s, so their Personal DPS is the highest of the three
+              (150,000 ÷ 120) but their Raid contribution is third
+              (150,000 ÷ 180).
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Session breaks
+            </h3>
+            <p class="mt-3">
+              The Combat Log and Combat History pages insert a "Session
+              break" divider between fights separated by 120 seconds or
+              more of inactivity. Long medding pauses, between-pull
+              breaks, and "back from dinner" gaps become legible at a
+              glance instead of running together. The divider is visual
+              only — DPS calculations, fight ordering, and the data
+              behind everything are unaffected.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Sharing fights
@@ -353,18 +460,125 @@ const sections = [
               > and <code
                 class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >/tell</code
-              >. Click any combatant to expand their full damage breakdown
-              (melee, spells, procs, pet) before copying.
+              >. The current DPS mode is included in the header so
+              recipients know which metric they're reading. Click any
+              combatant row to expand their breakdown (hit count, max
+              hit, crits) before copying.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Combat history
+              Combat Log vs Combat History
             </h3>
             <p class="mt-3">
-              Every fight is retained in a scrollable history. Re-open a
-              fight from last night to grab a parse for a guild post, or
-              compare back-to-back pulls without losing the data. Filter
-              by combatant name, time window, or "me only", and export
-              the visible fights as CSV.
+              The <strong class="text-foreground">Combat Log</strong>
+              page is the live, in-memory view of the current session —
+              the last 20 fights, updated in real time. The
+              <strong class="text-foreground">Combat History</strong>
+              page is the persistent archive of every fight you've
+              recorded, with date-range and per-character filters. See
+              the next section for full detail.
+            </p>
+          </section>
+
+          <section id="combat-history" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Combat History
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >. Fights are saved automatically as you encounter them —
+              no manual export step.
+            </p>
+            <p class="mt-4">
+              Every archived fight is written to a local SQLite database
+              (<code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >~/.pq-companion/user.db</code
+              >) so the in-memory last-20 ring buffer is no longer the
+              only record. Re-open a fight from last week to grab a
+              parse for a guild post, browse a raid night by zone, or
+              dig up the parse from that one Naggy attempt that mattered
+              — the data sticks around.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Filtering
+            </h3>
+            <p class="mt-3">
+              The header has dropdowns and inputs for the four most
+              common filters:
+            </p>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">NPC name</strong>
+                  (substring, case-insensitive) — find every fight
+                  against "Naggy", every Frenzied Ghoul, etc.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Character</strong>
+                  dropdown — populated from the characters that actually
+                  appear in your saved fights, so there's no guessing at
+                  spelling.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Zone</strong> dropdown
+                  — same: only zones with saved fights show up.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Date range</strong>
+                  with one-click presets: <em>Last 24h</em>,
+                  <em>Last 7d</em> (default), <em>Last 30d</em>,
+                  <em>All</em>, or <em>Custom</em> with date pickers.
+                  Preset clicks apply immediately; the other filters
+                  apply on Enter or the Apply button.
+                </span>
+              </li>
+            </ul>
+            <p class="mt-3">
+              Click any row to expand the full combatant and healer
+              breakdown for that fight. Per-row delete and a clear-all
+              button live in the header — both pop a themed confirmation
+              before destroying anything.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Retention
+            </h3>
+            <p class="mt-3">
+              Saved fights are pruned after 30 days by default — enough
+              to cover a typical week of raiding without the database
+              growing without bound. The retention window is configurable
+              in <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >config.yaml</code
+              > under
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >combat.retention_days</code
+              >: set a higher number to keep fights longer, or
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >-1</code
+              > to disable pruning entirely. Pruning runs once at startup
+              and once per hour while the app is open.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Storage size
+            </h3>
+            <p class="mt-3">
+              A fight is typically 1–10&nbsp;KB. A heavy week of raiding
+              produces a few thousand fights at most — single-digit
+              megabytes total. SQLite's WAL journal keeps writes
+              non-blocking even when the rest of the app is touching the
+              same database for triggers, character data, and backups.
             </p>
           </section>
 
@@ -839,9 +1053,14 @@ const sections = [
             <p class="mt-4">
               PQ Companion runs entirely locally. It reads two things off
               disk: your combat log file and your Zeal JSON exports.
-              Nothing is uploaded anywhere; there's no account, no
-              telemetry beyond auto-update checks against the GitHub
-              releases API.
+              Triggers, character notes, and combat history are persisted
+              to a local SQLite database at
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >~/.pq-companion/user.db</code
+              > (combat history defaults to a 30-day retention window;
+              everything else is yours until you delete it). Nothing is
+              uploaded anywhere; there's no account, no telemetry beyond
+              auto-update checks against the GitHub releases API.
             </p>
             <p class="mt-4">
               The app never modifies the game client or game data. It is
