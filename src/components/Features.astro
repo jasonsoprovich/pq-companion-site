@@ -27,6 +27,18 @@ const features = [
     mediaSlug: "dps-meter",
   },
   {
+    title: "Combat History",
+    tagline: "Every fight, archived and filterable",
+    description:
+      "Every fight gets archived to a local SQLite store with retention pruning so a long session doesn't bloat into gigabytes. Browse, filter, and group by NPC, character, or date — facet dropdowns, date presets, and a session-grouping toggle (120s gap rule) make finding that one boss attempt from last week trivial. Three DPS metrics — Personal, Raid, Encounter — switch on the fly across every aggregate display.",
+    bullets: [
+      "Per-fight detail with DoT ticks, crit hits, charm-pet attribution, and per-combatant breakdown",
+      "Pets, me-only, and DPS-mode toggles in the FilterBar — see the run from any angle",
+      "Curated expansion grouping in the zones browser links combat back to where it happened",
+    ],
+    mediaSlug: "combat-history",
+  },
+  {
     title: "Spell Timer Engine",
     tagline: "Never miss a re-cast",
     description:
@@ -36,8 +48,22 @@ const features = [
       "Tracking scope: Self only, Cast by me, or Anyone — plus an optional 'my class only' filter",
       "Per-category hide thresholds keep long raid buffs out of view until they're close to expiring",
       "Target name shown on every row; auto-cancels on resist, fade, zone, or death",
+      "Discipline cooldown timers for every melee class — Defensive, Furious, Trueshot, Holyforge, and the rest — with a TTS 'ready' alert when the recast comes up",
     ],
     mediaSlug: "spell-timers",
+  },
+  {
+    title: "Zeal Integration",
+    tagline: "Live data straight from the client",
+    description:
+      "When you have the Zeal mod installed, PQ Companion talks to it over a local Windows pipe to get authoritative live game state — target, target HP, pet name, group HP, casting state, and more. The first-launch wizard auto-detects Zeal; Settings shows live pipe status; everything below the surface gets sharper.",
+    bullets: [
+      "Live target HP bar and pet-owner badge in the NPC overlay — no more /con guesswork",
+      "Better pet and charm-pet damage attribution in the combat meter",
+      "Confirmed casts cross-checked against the pipe so emote-based false positives disappear",
+      "Pipe-source triggers: fire on target name change, target HP threshold, buff land/fade, or your own /pipe <text> command in-game",
+    ],
+    mediaSlug: "zeal-integration",
   },
   {
     title: "NPC Info Overlay",
@@ -91,13 +117,51 @@ const features = [
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes plus group awareness. Import GINA shares as .xml or .gtp.",
+      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes plus group awareness. Import GINA shares as .xml or .gtp.",
     bullets: [
       "Drag-to-position overlay text with live test buttons",
       "Triggers can start spell timers — fading-soon alerts, hide thresholds, and per-character scoping",
       "Per-trigger exclude patterns to silence pet, merchant, and banker chatter on tell triggers",
+      "Pipe-source triggers (with Zeal) fire on target name, target HP%, buff landed/faded, or your in-game /pipe <text>",
     ],
     mediaSlug: "triggers",
+  },
+  {
+    title: "Players Database",
+    tagline: "A /who history that remembers",
+    description:
+      "Every player you see in /who output gets persisted to a searchable, sortable database — name, class, race, guild, last-seen level, last-seen zone, and a per-character level history. Anonymous sightings preserve the data you already knew. /guildstat output is captured too. Filter by class, guild, or zone; click any row for level progression.",
+    bullets: [
+      "Auto-captures /who, /who all, /who guild, and /guildstat output",
+      "Anonymous-aware upsert keeps class/level/race from the last non-anonymous sighting",
+      "Class title aliases (Lord, Necromancer Lord, etc.) collapse into the right base class",
+      "Pinned info panel on scroll; class, guild, and zone filters with one-click Clear",
+    ],
+    mediaSlug: "players",
+  },
+  {
+    title: "Spellsets",
+    tagline: "Spell-gem layouts at a glance",
+    description:
+      "Reads Zeal's _spellsets.ini and surfaces every saved spellset as a card with the eight gems laid out. Rename them inline, add and remove sets, and import another character's spellsets from their .ini — with ineligible spells (class/level/spellbook mismatch) blocked at import so you never accidentally save a set you can't actually load in-game.",
+    bullets: [
+      "Visual card grid with vertical gem layout for quick scanning",
+      "Inline rename, add and remove spellsets directly from the app",
+      "Import another character's spellsets with eligibility validation",
+    ],
+    mediaSlug: "spellsets",
+  },
+  {
+    title: "App Backup & Restore",
+    tagline: "Move your setup to a new PC",
+    description:
+      "Export your entire PQ Companion state — settings, triggers, character data, EQ config backups — into a single .pqcb bundle. Drop the bundle on another machine, import, and you're exactly where you left off. Always-visible panel under Settings → Backups.",
+    bullets: [
+      "One-file portable bundle (.pqcb)",
+      "Manifest with version + schema check refuses forward-incompatible bundles",
+      "Pre-import data renamed in place, not deleted — clean rollback path",
+    ],
+    mediaSlug: "app-backup",
   },
   {
     title: "Roll Tracker",
@@ -124,10 +188,10 @@ const features = [
     mediaSlug: "overlays-dashboard",
   },
   {
-    title: "Config Backup Manager",
-    tagline: "Snapshot & restore",
+    title: "EQ Config Backups",
+    tagline: "Snapshot & restore your .ini files",
     description:
-      "One-click backup and restore for every Project Quarm .ini config file. Snapshot before risky changes, roll back instantly if something breaks. Auto-backs up your files on a custom schedule or whenever they change.",
+      "One-click backup and restore for every Project Quarm .ini config file (UI layout, hotkeys, social macros, etc.). Snapshot before risky changes, roll back instantly if something breaks. Auto-backs up your files on a custom schedule or whenever they change.",
     bullets: [
       "Auto-backups on a custom schedule or on file change",
       "Snapshots all UI, hotkey, and social config",
