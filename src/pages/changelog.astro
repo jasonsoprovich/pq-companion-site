@@ -1,339 +1,33 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
-interface Release {
-  version: string;
-  date: string; // YYYY-MM-DD
-  headline?: string;
-  highlights?: string[];
-  fixes?: string[];
+const entries = (await getCollection("changelog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+// Lightweight inline-markdown renderer for bullet content. The CHANGELOG
+// only uses **bold** and `code`; anything else stays literal. HTML is
+// escaped first so user content can't inject markup.
+function inlineMd(s: string): string {
+  const escaped = s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return escaped
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
 }
 
-// Newest first. Summaries are user-facing — leave out internal refactors,
-// CI fixes, and version-bump commits.
-const releases: Release[] = [
-  {
-    version: "0.7.0",
-    date: "2026-05-17",
-    headline:
-      "Zeal integration, melee discipline cooldowns, Players page, app backup, Spellsets, and a settings overhaul.",
-    highlights: [
-      "<strong>Zeal integration</strong> — the app now talks to the Zeal mod over its local pipe for authoritative live data. Unlocks live target HP bar and pet-owner badge in the NPC overlay, better pet damage attribution in the combat meter, confirmed casts in the spell timer engine, and a brand-new pipe-source trigger type (fire on target name, target HP%, buff land/fade, or your in-game <code>/pipe &lt;text&gt;</code>).",
-      "<strong>Melee discipline cooldowns</strong> — discipline triggers now spawn a second timer tracking the reuse cooldown with a TTS \"ready\" alert. Covers every warrior, monk, rogue, paladin, SK, and ranger discipline plus Divine Intervention/Aura, Dictate, Avatar, Voice of Terris, Unholy Aura, Harmshield, Ferocity, Lay on Hands, and Harvest.",
-      "<strong>Players page</strong> — a <code>/who</code>-driven database that remembers every player you've seen with class, race, guild, last zone, and level history. Searchable, sortable, filterable. Anonymous sightings preserve previously known info.",
-      "<strong>App Backup & Restore</strong> — export your entire app state (settings, triggers, characters, EQ config backups) into one <code>.pqcb</code> bundle, then import on another PC.",
-      "<strong>Spellsets</strong> — new tab to view/rename/add/remove spellsets via Zeal's <code>_spellsets.ini</code>, plus import another character's spellsets with ineligible spells blocked at import.",
-      "<strong>Settings reorganized</strong> into 6 category tabs (General, Overlays, Spell Timers, Logs, Backups, Advanced). Renamed \"Backup Manager\" → \"EQ Config Backups\" and \"Backup &amp; Purge\" → \"Archive &amp; Trim Log File\" so the two backup features stop looking like the same thing.",
-      "<strong>NPC overlay</strong> — loot table toggle with drop rates, tighter layout in the popped-out window, class labels for trainers/bankers/merchants.",
-      "<strong>Raw Data modal</strong> on every item/spell/NPC/zone detail view — see every column from the underlying DB row.",
-    ],
-    fixes: [
-      "Combat meter shows charm pet damage when the pet name matches the current target",
-      "VT Lucid Shard correctly attributed to Ssraeshza Temple (was Grieg's End)",
-      "Loot rarity color tiers remapped — gold is now the default",
-      "Log parser recognizes the \"looks at you\" (dubious faction) con message",
-      "Item type 45 labeled \"Hand to Hand\"; item-type labels aligned with EQMacEmu enum",
-      "Spell raw-data fields flow column-major to match pqdi.cc layout",
-    ],
-  },
-  {
-    version: "0.6.4",
-    date: "2026-05-13",
-    headline: "Backend port discovery and CSP fixes.",
-    fixes: [
-      "Frontend targets 127.0.0.1 instead of localhost for more reliable backend dial",
-      "CSP allows dynamic backend ports on localhost and 127.0.0.1",
-      "Settings recovers from backend-unreachable errors",
-      "Backend port now discovered via file in dev mode",
-    ],
-  },
-  {
-    version: "0.6.3",
-    date: "2026-05-12",
-    headline: "Settings port-edit polish and a build pipeline fix.",
-    highlights: [
-      "Unsaved-change banner and inline Save for backend port edits in Settings",
-    ],
-    fixes: [
-      "Server binds 127.0.0.1 explicitly for reliable conflict detection",
-      "<code>npm run dist:win</code> now rebuilds the Go backend as part of the dist pipeline",
-    ],
-  },
-  {
-    version: "0.6.2",
-    date: "2026-05-12",
-    headline: "Backend network controls in Settings.",
-    highlights: [
-      "New <strong>Backend Network</strong> section in Settings — display, test, and reset the backend port",
-      "Backend tries your preferred port and falls back to an OS-assigned one on conflict, then plumbs the actual port to the renderer",
-    ],
-  },
-  {
-    version: "0.6.1",
-    date: "2026-05-12",
-    headline:
-      "Spell-modifier accuracy: bard exemption, 50% spell-haste cap, item-clicky gating.",
-    highlights: [
-      "Bards exempted from spell duration extensions (and locked in for in-class spells too)",
-      "Spell haste capped at 50% and now surfaced on the character stats page",
-      "Item-clicky duration extensions only apply when the spell is actually castable by your class",
-      "Item, spell, and NPC lists paginate with \"Show more\"",
-      "App detects a missing <code>quarm.db</code> on startup and guides you through manual repair",
-    ],
-    fixes: [
-      "Item in-game links use the correct Mac-era format for Project Quarm",
-    ],
-  },
-  {
-    version: "0.6.0",
-    date: "2026-05-12",
-    headline: "Combat History page, roll tracker, and three DPS metrics.",
-    highlights: [
-      "<strong>Combat History</strong> — every fight is archived to SQLite with retention pruning. Browse, filter, and group by NPC, character, date presets, or facet dropdowns. Toggle pets, me-only, and DPS-mode on the fly. Session-grouping option detects fight breaks.",
-      "<strong>Roll Tracker</strong> — watches <code>/random</code> in the combat log, buckets rolls into per-range sessions (so Cowl 333 / Shard 444 / Heart 666 in overlapping windows stay separate). Per-session Stop/Remove/Clear, optional Timer mode with 5–600s auto-stop, dashboard panel and pop-out overlay.",
-      "<strong>Three DPS metrics</strong> — Personal, Raid, Encounter — switch on the fly across every aggregate display",
-      "Session-break dividers in combat with a 120s gap rule",
-      "DoT ticks and PQ-format crit hits now captured by the combat parser",
-      "Per-combatant bar colors on the DPS meter",
-      "Curated expansion grouping in the zones browser, with graveyard pop-out info",
-      "Overlays: lock toggles click-through, only the header stays clickable",
-    ],
-    fixes: [
-      "Orphan detrimental timers clear when the target NPC dies",
-      "Combat parser handles single-word bosses, charmed pets, Eye scouts, and 0-damage rows",
-      "DPS mode toggle now updates every aggregate display",
-    ],
-  },
-  {
-    version: "0.5.3",
-    date: "2026-05-08",
-    headline: "Faster zones browser.",
-    fixes: [
-      "Zone list shows immediately on mount instead of waiting for a 300ms debounce",
-      "NPC name search treats spaces as underscores",
-    ],
-  },
-  {
-    version: "0.5.2",
-    date: "2026-05-08",
-    headline: "Master volume slider.",
-    highlights: ["Master volume slider added to Settings"],
-  },
-  {
-    version: "0.5.1",
-    date: "2026-05-07",
-    headline: "Trigger polish and charm-pet damage fixes.",
-    highlights: [
-      "Multiple trigger edit forms can be open simultaneously",
-      "Per-trigger <strong>exclude patterns</strong> to filter pet/merchant lines",
-      "Keyed one-time additive default updates for built-in packs — new defaults land cleanly without overwriting your edits",
-    ],
-    fixes: [
-      "Charmed pet damage stays attributed to you when you tagged the mob first",
-      "Unpositioned text overlays default to screen center instead of (0,0)",
-      "Global event alerts default to off",
-      "Per-trigger threshold no longer lost when the trigger fires before spell-land",
-      "Per-row remove now works and shows in popped-out timer overlays",
-    ],
-  },
-  {
-    version: "0.5.0",
-    date: "2026-05-07",
-    headline:
-      "Active-time DPS, trigger-only timer mode, and overlay quality-of-life.",
-    highlights: [
-      "Toggle between <strong>fight-duration DPS and active-time DPS</strong> — fairer for DoT classes and downtime-heavy roles",
-      "<strong>Spell Timer tracking mode</strong>: Auto (every recognised spell) or Triggers-only (only spells you've curated)",
-      "<strong>Overlay hover-disable</strong> — hovering anywhere in a locked overlay temporarily disables passthrough so you can interact",
-      "Per-timer <strong>X button</strong> to dismiss individual timers",
-      "Trigger-driven timers now capture the spell icon",
-      "Settings: stay on page after save/discard with an inline notice",
-    ],
-    fixes: [
-      "Combat parser recognises passive-form kills (\"X has been slain by Y!\")",
-      "Logparser handles YOU all-caps and multi-word NPC actor names",
-      "<code>pq-audio://</code> scheme now uses <code>protocol.handle</code> with explicit MIME types so paths with spaces and special characters work",
-    ],
-  },
-  {
-    version: "0.4.3",
-    date: "2026-05-05",
-    headline: "Trigger and spell-timer accuracy fixes.",
-    highlights: [
-      "<strong>Class filter for spell timers</strong>, with detrimentals exempt from buff scope",
-      "Drag the alert card directly when positioning instead of fiddling with chrome",
-      "Buff timer <strong>sort-mode toggle</strong>",
-      "Dashboard toolbar gets a <strong>Pop Out All / Close All Popouts</strong> toggle",
-    ],
-    fixes: [
-      "Spell duration formulas 8, 9, and 10 corrected; halved Pacify; matched generic charm-fade",
-      "Trigger Clear-All now does one DELETE plus one engine reload",
-      "Audio: TTS no longer cancels prior speech; autoplay forced; failures surfaced",
-      "Log feed persists events across tab navigation",
-      "DPS rolls \"You\" up with character row so charmed-pet damage attributes correctly",
-    ],
-  },
-  {
-    version: "0.4.2",
-    date: "2026-05-05",
-    headline: "Spell timer persistence and CC break alerts.",
-    highlights: [
-      "Spell timers <strong>persist across zone</strong>, scope by caster, and drop on victim death",
-      "<strong>CC break alerts</strong> (overlay + TTS) added across class packs",
-      "Default <strong>fading-soon / expiring</strong> TTS alerts added to every built-in class pack",
-    ],
-    fixes: [
-      "user.db busy timeout bumped from 5s to 30s to avoid SQLITE_BUSY",
-      "Icons load correctly in the packaged app via relative paths",
-    ],
-  },
-  {
-    version: "0.4.1",
-    date: "2026-05-04",
-    headline: "All 14 class trigger packs.",
-    highlights: [
-      "Built-in trigger packs for every class: Warrior, Cleric, Paladin, Ranger, Shadowknight, Druid, Monk, Bard, Rogue, Shaman, Necromancer, Wizard, Magician, Beastlord — plus Enchanter expanded with charm/root/pacify and Boltran's",
-      "<strong>Per-character chips</strong> on trigger edit form; pack imports default to matching-class characters only",
-      "<strong>Search + class filter</strong> on the trigger list",
-      "Triggers page renamed <strong>Triggers / Timers</strong>",
-      "Quarmy-driven persona refresh for all characters",
-      "Zone browser switches to a PQDI-based allowlist (181 zones) with expansion filter",
-      "<strong>Clear All</strong> button with confirmation modal on triggers",
-    ],
-    fixes: [
-      "NPC special-ability codes corrected to match Project Quarm's EQMacEmu fork",
-      "Spell SPAs 145–220 labeled so disciplines show effect names",
-      "Native form controls render in dark mode",
-      "Class-pack triggers disabled when no matching character exists",
-    ],
-  },
-  {
-    version: "0.4.0",
-    date: "2026-05-03",
-    headline:
-      "Overlay dashboard with snap grid, icons everywhere, and a character stats rework.",
-    highlights: [
-      "<strong>Customizable Overlay Dashboard</strong> with snap-grid drag-and-drop layout that persists across sessions; pop any panel out as its own transparent click-through window",
-      "<strong>Item and spell icons</strong> throughout — database explorer, inventory, spell checklist, timer overlays, modals, NPC loot, cross-refs",
-      "<strong>Character Stats rework</strong>: base HP/Mana, stat caps, side buff list, worn effects, softcap AC, INT/WIS-driven mana",
-      "<strong>AA descriptions</strong> shown for each Alternate Advancement",
-      "<strong>Per-character sub-tabs</strong> across every tracker page",
-      "Persona now <strong>driven by Zeal</strong> — no more manual edit",
-      "Trigger packs: <strong>Test/Position</strong> button for overlay-text alerts; play/test buttons for sound/TTS; native file picker for sound paths",
-      "Per-action position and font size added to the Action model",
-      "Audio: <code>pq-audio://</code> scheme for local sound files",
-      "HPS dashboard panel wired in (currently hidden behind dev flag)",
-    ],
-    fixes: [
-      "Boss fights no longer fragment into many entries",
-      "Pet/charm damage rolls up under owner",
-      "Enemy title shows on NPC info; stop attributing fights to players",
-    ],
-  },
-  {
-    version: "0.3.1",
-    date: "2026-04-28",
-    headline:
-      "Spell Modifiers tab and overlay consolidation.",
-    highlights: [
-      "<strong>Spell Modifiers tab</strong> on Character Info shows every focus and worn effect modifying your spells",
-      "All overlays consolidated into a single dashboard tab",
-    ],
-    fixes: [
-      "NPC-only spell filter; NPC-only spells excluded from All Classes",
-      "Spell SPA labels rebuilt from canonical EQEmu <code>spdat.h</code>",
-      "Cross-class trained AAs dropped from character AA list",
-      "Intermediate combine marks complete when final key is owned",
-      "Power toggle replaced with <strong>Clear button</strong> on timer overlays",
-      "Lock toggle added to overlay popout windows",
-      "Duplicate timer creates de-duped; timers cancel when spell fails to hold",
-      "EQ log timestamps parsed as local time, not UTC",
-    ],
-  },
-  {
-    version: "0.3.0",
-    date: "2026-04-26",
-    headline:
-      "Character Progression, first-launch wizard, paper-doll inventory, and to-do lists.",
-    highlights: [
-      "<strong>Character Progression</strong> — full per-character workspace with stat tracking, gear view, and AA tracking",
-      "<strong>First-launch onboarding wizard</strong>",
-      "<strong>Per-character to-do list</strong> with subtasks and reordering",
-      "<strong>AA trained/available split</strong> with in-place item detail modal",
-      "<strong>Paper-doll inventory layout</strong> with collapsible bag/bank cards",
-      "<strong>Advanced item filter modal</strong> — race, class, level, slot, type, stat thresholds",
-      "<strong>Class and level filters</strong> on Spells tab and Spell Checklist",
-      "NPC, DPS, and Spell Timer overlays consolidated under Overlays nav",
-      "Character-related nav items grouped under Characters with sub-tabs",
-      "Active character auto-detected in the nav-bar selector",
-      "Backup Manager moved from nav bar into Settings tab",
-      "Forward/back navigation buttons near global search",
-      "Persisted overlay window size/position across sessions",
-      "Trigger-driven spell timers, GINA import, DB-entry shortcuts",
-      "<strong>Click-through</strong> enabled on overlay windows so game input passes through",
-    ],
-    fixes: [
-      "Placeholder NPCs filtered from search by default",
-      "Independent scroll regions for header, nav, and main pane",
-      "Vex Thal intermediate combine detection",
-      "DPS list excludes NPCs attacking group members not the player",
-      "Audio/alert hooks only run in the main window — no more duplicate TTS",
-    ],
-  },
-  {
-    version: "0.2.2",
-    date: "2026-04-19",
-    headline:
-      "Multi-character support and a flood of DB-explorer cross-references.",
-    highlights: [
-      "<strong>Multi-character support</strong> with Characters tab and CRUD; auto-discover characters from EQ logs",
-      "Item pages gain <strong>Drops From, Purchased From, Foraged From, Ground Spawns, and Tradeskills</strong> tabs",
-      "Zone pages gain <strong>connected zones, drops, ground spawns, forage, and NPC</strong> tabs",
-      "Spell detail gains <strong>Taught by</strong> and <strong>Items with this effect</strong>",
-      "NPC detail gains <strong>loot table, spawn tables, respawn timers, faction name, kill hits</strong>",
-      "<strong>Copy In-Game Link</strong> button on item detail",
-      "<strong>Copy DPS/HPS fight summary</strong> to clipboard",
-      "Clickable popups for special abilities and spell effect links",
-      "Item source (drop/merchant) shown on item detail",
-    ],
-  },
-  {
-    version: "0.2.1",
-    date: "2026-04-19",
-    headline: "Installer/updater fix.",
-    fixes: [
-      "Sidecar killed reliably on Windows so the installer and auto-updater can replace files",
-    ],
-  },
-  {
-    version: "0.2.0",
-    date: "2026-04-18",
-    headline:
-      "Auto-updater, code signing, key tracker additions, and DPS overhaul.",
-    highlights: [
-      "<strong>Auto-updater</strong> with silent install to same path and a restart countdown",
-      "<strong>Windows code signing</strong> via electron-builder secrets",
-      "<strong>Ring of the Shissar</strong> and <strong>Scepter of Shadows</strong> tracked in Key Tracker",
-      "<strong>Character switcher</strong> under global search in sidebar",
-      "<strong>Log backup &amp; purge</strong> with 75 MB size warning",
-      "Active character <strong>auto-detected from log file activity</strong>",
-      "Clickable NPC rows in Zones tab that link to NPC detail",
-    ],
-    fixes: [
-      "Non-melee spell damage parsed for caster DPS tracking",
-      "Fight duration correction; DPS overlay persists 30s after a fight ends",
-      "Zone name no longer leaks into the NPC overlay target",
-      "Default overlay opacity set to 25%",
-      "Re-select item/spell/NPC/zone from global search when already on that page",
-      "Spell detail popup modal added to Spell Checklist",
-    ],
-  },
-];
+function formatDate(d: Date): string {
+  // Use the entry's nominal date (no timezone shift).
+  return d.toISOString().slice(0, 10);
+}
 ---
 
 <BaseLayout
   title="Changelog — PQ Companion"
-  description="Release notes for PQ Companion. Per-version summary of new features, improvements, and fixes since v0.2.0."
+  description="Release notes for PQ Companion. Per-version summary of new features, improvements, and fixes since v0.1.0."
 >
   <section class="hero-glow border-b border-border-subtle">
     <div class="mx-auto max-w-4xl px-6 pb-12 pt-20 md:pt-24">
@@ -359,69 +53,70 @@ const releases: Release[] = [
     <div class="mx-auto max-w-4xl px-6">
       <ol class="space-y-10">
         {
-          releases.map((r) => (
-            <li class="rounded-lg border border-border bg-surface p-6 md:p-8">
-              <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-border-subtle pb-4">
-                <div class="flex items-baseline gap-3">
-                  <h2 class="text-2xl font-semibold text-foreground">
-                    v{r.version}
-                  </h2>
-                  <span class="text-sm text-muted">{r.date}</span>
+          entries.map((entry) => {
+            const { version, headline, highlights, fixes } = entry.data;
+            return (
+              <li class="rounded-lg border border-border bg-surface p-6 md:p-8">
+                <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-border-subtle pb-4">
+                  <div class="flex items-baseline gap-3">
+                    <h2 class="text-2xl font-semibold text-foreground">
+                      v{version}
+                    </h2>
+                    <span class="text-sm text-muted">
+                      {formatDate(entry.data.date)}
+                    </span>
+                  </div>
+                  <a
+                    href={`https://github.com/jasonsoprovich/pq-companion/releases/tag/v${version}`}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm text-primary transition-colors hover:text-primary-hover"
+                  >
+                    View on GitHub →
+                  </a>
                 </div>
-                <a
-                  href={`https://github.com/jasonsoprovich/pq-companion/releases/tag/v${r.version}`}
-                  target="_blank"
-                  rel="noopener"
-                  class="text-sm text-primary transition-colors hover:text-primary-hover"
-                >
-                  View on GitHub →
-                </a>
-              </div>
 
-              {r.headline && (
-                <p
-                  class="mt-4 text-base leading-relaxed text-foreground"
-                  set:html={r.headline}
-                />
-              )}
+                {headline && (
+                  <p
+                    class="mt-4 text-base leading-relaxed text-foreground"
+                    set:html={inlineMd(headline)}
+                  />
+                )}
 
-              {r.highlights && r.highlights.length > 0 && (
-                <div class="mt-5">
-                  <h3 class="text-sm font-medium uppercase tracking-[0.15em] text-primary">
-                    Highlights
-                  </h3>
-                  <ul class="mt-3 space-y-2">
-                    {r.highlights.map((h) => (
-                      <li
-                        class="flex gap-3 text-sm leading-relaxed text-muted-foreground"
-                      >
-                        <span class="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
-                        <span set:html={h} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                {highlights && highlights.length > 0 && (
+                  <div class="mt-5">
+                    <h3 class="text-sm font-medium uppercase tracking-[0.15em] text-primary">
+                      Highlights
+                    </h3>
+                    <ul class="mt-3 space-y-2">
+                      {highlights.map((h) => (
+                        <li class="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                          <span class="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                          <span set:html={inlineMd(h)} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              {r.fixes && r.fixes.length > 0 && (
-                <div class="mt-5">
-                  <h3 class="text-sm font-medium uppercase tracking-[0.15em] text-muted">
-                    Fixes
-                  </h3>
-                  <ul class="mt-3 space-y-2">
-                    {r.fixes.map((f) => (
-                      <li
-                        class="flex gap-3 text-sm leading-relaxed text-muted-foreground"
-                      >
-                        <span class="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-border" />
-                        <span set:html={f} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </li>
-          ))
+                {fixes && fixes.length > 0 && (
+                  <div class="mt-5">
+                    <h3 class="text-sm font-medium uppercase tracking-[0.15em] text-muted">
+                      Fixes
+                    </h3>
+                    <ul class="mt-3 space-y-2">
+                      {fixes.map((f) => (
+                        <li class="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                          <span class="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-border" />
+                          <span set:html={inlineMd(f)} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            );
+          })
         }
       </ol>
 
