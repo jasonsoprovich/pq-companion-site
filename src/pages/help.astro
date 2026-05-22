@@ -15,7 +15,7 @@ const sections = [
   { id: "inventory-tracker", label: "Inventory & Key Tracker" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
   { id: "roll-tracker", label: "Roll Tracker" },
-  { id: "backups", label: "Config Backup Manager" },
+  { id: "backups", label: "Backup & Restore" },
   { id: "troubleshooting", label: "Troubleshooting" },
   { id: "privacy", label: "Privacy & safety" },
 ];
@@ -449,6 +449,26 @@ const sections = [
               glance instead of running together. The divider is visual
               only — DPS calculations, fight ordering, and the data
               behind everything are unaffected.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Per-class bar colors
+            </h3>
+            <p class="mt-3">
+              Combatant bars on the DPS panel (and rows on the Combat
+              History page) are colored by class — Cleric blue, Warrior
+              red, Necro purple, and so on. Class is resolved server-side
+              from your <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              > history, with the active character's stored class used for
+              <strong class="text-foreground">You</strong>, so pets
+              automatically inherit their owner's color and unfamiliar
+              combatants fall back to an Unknown swatch. The palette
+              lives under <strong class="text-foreground"
+                >Settings → DPS Class Colors</strong
+              > — hex inputs plus native color pickers per class, with
+              per-row and global reset to defaults if you want to start
+              over.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Sharing fights
@@ -1085,9 +1105,39 @@ const sections = [
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
             >
-              Config Backup Manager
+              Backup & Restore
             </h2>
             <p class="mt-4">
+              Settings → Backups groups two independent backup systems —
+              one for PQ Companion itself, one for your Project Quarm
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.ini</code
+              > files.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              App Backup & Restore
+            </h3>
+            <p class="mt-3">
+              Exports your entire PQ Companion state — settings, triggers,
+              character data, EQ config snapshots — into a single
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.pqcb</code
+              > bundle. Drop the bundle on another machine, import, and
+              you're exactly where you left off. The panel is always
+              visible under Settings → Backups so it's there when you need
+              to move to a new PC.
+            </p>
+            <p class="mt-3">
+              The bundle carries a manifest with a version and schema
+              check; a forward-incompatible bundle is refused at import
+              instead of silently corrupting the destination. On import,
+              the existing data is renamed in place rather than deleted —
+              if anything goes wrong you have a clean rollback path.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              EQ Config Backups
+            </h3>
+            <p class="mt-3">
               One-click backup and restore for every Project Quarm
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >.ini</code

@@ -152,18 +152,6 @@ const features = [
     mediaSlug: "spellsets",
   },
   {
-    title: "App Backup & Restore",
-    tagline: "Move your setup to a new PC",
-    description:
-      "Export your entire PQ Companion state — settings, triggers, character data, EQ config backups — into a single .pqcb bundle. Drop the bundle on another machine, import, and you're exactly where you left off. Always-visible panel under Settings → Backups.",
-    bullets: [
-      "One-file portable bundle (.pqcb)",
-      "Manifest with version + schema check refuses forward-incompatible bundles",
-      "Pre-import data renamed in place, not deleted — clean rollback path",
-    ],
-    mediaSlug: "app-backup",
-  },
-  {
     title: "Roll Tracker",
     tagline: "Loot rolls, organized",
     description:
@@ -188,14 +176,15 @@ const features = [
     mediaSlug: "overlays-dashboard",
   },
   {
-    title: "EQ Config Backups",
-    tagline: "Snapshot & restore your .ini files",
+    title: "Backup & Restore",
+    tagline: "Portable app state and .ini snapshots",
     description:
-      "One-click backup and restore for every Project Quarm .ini config file (UI layout, hotkeys, social macros, etc.). Snapshot before risky changes, roll back instantly if something breaks. Auto-backs up your files on a custom schedule or whenever they change.",
+      "Two backup systems in one place. App Backup & Restore exports your entire PQ Companion state — settings, triggers, character data, EQ config backups — into a single .pqcb bundle so you can move to a new PC and pick up exactly where you left off. EQ Config Backups snapshots every Project Quarm .ini file (UI layout, hotkeys, social macros) on a schedule or on file change, so you can roll back instantly if a UI overhaul breaks something. Both live under Settings → Backups.",
     bullets: [
-      "Auto-backups on a custom schedule or on file change",
-      "Snapshots all UI, hotkey, and social config",
-      "Browse, label, and restore previous backups",
+      "Portable .pqcb bundle for the entire app — manifest with version + schema check refuses forward-incompatible imports",
+      "Pre-import data renamed in place, not deleted — clean rollback path on a failed restore",
+      "Auto-backups for Quarm .ini files on a custom schedule or on file change",
+      "Browse, label, and restore previous .ini snapshots from a single list",
     ],
     mediaSlug: "backup-manager",
   },
