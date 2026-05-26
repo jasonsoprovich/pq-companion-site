@@ -62,6 +62,7 @@ const features = [
       "Better pet and charm-pet damage attribution in the combat meter",
       "Confirmed casts cross-checked against the pipe so emote-based false positives disappear",
       "Pipe-source triggers: fire on target name change, target HP threshold, buff land/fade, or your own /pipe <text> command in-game",
+      "Soft update notice when your installed Zeal is below the minimum supported version, plus an ExportOnCamp warning if exports won't refresh on camp",
     ],
     mediaSlug: "zeal-integration",
   },
@@ -69,20 +70,21 @@ const features = [
     title: "NPC Info Overlay",
     tagline: "Know your target",
     description:
-      "The moment you consider a mob, the overlay shows its level, class, HP, resists, body type, and special abilities — Summon, Unmezzable, Uncharmable, See Invis, Enrage, Flurry. Pulled straight from the database via your combat log.",
+      "The moment you consider a mob, the overlay shows its level, class, HP and max mana, colour-coded MR/CR/FR/DR/PR resists, body type, and special abilities — Summon, Unmezzable, Uncharmable, See Invis, Enrage, Flurry. Pulled straight from the database via your combat log; corpse targets resolve back to the underlying NPC so the panel stays useful after the kill.",
     bullets: [
-      "Auto-detects target from melee and spell events",
-      "Special-ability badges and resist breakdown at a glance",
-      "Faction, body type, and zone context in one panel",
+      "Auto-detects target from melee and spell events; live HP bar and pet-owner badge with Zeal",
+      "Special-ability badges, resist breakdown with EQ-convention colours, and humanised body type at a glance",
+      "On-demand loot table with drop rates and zone-wide drops surfaced on every mob in the zone",
     ],
     mediaSlug: "npc-info",
   },
   {
     title: "Character Progression",
-    tagline: "Stats, gear, AAs, to-dos",
+    tagline: "Stats, gear, AAs, buffs, to-dos",
     description:
       "A full per-character workspace driven by Zeal exports. Stats panel with base HP/Mana, stat caps, worn effects, and softcap AC. Paper-doll gear view with bag and bank cards. AA tracking split into trained vs. available, with descriptions. A per-character to-do list with subtasks for tracking goals.",
     bullets: [
+      "Live Buffs panel driven by the spell timer engine, with swappable raid-buff presets per character",
       "Spell Modifiers tab — see every focus and worn effect that's modifying your spells",
       "AA tracking: trained ranks, untrained candidates, and cost-aware planning",
       "Character switcher syncs across the app; sub-tabs on every tracker page",
@@ -102,27 +104,52 @@ const features = [
     mediaSlug: "spell-checklist",
   },
   {
-    title: "Inventory & Key Tracker",
+    title: "Inventory Tracker",
     tagline: "Across all your characters",
     description:
-      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Paper-doll layout with collapsible bag and bank cards. Click any item to open its full database entry in a modal without leaving the page.",
+      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Paper-doll layout with collapsible bag and bank cards (hide-empty-bags toggle). Click any item to open its full database entry in a modal without leaving the page.",
     bullets: [
       "One search box across every character's full inventory",
-      "Per-key component checklist for VP, Sebilis, Howling Stones, and more",
-      "Auto-detects intermediate combines (e.g. Vex Thal keys) as you progress",
+      "Hide-empty-bags toggle keeps the paper-doll readable on cluttered characters",
+      "Click any item for the full database entry in a modal — no page navigation",
     ],
     mediaSlug: "inventory-tracker",
+  },
+  {
+    title: "Keys & Keyring",
+    tagline: "Raid keys, parsed and tracked",
+    description:
+      "Two complementary views of your key progress. The Keyring tab is a live per-character /keys snapshot, with an inventory fallback for keys not yet added to a keyring (Plane of Time, Vex Thal). The Key Tracker walks the component quests for every major raid key — Veeshan's Peak, Sebilis (Trakanon Idol), Howling Stones (Key to Charasis), Arx Seru, Sleeper's Tomb, and more — and ticks off pieces from inventory as you collect them.",
+    bullets: [
+      "Live /keys refresh as Zeal exports update; upgraded key stages auto-inferred as owned",
+      "Multi-quest support per key (Sleeper's Tomb accepts any one Velious talisman; Charasis recognises both the Key to Charasis quest and the Hand of Glory internal-doors key)",
+      "Intermediate combines (Vex Thal sub-shards with correct Lucid Shard zone mappings) tracked as you progress",
+    ],
+    mediaSlug: "keys-keyring",
+  },
+  {
+    title: "Wishlist",
+    tagline: "Per-character drag-to-reorder upgrade list",
+    description:
+      "Star any item from the Database Explorer to add it to your character's wishlist; star it again to remove. The wishlist page groups entries by slot in collapsible drag-reorderable cards (with a flat All Items view for cross-slot prioritising) so your top upgrade for each slot is always one glance away. Layout, ordering, and collapse state persist per character.",
+    bullets: [
+      "Collapsible slot cards with +/− toggle and drag-grip reorder; expand-all / collapse-all toolbar",
+      "All Items view for free-form cross-slot drag prioritising — one global ordering backs both views",
+      "Star toggle from any item page or modal; confirm-on-remove when you click a filled star",
+    ],
+    mediaSlug: "wishlist",
   },
   {
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes plus group awareness. Import GINA shares as .xml or .gtp.",
+      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes (including full melee discipline coverage) plus group awareness. Import GINA shares as .xml or .gtp.",
     bullets: [
       "Drag-to-position overlay text with live test buttons",
       "Triggers can start spell timers — fading-soon alerts, hide thresholds, and per-character scoping",
       "Per-trigger exclude patterns to silence pet, merchant, and banker chatter on tell triggers",
       "Pipe-source triggers (with Zeal) fire on target name, target HP%, buff landed/faded, or your in-game /pipe <text>",
+      "Pack-grouped UI with collapsibles, pack filter, sort, and shared-trigger badges; dedup_key fires shared triggers across packs once instead of twice",
     ],
     mediaSlug: "triggers",
   },
@@ -184,7 +211,7 @@ const features = [
       "Portable .pqcb bundle for the entire app — manifest with version + schema check refuses forward-incompatible imports",
       "Pre-import data renamed in place, not deleted — clean rollback path on a failed restore",
       "Auto-backups for Quarm .ini files on a custom schedule or on file change",
-      "Browse, label, and restore previous .ini snapshots from a single list",
+      "Browse, label, and restore previous .ini snapshots from a single list; Open folder button jumps straight to the backup directory",
     ],
     mediaSlug: "backup-manager",
   },

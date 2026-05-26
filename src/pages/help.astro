@@ -12,10 +12,15 @@ const sections = [
   { id: "npc-info", label: "NPC Info Overlay" },
   { id: "character-progression", label: "Character Progression" },
   { id: "spell-checklist", label: "Spell Checklist" },
-  { id: "inventory-tracker", label: "Inventory & Key Tracker" },
+  { id: "spellsets", label: "Spellsets" },
+  { id: "inventory-tracker", label: "Inventory Tracker" },
+  { id: "keys", label: "Keys & Keyring" },
+  { id: "wishlist", label: "Wishlist" },
+  { id: "players", label: "Players Database" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
   { id: "roll-tracker", label: "Roll Tracker" },
   { id: "backups", label: "Backup & Restore" },
+  { id: "developer-mode", label: "Developer mode" },
   { id: "troubleshooting", label: "Troubleshooting" },
   { id: "privacy", label: "Privacy & safety" },
 ];
@@ -173,6 +178,34 @@ const sections = [
               on top of each action's per-trigger volume — dampen
               everything together without losing the relative balance
               between individual triggers.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              EQ client version
+            </h3>
+            <p class="mt-3">
+              A status panel under Settings shows the
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >eqgame.exe</code
+              > version detected at your configured Project Quarm path.
+              Useful for confirming you patched after a server-side
+              update; the panel uses the file's FileVersion as the
+              primary signal so patch-day MD5 churn doesn't flip the
+              status to "unknown".
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Zeal version &amp; ExportOnCamp
+            </h3>
+            <p class="mt-3">
+              When Zeal is installed, the app detects its version via
+              the crash-handler anchor and shows a soft warning if
+              you're below the minimum supported version — features
+              that depend on newer pipe events may not work until you
+              update. A separate warning fires if Zeal's
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >ExportOnCamp</code
+              > setting is disabled, since Spell Checklist, Inventory,
+              and AAs won't refresh after camping until that's turned
+              back on.
             </p>
           </section>
 
@@ -733,11 +766,11 @@ const sections = [
             </p>
             <p class="mt-4">
               The moment you consider a mob, the overlay shows its level,
-              class, HP, resists, body type, faction, and special
-              abilities — Summon, Unmezzable, Uncharmable, See Invis,
-              Enrage, Flurry, and so on. Pulled straight from the database
-              via your combat log, so it works for any mob the database
-              knows about.
+              class, HP (and max mana when it has any), resists, body
+              type, faction, and special abilities — Summon, Unmezzable,
+              Uncharmable, See Invis, Enrage, Flurry, and so on. Pulled
+              straight from the database via your combat log, so it works
+              for any mob the database knows about.
             </p>
             <p class="mt-4">
               The overlay also auto-detects your target from melee and
@@ -745,7 +778,39 @@ const sections = [
               explicitly <code
                 class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >/con</code
-              >.
+              >. If you target a corpse, the overlay resolves back to the
+              underlying NPC so the panel stays useful for loot calls
+              after the kill.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Resists and special abilities
+            </h3>
+            <p class="mt-3">
+              Resists are shown in EQ convention order — MR / CR / FR /
+              DR / PR — and colour-coded so high resists stand out at a
+              glance. Special abilities render as labelled badges
+              (Summon, Mez Immune, Enrage with HP threshold, Flurry,
+              etc.) rather than raw numeric codes. Multi-field entries
+              like Rampage range arguments parse correctly.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Loot table
+            </h3>
+            <p class="mt-3">
+              The overlay's on-demand loot table shows every item the NPC
+              can drop with the database drop rate. Zone-wide drops — the
+              shared Vex Thal pool, for example — surface on every NPC in
+              the zone, labelled with the pool name so you know it isn't
+              mob-specific.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              With Zeal
+            </h3>
+            <p class="mt-3">
+              Zeal adds a live HP bar driven by pipe events (so you see
+              the bar move as the mob takes damage), and a pet-owner
+              badge that names the player a charmed or summoned pet
+              belongs to.
             </p>
           </section>
 
@@ -804,6 +869,17 @@ const sections = [
               <li class="flex gap-3">
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
+                  <strong class="text-foreground">Live Buffs</strong>
+                  — the Stats page's buffs panel is now driven by the
+                  spell timer engine. Swap between raid-buff presets per
+                  character, confirm-on-edit, and remove individual
+                  buffs to keep the panel honest if you suspect a buff
+                  fell off off-screen.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
                   <strong class="text-foreground">To-dos</strong> —
                   per-character checklist with subtasks for goals (epic
                   pieces, key quests, AA targets).
@@ -831,11 +907,44 @@ const sections = [
             </p>
           </section>
 
+          <section id="spellsets" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Spellsets
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              Zeal-exported <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >_spellsets.ini</code
+              >.
+            </p>
+            <p class="mt-4">
+              Reads Zeal's <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >_spellsets.ini</code
+              > and surfaces every saved spellset as a card with the
+              eight gems laid out vertically for quick scanning. Rename
+              sets inline, add and remove sets from inside the app, or
+              import another character's spellsets from their
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.ini</code
+              >.
+            </p>
+            <p class="mt-4">
+              Imports are filtered: spells that are off-class for the
+              active character or above the character's level are
+              flagged and blocked at import, so you never end up with a
+              set you can't actually load in-game.
+            </p>
+          </section>
+
           <section id="inventory-tracker" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
             >
-              Inventory & Key Tracker
+              Inventory Tracker
             </h2>
             <p class="mt-4">
               <strong class="text-foreground">Prerequisite:</strong> Zeal
@@ -849,13 +958,172 @@ const sections = [
               modal without leaving the page.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Key tracker
+              Hide empty bags
             </h3>
             <p class="mt-3">
-              Per-key component checklist for VP, Sebilis, Howling Stones,
-              and the rest. Auto-detects intermediate combines (e.g. Vex
-              Thal sub-keys) as you progress, so the list updates without
-              manual ticking.
+              A toggle in the toolbar collapses bag and bank cards that
+              don't contain any items — handy on cluttered characters
+              where you only care about the slots that hold something.
+            </p>
+          </section>
+
+          <section id="keys" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Keys & Keyring
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              Zeal — the Keyring tab needs <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/keys</code
+              > or inventory exports; the Key Tracker tab needs an
+              inventory export.
+            </p>
+            <p class="mt-4">
+              Two complementary tabs sit side-by-side on the Keys page,
+              with Keyring as the default since it's the one you'll
+              check before pulling a key-gated zone.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Keyring (live /keys snapshot)
+            </h3>
+            <p class="mt-3">
+              The Keyring tab mirrors the in-game keyring for each
+              character. The data refreshes the moment a new <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/keys</code
+              > export lands. For keys that aren't in the keyring yet
+              (Plane of Time fragments, Vex Thal Shroud, and similar
+              one-off items), inventory is used as a fallback. Upgraded
+              key stages — e.g. a finished Vex Thal Shroud — are
+              automatically inferred as owning all the prerequisite
+              pieces, so you don't see ghost "missing" entries after a
+              combine.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Key Tracker (component quests)
+            </h3>
+            <p class="mt-3">
+              The Key Tracker walks the component quest for every major
+              raid key and ticks off the pieces you already own. Each
+              key is modelled from the canonical quest path: Howling
+              Stones uses the full Key to Charasis quest (with Hand of
+              Glory as a separate internal-doors key), Arx Seru uses
+              the 4-shard Praesertum quest, Veeshan's Peak uses the
+              full Key of Veeshan quest, and Sleeper's Tomb accepts any
+              one of the four Velious talismans. Sebilis is tracked
+              from the Trakanon Idol quest. Vex Thal sub-shards use
+              the correct Lucid Shard zone mappings so you know which
+              zone to camp for the missing piece.
+            </p>
+            <p class="mt-3">
+              Intermediate combines are detected as you progress, so
+              the list updates without manual ticking.
+            </p>
+          </section>
+
+          <section id="wishlist" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Wishlist
+            </h2>
+            <p class="mt-4">
+              A per-character upgrade list. Star any item from the
+              Database Explorer (or its detail modal) to add it; click
+              the filled star again — and confirm — to remove it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Sections view
+            </h3>
+            <p class="mt-3">
+              The default view groups entries into one card per slot.
+              Each card collapses with its <kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >+</kbd
+              > / <kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >−</kbd
+              > toggle or by clicking the header, and the drag-grip on
+              the left of the header reorders the section list. The
+              toolbar has Expand all / Collapse all buttons for quickly
+              checking what's still on the list after a kill. Card
+              order and collapse state persist per character.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              All Items view
+            </h3>
+            <p class="mt-3">
+              Toggle the toolbar to All Items for a flat list of every
+              wishlisted item across slots, with free-form cross-slot
+              drag for prioritising upgrades against each other. The
+              same global ordering backs both views, so a reorder in
+              either view is reflected in the other.
+            </p>
+          </section>
+
+          <section id="players" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Players Database
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              > — every <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              > and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/guildstat</code
+              > you run gets captured automatically.
+            </p>
+            <p class="mt-4">
+              A searchable, sortable database of every player you've
+              seen via <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              > and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/guildstat</code
+              > — name, class, race, guild, last-seen zone, last-seen
+              level, plus a per-character level history. Captures
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              >, <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who all</code
+              >, <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who guild</code
+              >, and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/guildstat</code
+              > output. Filter by class, guild, or zone; click any row
+              for the full level progression.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Anonymous-aware
+            </h3>
+            <p class="mt-3">
+              Anonymous and roleplay sightings don't overwrite class
+              and level data you already had from a non-anonymous
+              sighting — the row just gets a new last-seen timestamp,
+              so going /anon doesn't erase a known player from your
+              database.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Class title aliases
+            </h3>
+            <p class="mt-3">
+              EQ titles like "Lord", "Necromancer Lord", or "Crusader"
+              collapse into the right base class automatically, so a
+              50+ player isn't filed under a different class from their
+              under-50 self.
             </p>
           </section>
 
@@ -924,6 +1192,39 @@ const sections = [
               "fading soon" audio cues at any thresholds you want. Each
               trigger can carry a per-trigger display threshold that
               overrides the global category default.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pipe-source triggers (with Zeal)
+            </h3>
+            <p class="mt-3">
+              When Zeal is connected, triggers can fire off the live
+              pipe stream instead of log text. Pipe sources include
+              target name change, target HP crossing a threshold
+              percentage, a named buff landing or fading on you, and
+              your own in-game <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/pipe &lt;text&gt;</code
+              > commands. Pipe triggers don't depend on the log file,
+              so they're immune to log latency and to emote-only
+              events the log doesn't capture.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pack-grouped UI
+            </h3>
+            <p class="mt-3">
+              Built-in and imported packs render as collapsible groups
+              on the Triggers page, with a pack filter and sort in the
+              header. Always-on event alerts (deaths, zoning, resists,
+              interrupts) live under the General Triggers group rather
+              than as a separate page. Triggers that are shared across
+              packs — the same Mez Break alert appearing in Enchanter
+              and Bard packs, for example — carry a <strong
+                class="text-foreground">shared</strong
+              > badge and use a <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >dedup_key</code
+              > so a single log line fires the alert once, not once
+              per pack.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Per-character scoping
@@ -1151,7 +1452,45 @@ const sections = [
               Configure auto-backups on a custom schedule (e.g. once a
               day) or on file change (every time the game writes the
               file). Browse, label, and restore previous backups from a
-              single list.
+              single list. The Backup Manager header has an
+              <strong class="text-foreground">Open folder</strong>
+              button that jumps straight to the on-disk backup
+              directory — useful if you want to copy a snapshot
+              somewhere else or archive it manually.
+            </p>
+            <p class="mt-3">
+              Backup files live under your home directory (e.g.
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >~/.pq-companion/eq-config-backups/</code
+              >) so they're independent of the install location. Older
+              installs that wrote backups beside the app are migrated
+              to this directory automatically on first launch.
+            </p>
+          </section>
+
+          <section id="developer-mode" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Developer mode
+            </h2>
+            <p class="mt-4">
+              A hidden Settings tab unlocked with <kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >Ctrl + Shift + D</kbd
+              >. Aimed at contributors and curious power users — not
+              required for any normal feature.
+            </p>
+            <p class="mt-4">
+              Once unlocked, the Developer tab exposes a read-only SQL
+              sandbox over the Project Quarm database (the same
+              database the explorer reads from) with ten curated
+              starter queries, an interactive schema graph showing how
+              the tables relate, and a Mermaid ER diagrams panel for
+              the most-asked-about subsystems (items, NPCs, loot,
+              spells). Queries run through a guarded backend endpoint
+              that enforces read-only access — no write or schema
+              statements are accepted.
             </p>
           </section>
 
