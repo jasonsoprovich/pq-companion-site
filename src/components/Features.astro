@@ -11,6 +11,7 @@ const features = [
       "Advanced item filters: race, class, level, slot, type, stat thresholds",
       "Spell filters by class and level; hides NPC-only spells",
       "Zone tabs for connected zones, drops, ground spawns, and forage",
+      "Duplicate-name items and spells collapse to a single canonical row that links out to every variant",
     ],
     mediaSlug: "database-explorer",
   },
@@ -74,15 +75,40 @@ const features = [
     bullets: [
       "Auto-detects target from melee and spell events; live HP bar and pet-owner badge with Zeal",
       "Special-ability badges, resist breakdown with EQ-convention colours, and humanised body type at a glance",
-      "On-demand loot table with drop rates and zone-wide drops surfaced on every mob in the zone",
+      "On-demand loot table with drop rates and zone-wide drops surfaced on every mob in the zone — wishlisted drops highlighted",
+      "Same-name NPCs disambiguated by zone and your position, with the variant set surfaced when a target is ambiguous",
     ],
     mediaSlug: "npc-info",
+  },
+  {
+    title: "NPC Respawn Timers",
+    tagline: "Know when it's back up",
+    description:
+      "A transparent overlay that watches NPC deaths in your combat log and counts down to respawn, so you know exactly when a named or a contested camp is due back. Project Quarm's accelerated respawn rates are applied automatically, so the countdown matches the server you're actually on instead of classic timers.",
+    bullets: [
+      "Death-to-respawn countdown driven straight from the kill line in your log",
+      "Quarm fast-respawn reduction baked in — no mental math against classic timers",
+      "Pops out as its own click-through overlay alongside the rest of the dashboard",
+    ],
+    mediaSlug: "respawn-timers",
+  },
+  {
+    title: "Lockouts Tracker",
+    tagline: "Never walk up to a locked zone",
+    description:
+      "Parses your /sll output into live per-character countdowns for loot and legacy lockouts, so you always know when an instance or flagged encounter is available to you again. No spreadsheet, no guesswork — just run /sll and the timers update.",
+    bullets: [
+      "Live countdowns for both loot lockouts and legacy lockouts",
+      "Tracked per character, so each alt's lockouts stay separate",
+      "Updates the moment you run /sll in-game",
+    ],
+    mediaSlug: "lockouts",
   },
   {
     title: "Character Progression",
     tagline: "Stats, gear, AAs, buffs, to-dos",
     description:
-      "A full per-character workspace driven by Zeal exports. Stats panel with base HP/Mana, stat caps, worn effects, and softcap AC. Paper-doll gear view with bag and bank cards. AA tracking split into trained vs. available, with descriptions. A per-character to-do list with subtasks for tracking goals.",
+      "A full per-character workspace driven by Zeal exports. Stats panel computed from Project Quarm's real HP/Mana/AC/resist formulas — including AA passive bonuses — with stat caps, worn effects, and softcap AC. Paper-doll gear view with bag and bank cards. AA tracking split into trained vs. available, with descriptions. A per-character to-do list with subtasks for tracking goals.",
     bullets: [
       "Live Buffs panel driven by the spell timer engine, with swappable raid-buff presets per character",
       "Spell Modifiers tab — see every focus and worn effect that's modifying your spells",
@@ -124,6 +150,7 @@ const features = [
       "Live /keys refresh as Zeal exports update; upgraded key stages auto-inferred as owned",
       "Multi-quest support per key (Sleeper's Tomb accepts any one Velious talisman; Charasis recognises both the Key to Charasis quest and the Hand of Glory internal-doors key)",
       "Intermediate combines (Vex Thal sub-shards with correct Lucid Shard zone mappings) tracked as you progress",
+      "Shows the bag or bank slot each held component is sitting in, so you don't have to dig for it",
     ],
     mediaSlug: "keys-keyring",
   },
@@ -199,6 +226,7 @@ const features = [
       "One dashboard for combat, timers, target info, and alerts at a glance",
       "Snap-grid drag-and-drop layout that persists across sessions",
       "Click-through transparent pop-out windows with remembered size and position",
+      "Multi-monitor aware — the trigger overlay can span every monitor, and pop-outs drag freely from one screen to another",
     ],
     mediaSlug: "overlays-dashboard",
   },

@@ -10,11 +10,13 @@ const sections = [
   { id: "combat-history", label: "Combat History" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
+  { id: "respawn-timers", label: "NPC Respawn Timers" },
   { id: "character-progression", label: "Character Progression" },
   { id: "spell-checklist", label: "Spell Checklist" },
   { id: "spellsets", label: "Spellsets" },
   { id: "inventory-tracker", label: "Inventory Tracker" },
   { id: "keys", label: "Keys & Keyring" },
+  { id: "lockouts", label: "Lockouts" },
   { id: "wishlist", label: "Wishlist" },
   { id: "players", label: "Players Database" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
@@ -246,6 +248,18 @@ const sections = [
               click; once any pop-outs exist it flips to <strong
                 class="text-foreground">Close All Popouts</strong
               >.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Multiple monitors
+            </h3>
+            <p class="mt-3">
+              PQ Companion is multi-monitor aware. The trigger alert
+              overlay can span every monitor so an alert shows wherever
+              you're looking, and pop-out windows drag freely from one
+              screen to another — handy if you keep the game on one
+              monitor and your overlays on a second. Each pop-out
+              remembers which monitor it was on along with its size and
+              position.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Click-through &amp; lock
@@ -812,6 +826,60 @@ const sections = [
               badge that names the player a charmed or summoned pet
               belongs to.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Same-name disambiguation
+            </h3>
+            <p class="mt-3">
+              When several mobs in a zone share a name, the overlay uses
+              the zone and your in-game position (via Zeal) to work out
+              which one you're actually looking at. If the target is
+              still ambiguous, the panel surfaces the full variant set so
+              you can see every same-name NPC and its stats instead of
+              guessing. The popped-out window handles the
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >#</code
+              >-prefixed same-name rows and their special abilities too.
+            </p>
+          </section>
+
+          <section id="respawn-timers" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              NPC Respawn Timers
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              A transparent overlay that watches NPC deaths in your
+              combat log and counts down to respawn, so you know exactly
+              when a named or a contested camp is due back up. The
+              countdown starts from the kill line the moment a mob dies —
+              no manual timers to start or stop.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Quarm respawn rates
+            </h3>
+            <p class="mt-3">
+              Project Quarm uses accelerated respawn rates compared with
+              classic EverQuest, and the overlay applies that reduction
+              automatically. The countdown reflects the timer on the
+              server you're actually playing on, so you're not mentally
+              subtracting from a classic respawn window.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where it lives
+            </h3>
+            <p class="mt-3">
+              The respawn overlay sits alongside the rest of the Overlay
+              Dashboard and pops out as its own click-through transparent
+              window, so you can float it over the game next to the DPS
+              meter and spell timers.
+            </p>
           </section>
 
           <section id="character-progression" class="scroll-mt-24">
@@ -1020,7 +1088,48 @@ const sections = [
             </p>
             <p class="mt-3">
               Intermediate combines are detected as you progress, so
-              the list updates without manual ticking.
+              the list updates without manual ticking. Each held
+              component shows the bag or bank slot it's sitting in, so
+              you don't have to dig through inventory to find it.
+            </p>
+          </section>
+
+          <section id="lockouts" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Lockouts
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >, then run <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/sll</code
+              > in-game.
+            </p>
+            <p class="mt-4">
+              The Lockouts page turns your <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/sll</code
+              > output into live countdowns, so you always know when an
+              instance or flagged encounter is available to you again
+              instead of walking up to a locked zone. Both loot lockouts
+              and legacy lockouts are parsed and shown with the time
+              remaining.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Per character
+            </h3>
+            <p class="mt-3">
+              Lockouts are stored per character, so each alt keeps its
+              own set of timers. Switch characters with the global
+              switcher and the list follows. Run <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/sll</code
+              > whenever you want to refresh — the countdowns update the
+              moment the new output lands in the log.
             </p>
           </section>
 
@@ -1033,7 +1142,10 @@ const sections = [
             <p class="mt-4">
               A per-character upgrade list. Star any item from the
               Database Explorer (or its detail modal) to add it; click
-              the filled star again — and confirm — to remove it.
+              the filled star again — and confirm — to remove it. Any
+              wishlisted item is highlighted in the NPC overlay's loot
+              table, so you spot an upgrade drop the moment you con the
+              mob that carries it.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Sections view
@@ -1491,6 +1603,13 @@ const sections = [
               spells). Queries run through a guarded backend endpoint
               that enforces read-only access — no write or schema
               statements are accepted.
+            </p>
+            <p class="mt-4">
+              You can save queries you reuse, give them names, and
+              export a set as a query pack to share or re-import on
+              another machine. Each tab keeps its own query history, and
+              wide result sets scroll horizontally so big SELECTs stay
+              readable.
             </p>
           </section>
 
