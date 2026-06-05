@@ -90,11 +90,19 @@ function parseSection(section) {
       const subHeaderMatch = part.match(/^### (\S+)\s*\n?([\s\S]*)$/);
       if (!subHeaderMatch) continue;
       const [, name, contentRaw] = subHeaderMatch;
-      const bullets = contentRaw
-        .split("\n")
-        .map((l) => l.trim())
-        .filter((l) => l.startsWith("- "))
-        .map((l) => l.slice(2).trim());
+      // CHANGELOG bullets wrap across multiple ~76-char lines; continuation
+      // lines are indented and do NOT start with "- ". Fold each continuation
+      // back into the bullet it belongs to instead of dropping it.
+      const bullets = [];
+      for (const rawLine of contentRaw.split("\n")) {
+        const line = rawLine.trim();
+        if (!line) continue;
+        if (line.startsWith("- ")) {
+          bullets.push(line.slice(2).trim());
+        } else if (bullets.length) {
+          bullets[bullets.length - 1] += ` ${line}`;
+        }
+      }
       subs[name.toLowerCase()] = bullets;
     } else if (!headline && part.trim()) {
       // First non-### block is the headline.

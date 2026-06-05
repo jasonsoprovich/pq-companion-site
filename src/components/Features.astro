@@ -93,6 +93,19 @@ const features = [
     mediaSlug: "respawn-timers",
   },
   {
+    title: "CH Chain & Metronome",
+    tagline: "Run the heal chain without counting in your head",
+    description:
+      "Two overlays for raids that run a Complete Heal chain. The CH Chain panel reads your clerics' heal callouts straight from the log and tracks the whole rotation live — cast-to-land bars for each heal, the measured cadence between casts, and a stall indicator the moment the next healer is late. The personal CH Metronome paces your own slot so you know exactly when to start casting.",
+    bullets: [
+      "Callout-driven — reads the heal announcements everyone already sees, no client hooks",
+      "Live measured cadence and a stall warning before the chain breaks",
+      "Personal metronome overlay that paces your slot in the rotation",
+      "Both are first-class dashboard panels with their own Overlays toggles and click-through pop-outs",
+    ],
+    mediaSlug: "ch-chain",
+  },
+  {
     title: "Lockouts Tracker",
     tagline: "Never walk up to a locked zone",
     description:
@@ -103,6 +116,18 @@ const features = [
       "Updates the moment you run /sll in-game",
     ],
     mediaSlug: "lockouts",
+  },
+  {
+    title: "Loot Tracker",
+    tagline: "Every drop, logged as it lands",
+    description:
+      "A dedicated page that records drops as they happen, so you don't have to scroll back through the combat log to remember what came off which mob. Every logged drop is clickable both ways: open the item's full database entry in a detail popup, or jump straight to the source zone in the Database Explorer.",
+    bullets: [
+      "Running record of drops over a session, on its own browsable page",
+      "Click any item for the full database entry in a detail popup",
+      "Click the zone to jump straight to it in the Database Explorer",
+    ],
+    mediaSlug: "loot-tracker",
   },
   {
     title: "Character Progression",
@@ -121,10 +146,11 @@ const features = [
     title: "Spell Checklist",
     tagline: "Know what you're missing",
     description:
-      "Cross-references every spell your class can learn against your Zeal-exported spellbook so you always know exactly which spells you still need to scribe. Filterable, level-aware, and updated whenever Zeal exports.",
+      "Cross-references every spell your class can learn against your Zeal-exported spellbook so you always know exactly which spells you still need to scribe. Filterable, level-aware, and updated whenever Zeal exports. Select the spells you need and the built-in planner maps an efficient vendor shopping run to go buy them.",
     bullets: [
-      "Filters by class and level range",
-      "Hides NPC-only and unobtainable spells",
+      "Filters by class and level range, plus a spell-name search box",
+      "Hides NPC-only and unobtainable spells; 'Where to get it' on every spell",
+      "Shopping-route planner: distance-aware vendor run with port hubs, town filters, and a start zone",
       "Click any spell to jump to its database entry",
     ],
     mediaSlug: "spell-checklist",
@@ -133,9 +159,10 @@ const features = [
     title: "Inventory Tracker",
     tagline: "Across all your characters",
     description:
-      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Paper-doll layout with collapsible bag and bank cards (hide-empty-bags toggle). Click any item to open its full database entry in a modal without leaving the page.",
+      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Paper-doll layout with collapsible bag and bank cards (hide-empty-bags toggle). A dedicated Rechargeable Items section gathers your limited-charge clickies, each showing its remaining charges. Click any item to open its full database entry in a modal without leaving the page.",
     bullets: [
       "One search box across every character's full inventory",
+      "Rechargeable Items section with remaining charge counts on limited-charge clickies",
       "Hide-empty-bags toggle keeps the paper-doll readable on cluttered characters",
       "Click any item for the full database entry in a modal — no page navigation",
     ],
@@ -192,6 +219,19 @@ const features = [
       "Pinned info panel on scroll; class, guild, and zone filters with one-click Clear",
     ],
     mediaSlug: "players",
+  },
+  {
+    title: "Chat History",
+    tagline: "Your tells, kept like a messaging app",
+    description:
+      "A searchable archive of your conversations parsed straight from the log. What started as a Tell Tracker for direct player-to-player tells grew into a full multi-channel chat log, with each person you've talked to laid out as their own conversation thread instead of a flat log dump — so the back-and-forth you'd otherwise lose to the scroll-back stays readable.",
+    bullets: [
+      "Chat-style conversation threads, one per person you've talked to",
+      "Multi-channel tracking, not just tells",
+      "Per-character tabs keep each alt's conversations separate",
+      "Live backfill meter fills in history from your existing logs",
+    ],
+    mediaSlug: "chat-history",
   },
   {
     title: "Spellsets",

@@ -11,14 +11,17 @@ const sections = [
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
   { id: "respawn-timers", label: "NPC Respawn Timers" },
+  { id: "ch-chain", label: "CH Chain & Metronome" },
   { id: "character-progression", label: "Character Progression" },
   { id: "spell-checklist", label: "Spell Checklist" },
   { id: "spellsets", label: "Spellsets" },
   { id: "inventory-tracker", label: "Inventory Tracker" },
   { id: "keys", label: "Keys & Keyring" },
   { id: "lockouts", label: "Lockouts" },
+  { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
   { id: "players", label: "Players Database" },
+  { id: "chat-history", label: "Chat History" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
   { id: "roll-tracker", label: "Roll Tracker" },
   { id: "backups", label: "Backup & Restore" },
@@ -208,6 +211,31 @@ const sections = [
               > setting is disabled, since Spell Checklist, Inventory,
               and AAs won't refresh after camping until that's turned
               back on.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Navigation
+            </h3>
+            <p class="mt-3">
+              A <strong class="text-foreground">Settings → Navigation</strong>
+              tab lets you hide and reorder the sidebar tabs, so you can
+              trim the app down to just the features you use and put them
+              in the order that suits how you play.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Log Backfill
+            </h3>
+            <p class="mt-3">
+              Log Backfill lives in the <strong class="text-foreground"
+                >Logs</strong
+              > tab and walks your existing combat logs to populate
+              history — combat, chat, loot, and the rest — for events that
+              happened before you installed the app. It runs in the
+              background with a progress bar along the bottom so you can
+              keep using the app while it catches up, and a 30-day log trim
+              keeps the log directory from growing without bound. The Logs
+              tab also surfaces log and Zeal status toggles, wizard
+              diagnostics, and notices when an expected log file is
+              missing.
             </p>
           </section>
 
@@ -882,6 +910,66 @@ const sections = [
             </p>
           </section>
 
+          <section id="ch-chain" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              CH Chain & Metronome
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >, plus your cleric chain calling its heals out loud in a
+              channel the log captures (raid, group, or the heal callout
+              channel your raid uses).
+            </p>
+            <p class="mt-4">
+              A pair of overlays for running and following a Complete Heal
+              chain. The app watches for CH callouts in your log and tracks
+              the rotation in real time — who's healing, who's up next, and
+              whether the chain is keeping pace — so a cleric in the chain
+              (or the person calling it) can see the whole rotation at a
+              glance instead of counting in their head.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              How it tracks the chain
+            </h3>
+            <p class="mt-3">
+              CH-chain tracking is callout-driven: it reads the heal
+              announcements your clerics post, not the spell mechanics
+              themselves, so it works off the same log line everyone in the
+              raid already sees. Each cast draws a cast-to-land bar so you
+              can watch the heal travel from cast to landing, and the
+              overlay measures the live cadence between casts and flags a
+              <strong class="text-foreground">stall</strong> when the next
+              healer is late — the early warning that a chain is about to
+              break. The default callout pattern is broad enough to catch
+              the common raid conventions; tune it with a custom trigger if
+              your raid uses an unusual format.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Personal CH metronome
+            </h3>
+            <p class="mt-3">
+              The metronome overlay is the cleric's-eye view: a standalone
+              window that paces <em>your</em> slot in the rotation, so you
+              know exactly when to start casting to keep the cadence steady.
+              Pop it out over the game like any other overlay.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where it lives
+            </h3>
+            <p class="mt-3">
+              Both the CH Chain panel and the CH Metronome are first-class
+              dashboard panels with their own toggles in the
+              <strong class="text-foreground">Overlays</strong> view —
+              switch them on only on the characters and fights where you
+              need them, and pop either out as its own click-through
+              window.
+            </p>
+          </section>
+
           <section id="character-progression" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -970,8 +1058,26 @@ const sections = [
               Cross-references every spell your class can learn against
               your Zeal-exported spellbook so you always know exactly
               which spells you still need to scribe. Filter by class and
-              level range; NPC-only and unobtainable spells are hidden by
-              default. Click any spell to jump to its full database entry.
+              level range, narrow the list with the spell-name search box,
+              and click any spell to jump to its full database entry.
+              NPC-only and unobtainable spells are hidden by default, and a
+              "Where to get it" button on each spell surfaces where it can
+              be obtained.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Shopping-route planner
+            </h3>
+            <p class="mt-3">
+              Tick the spells you want to pick up and hit
+              <strong class="text-foreground">Plan shopping route</strong>:
+              the app works out an efficient vendor run that covers every
+              selected spell with the fewest stops. It's a greedy set-cover
+              over the merchants that sell each spell, made distance-aware
+              so nearby vendors are preferred, with Druid and Wizard ports
+              modelled as a Nexus hub. Route controls let you exclude
+              specific spells, filter towns (handy for alignment-restricted
+              characters), toggle a Plane of Knowledge stop, and set the
+              start zone so the route begins where you actually are.
             </p>
           </section>
 
@@ -1032,6 +1138,16 @@ const sections = [
               A toggle in the toolbar collapses bag and bank cards that
               don't contain any items — handy on cluttered characters
               where you only care about the slots that hold something.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Rechargeable items
+            </h3>
+            <p class="mt-3">
+              A dedicated Rechargeable Items section gathers the
+              limited-charge clickies across your inventory into one place,
+              and every limited-charge item shows its remaining charge
+              count — so you can see at a glance which clickies are running
+              low and need a recharge before the next raid.
             </p>
           </section>
 
@@ -1130,6 +1246,37 @@ const sections = [
                 >/sll</code
               > whenever you want to refresh — the countdowns update the
               moment the new output lands in the log.
+            </p>
+          </section>
+
+          <section id="loot-tracker" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Loot Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              A dedicated page that logs drops as they happen, building a
+              running record of what came off which mob over a session.
+              Instead of scrolling back through the combat log to remember
+              what dropped, you get a clean, browsable list on its own
+              page.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Click through to the source
+            </h3>
+            <p class="mt-3">
+              Every logged drop is clickable in two directions: click the
+              item to open its full database entry in a detail popup, or
+              click the zone to jump straight to that zone in the Database
+              Explorer. Handy for checking an unfamiliar drop's stats or
+              seeing what else the zone holds, without leaving the page.
             </p>
           </section>
 
@@ -1236,6 +1383,46 @@ const sections = [
               collapse into the right base class automatically, so a
               50+ player isn't filed under a different class from their
               under-50 self.
+            </p>
+          </section>
+
+          <section id="chat-history" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Chat History
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              A searchable archive of your conversations, parsed straight
+              from the log. It started as a Tell Tracker for direct
+              player-to-player tells and grew into a full multi-channel
+              chat log, so the back-and-forth you'd otherwise lose to the
+              log scroll-back stays readable and organised.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Threads and channels
+            </h3>
+            <p class="mt-3">
+              Tells render as conversation threads in a chat-style feed —
+              each person you've talked to is their own thread, laid out
+              like a messaging app rather than a flat log dump, so you can
+              scroll back through who said what. Multiple channels are
+              tracked, not just tells.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Per-character tabs
+            </h3>
+            <p class="mt-3">
+              Conversations are kept per character with tabs across the
+              top, so each alt's tells stay separate. A live backfill
+              progress meter fills in history from your existing logs when
+              you first open the page.
             </p>
           </section>
 
