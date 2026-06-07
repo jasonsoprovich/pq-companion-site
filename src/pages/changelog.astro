@@ -2,9 +2,25 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const entries = (await getCollection("changelog")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+// Compare two "X.Y.Z" version strings; returns >0 when a is newer than b.
+function cmpVersion(a: string, b: string): number {
+  const pa = a.split(".").map(Number);
+  const pb = b.split(".").map(Number);
+  for (let i = 0; i < 3; i++) {
+    const diff = (pa[i] ?? 0) - (pb[i] ?? 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
+
+// Newest first by date, then by semver so same-day releases (e.g. v0.12.0 and
+// v0.12.1 both dated 2026-06-05) order by version instead of falling back to
+// the loader's alphabetical filename order, which buried the newer entry.
+const entries = (await getCollection("changelog")).sort((a, b) => {
+  const byDate = b.data.date.valueOf() - a.data.date.valueOf();
+  if (byDate !== 0) return byDate;
+  return cmpVersion(b.data.version, a.data.version);
+});
 
 // Lightweight inline-markdown renderer for bullet content. The CHANGELOG
 // only uses **bold** and `code`; anything else stays literal. HTML is
