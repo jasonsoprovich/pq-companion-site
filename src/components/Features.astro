@@ -16,6 +16,18 @@ const features = [
     mediaSlug: "database-explorer",
   },
   {
+    title: "Quests",
+    tagline: "Walkthroughs, built in",
+    description:
+      "Self-contained quest walkthroughs built right into the app — no tabbing out to a wiki. Browse a dedicated Quests section in the database explorer, see every quest an item is involved in (as a reward or a turn-in) on that item's Quests tab, and follow full quest-chain to-do lists for multi-step keys and long reward chains.",
+    bullets: [
+      "Quests section in the database explorer with step-by-step walkthroughs",
+      "Quests tab on any item — rewards and turn-ins, both linked back to the database",
+      "Multi-step quest-chain to-do lists for keys and long reward chains",
+    ],
+    mediaSlug: "quests",
+  },
+  {
     title: "DPS Meter & Combat Log",
     tagline: "Live combat tracking",
     description:
@@ -159,12 +171,13 @@ const features = [
     title: "Inventory Tracker",
     tagline: "Across all your characters",
     description:
-      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Paper-doll layout with collapsible bag and bank cards (hide-empty-bags toggle). A dedicated Rechargeable Items section gathers your limited-charge clickies, each showing its remaining charges. Click any item to open its full database entry in a modal without leaving the page.",
+      "All inventory across every character in one searchable view, with item icons everywhere — equipped, bags, bank, shared bank. Search returns a flat, cross-character result list so you can find which alt is holding that one item in seconds, and you can scope the tracker to just your imported characters. Paper-doll layout with collapsible bag and bank cards (hide-empty-bags on by default). A dedicated Rechargeable Items section gathers your limited-charge clickies, each showing its remaining charges. Click any item to open its full database entry — including a Characters tab listing exactly who holds it — without leaving the page.",
     bullets: [
-      "One search box across every character's full inventory",
+      "Flat cross-character search results — find which alt has the item instantly",
+      "Scope the tracker to imported characters, with a toggle to show the rest",
+      "Item Characters tab shows every character holding a given item",
       "Rechargeable Items section with remaining charge counts on limited-charge clickies",
-      "Hide-empty-bags toggle keeps the paper-doll readable on cluttered characters",
-      "Click any item for the full database entry in a modal — no page navigation",
+      "Hide-empty-bags default keeps the paper-doll readable on cluttered characters",
     ],
     mediaSlug: "inventory-tracker",
   },
@@ -182,10 +195,23 @@ const features = [
     mediaSlug: "keys-keyring",
   },
   {
+    title: "Gear Upgrade Finder",
+    tagline: "Your next upgrade, ranked",
+    description:
+      "A per-character, per-slot upgrade scanner that reads your equipped gear and ranks real upgrades for every slot. Scoring is stat-cap aware — it knows when a stat is already maxed for your class versus still scaling — and you can tune the per-class weights to match how you actually play. An all-slots overview surfaces the single best pick for each slot at a glance, and any candidate stars straight into your wishlist.",
+    bullets: [
+      "Cap-aware stat scoring with editable per-class weights, saved per character",
+      "Weapon DPS (ratio), worn ATK, and cap-aware haste all factored in",
+      "Priority focus effects score-boosted and badged so the right clicky wins",
+      "All-slots overview with one-click star-to-wishlist on any suggestion",
+    ],
+    mediaSlug: "gear-upgrade-finder",
+  },
+  {
     title: "Wishlist",
     tagline: "Per-character drag-to-reorder upgrade list",
     description:
-      "Star any item from the Database Explorer to add it to your character's wishlist; star it again to remove. The wishlist page groups entries by slot in collapsible drag-reorderable cards (with a flat All Items view for cross-slot prioritising) so your top upgrade for each slot is always one glance away. Layout, ordering, and collapse state persist per character.",
+      "Star any item from the Database Explorer — or any suggestion in the Gear Upgrade Finder — to add it to your character's wishlist; star it again to remove. The wishlist page groups entries by slot in collapsible drag-reorderable cards (with a flat All Items view for cross-slot prioritising) so your top upgrade for each slot is always one glance away. Layout, ordering, and collapse state persist per character.",
     bullets: [
       "Collapsible slot cards with +/− toggle and drag-grip reorder; expand-all / collapse-all toolbar",
       "All Items view for free-form cross-slot drag prioritising — one global ordering backs both views",
@@ -197,25 +223,39 @@ const features = [
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger fires one or more actions: on-screen text alerts (with draggable position and font size), local sound files, or text-to-speech. A trigger can also drive a spell timer on the buff or detrimental overlay — with its own worn-off pattern and 'fading soon' audio cues. Built-in packs for all 14 classes (including full melee discipline coverage) plus group awareness. Import GINA shares as .xml or .gtp.",
+      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger can hold several regex patterns at once (toggle each on or off) and use GINA-style {c}/{target} tokens, and a matched capture group — like a target's name — flows straight into the alert text and the timer it starts. Fire on-screen text alerts (draggable position and font size), local sound files, or text-to-speech. Organize everything into custom categories you can drag to reorder, customize the alert text style, and replay historical log segments through the live pipeline to test a trigger before you rely on it.",
     bullets: [
-      "Drag-to-position overlay text with live test buttons",
-      "Triggers can start spell timers — fading-soon alerts, hide thresholds, and per-character scoping",
-      "Per-trigger exclude patterns to silence pet, merchant, and banker chatter on tell triggers",
-      "Pipe-source triggers (with Zeal) fire on target name, target HP%, buff landed/faded, or your in-game /pipe <text>",
-      "Pack-grouped UI with collapsibles, pack filter, sort, and shared-trigger badges; dedup_key fires shared triggers across packs once instead of twice",
+      "Multiple regex patterns per trigger with per-row toggles; {c}/{target} tokens for GINA compatibility",
+      "Capture a target's name into the alert and the timer it drives",
+      "Custom categories with drag-and-drop reordering and pack-origin tags",
+      "Customizable alert text style — colour, glow, font, size — with a live preview and one-click Reset Style",
+      "Seven built-in community packs (plus class crowd-control break alerts) on top of the per-class discipline coverage; import GINA shares as .xml or .gtp",
+      "Log replay mode plays back recorded log segments so you can test triggers and overlays out of game",
     ],
     mediaSlug: "triggers",
+  },
+  {
+    title: "Custom Timers",
+    tagline: "Countdowns for anything",
+    description:
+      "Manual countdown timers with their own dedicated overlay, for the things your combat log won't announce — a spawn window, a click-item cooldown, a phase timer. Start one by hand, or let a trigger start it for you with a duration pulled straight from a regex capture group, so a single log line can spin up a perfectly-timed countdown.",
+    bullets: [
+      "Dedicated Custom Timers overlay alongside the rest of the dashboard",
+      "Start timers manually or fire them from a trigger",
+      "Durations can come from a trigger's capture group — the log line sets the clock",
+    ],
+    mediaSlug: "custom-timers",
   },
   {
     title: "Players Database",
     tagline: "A /who history that remembers",
     description:
-      "Every player you see in /who output gets persisted to a searchable, sortable database — name, class, race, guild, last-seen level, last-seen zone, and a per-character level history. Anonymous sightings preserve the data you already knew. /guildstat output is captured too. Filter by class, guild, or zone; click any row for level progression.",
+      "Every player you see in /who output gets persisted to a searchable, sortable database — name, class, race, guild, last-seen level, last-seen zone, and a per-character level history. Anonymous sightings preserve the data you already knew. /guildstat output is captured too. Add your own notes to anyone, flag the players you'd rather avoid, and get a heads-up the moment one shows up. Filter by class, guild, or zone; click any row for level progression.",
     bullets: [
       "Auto-captures /who, /who all, /who guild, and /guildstat output",
+      "Per-player notes and a PVP flag, with a sound + on-screen warning when a flagged player appears in /who",
+      "Automatically logs tells and group joins as player interactions",
       "Anonymous-aware upsert keeps class/level/race from the last non-anonymous sighting",
-      "Class title aliases (Lord, Necromancer Lord, etc.) collapse into the right base class",
       "Pinned info panel on scroll; class, guild, and zone filters with one-click Clear",
     ],
     mediaSlug: "players",
@@ -261,11 +301,12 @@ const features = [
     title: "Customizable Overlay Dashboard",
     tagline: "One screen, everything",
     description:
-      "A single Overlays page is your one-stop view of the run — DPS meter, spell timers, NPC info, and trigger alerts all in one place. Drag panels into the layout you want with a snap grid, resize them, and the arrangement persists across sessions. When you want them on top of the game, pop any panel out as its own click-through transparent window — same data, no alt-tab.",
+      "A single Overlays page is your one-stop view of the run — DPS meter, spell timers, NPC info, and trigger alerts all in one place. Drag panels into the layout you want with a snap grid, resize them, and the arrangement persists across sessions. When you want them on top of the game, pop any panel out as its own click-through transparent window. A Manage overlays menu shows, pops out, and resets every window from one spot, a global Position-overlays mode makes them all draggable at once, and each overlay's locked behaviour is yours to set — right down to a Display-only HUD mode that ignores the mouse entirely.",
     bullets: [
-      "One dashboard for combat, timers, target info, and alerts at a glance",
-      "Snap-grid drag-and-drop layout that persists across sessions",
-      "Click-through transparent pop-out windows with remembered size and position",
+      "Manage overlays menu: show/hide, pop out, and reset every window from one place",
+      "Global Position-overlays mode makes all open overlays draggable at once, then locks them back",
+      "Per-overlay lock behaviour, including a Display-only click-through HUD mode",
+      "One-click reset recovers an overlay that's drifted off-screen; optional fade-out hides overlay chrome when the mouse leaves",
       "Multi-monitor aware — the trigger overlay can span every monitor, and pop-outs drag freely from one screen to another",
     ],
     mediaSlug: "overlays-dashboard",

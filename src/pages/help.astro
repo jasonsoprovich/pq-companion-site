@@ -6,6 +6,7 @@ const sections = [
   { id: "settings", label: "Settings & data sources" },
   { id: "overlay-dashboard", label: "Overlay Dashboard" },
   { id: "database-explorer", label: "Database Explorer" },
+  { id: "quests", label: "Quests" },
   { id: "dps-meter", label: "DPS Meter & Combat Log" },
   { id: "combat-history", label: "Combat History" },
   { id: "spell-timers", label: "Spell Timers" },
@@ -20,9 +21,11 @@ const sections = [
   { id: "lockouts", label: "Lockouts" },
   { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
+  { id: "gear-upgrade-finder", label: "Gear Upgrade Finder" },
   { id: "players", label: "Players Database" },
   { id: "chat-history", label: "Chat History" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
+  { id: "custom-timers", label: "Custom Timers" },
   { id: "roll-tracker", label: "Roll Tracker" },
   { id: "backups", label: "Backup & Restore" },
   { id: "developer-mode", label: "Developer mode" },
@@ -174,6 +177,10 @@ const sections = [
               progression, inventory, spell checklist, to-dos — follows
               the active character.
             </p>
+            <p class="mt-4">
+              Settings save automatically as you change them — there are no
+              Save or Discard buttons to remember.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Master Volume
             </h3>
@@ -237,6 +244,15 @@ const sections = [
               diagnostics, and notices when an expected log file is
               missing.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              About
+            </h3>
+            <p class="mt-3">
+              A <strong class="text-foreground">Settings → About</strong> tab
+              shows the app version and links out to the community Discord, the
+              GitHub repository, the website, and the project's Ko-fi page if
+              you'd like to support development.
+            </p>
           </section>
 
           <section id="overlay-dashboard" class="scroll-mt-24">
@@ -270,12 +286,14 @@ const sections = [
               the game when you alt-tab in.
             </p>
             <p class="mt-3">
-              The dashboard toolbar has a <strong
-                class="text-foreground">Pop Out All</strong
-              > button that opens every standalone overlay window in one
-              click; once any pop-outs exist it flips to <strong
-                class="text-foreground">Close All Popouts</strong
-              >.
+              The dashboard toolbar's <strong
+                class="text-foreground">Manage overlays</strong
+              > menu is the control panel for every window: show or hide each
+              dashboard panel, pop a window out, and recenter it, all from one
+              list — plus a <strong class="text-foreground">Pop Out All</strong>
+              button that opens every standalone overlay in one click (it flips
+              to <strong class="text-foreground">Close All Popouts</strong> once
+              any are open).
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Multiple monitors
@@ -290,16 +308,44 @@ const sections = [
               position.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Click-through &amp; lock
+              Lock behaviour per overlay
             </h3>
             <p class="mt-3">
-              Pop-outs default to click-through so the game keeps the
-              focus while you read them. Locking an overlay from its
-              title bar makes it click-through; <em>hovering</em>
-              anywhere over a locked overlay temporarily disables
-              passthrough so you can scroll the timer list, click a
-              per-row dismiss button, or drag the header — moving the
-              cursor away restores click-through automatically.
+              Each overlay's locked behaviour is configurable in Settings →
+              Overlays. <strong class="text-foreground">Interactive on hover</strong>
+              (the default) keeps a locked overlay click-through, but
+              <em>hovering</em> it temporarily disables passthrough so you can
+              scroll the timer list, dismiss a row, or drag the header — moving
+              the cursor away restores click-through.
+              <strong class="text-foreground">Click-through</strong> leaves only
+              the title-bar buttons clickable, and
+              <strong class="text-foreground">Display only</strong> hides the
+              title bar entirely for a pure HUD that never captures the mouse.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Position overlays &amp; reset
+            </h3>
+            <p class="mt-3">
+              A global <strong class="text-foreground">Position overlays</strong>
+              toggle (on the dashboard and in Settings → Overlays) makes every
+              open overlay draggable at once regardless of its locked mode —
+              the only way to move a Display-only overlay — then locks them
+              back when you're done. Each overlay also has a one-click
+              <strong class="text-foreground">Reset position</strong> that
+              recenters it on your primary monitor and unlocks it, the recovery
+              path for a window that's drifted off-screen. In the Settings lock
+              card, a per-overlay <strong class="text-foreground">Pop out</strong>
+              button opens that window so you can position it without leaving
+              the page.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Fade when inactive
+            </h3>
+            <p class="mt-3">
+              Optionally, an overlay's background, border, and title bar fade
+              out a few seconds after the mouse leaves — timer bars and stats
+              stay visible — and reappear when you hover. The fade delay is
+              configurable.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -374,6 +420,44 @@ const sections = [
                 </span>
               </li>
             </ul>
+          </section>
+
+          <section id="quests" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Quests
+            </h2>
+            <p class="mt-4">
+              Self-contained quest walkthroughs built into the app, so you
+              don't have to tab out to a wiki to remember a turn-in order or
+              which mob drops a piece.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Quests in the database explorer
+            </h3>
+            <p class="mt-3">
+              A dedicated Quests section lists quest walkthroughs you can read
+              step by step, with the items involved linked back to their
+              database entries.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Quests tab on items
+            </h3>
+            <p class="mt-3">
+              Open any item and its Quests tab shows every quest the item is
+              part of — both the quests that <em>reward</em> it and the ones it
+              gets <em>turned in</em> to — each linked back to the full
+              walkthrough and the other items in the chain.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Quest-chain to-do lists
+            </h3>
+            <p class="mt-3">
+              Multi-step keys and long reward chains are laid out as a to-do
+              list so you can see the whole path at a glance and track what's
+              left.
+            </p>
           </section>
 
           <section id="dps-meter" class="scroll-mt-24">
@@ -1129,15 +1213,26 @@ const sections = [
               view, with item icons everywhere — equipped, bags, bank,
               shared bank. Paper-doll layout with collapsible bag and bank
               cards. Click any item to open its full database entry in a
-              modal without leaving the page.
+              modal without leaving the page — including a Characters tab on
+              that entry listing every character who holds the item.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Cross-character search
+            </h3>
+            <p class="mt-3">
+              Searching returns a flat result list spanning every character, so
+              "who's holding that resist gear?" is a one-box question instead of
+              a tab-by-tab hunt. By default the tracker is scoped to your
+              imported characters; a toggle shows the rest.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Hide empty bags
             </h3>
             <p class="mt-3">
-              A toggle in the toolbar collapses bag and bank cards that
-              don't contain any items — handy on cluttered characters
-              where you only care about the slots that hold something.
+              Empty bag and bank cards are hidden by default — handy on
+              cluttered characters where you only care about the slots that hold
+              something. The toggle persists, so flip it off once and it stays
+              off.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Rechargeable items
@@ -1319,7 +1414,66 @@ const sections = [
               wishlisted item across slots, with free-form cross-slot
               drag for prioritising upgrades against each other. The
               same global ordering backs both views, so a reorder in
-              either view is reflected in the other.
+              either view is reflected in the other. Suggestions in the Gear
+              Upgrade Finder can be starred straight onto this list.
+            </p>
+          </section>
+
+          <section id="gear-upgrade-finder" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Gear Upgrade Finder
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> a Zeal
+              character export, so the app knows what you currently have
+              equipped.
+            </p>
+            <p class="mt-4">
+              A per-character, per-slot upgrade scanner. It reads your worn
+              gear and ranks the database for real upgrades in each slot,
+              scoring candidates against the stats that actually help your
+              class.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Cap-aware scoring
+            </h3>
+            <p class="mt-3">
+              Scoring knows the difference between a stat that's already at its
+              cap for your class and one that's still scaling, so it won't
+              recommend a sidegrade that piles points into a stat you can't use
+              any more of. HP, mana, and AC are scored uncapped; weapon DPS
+              (ratio), worn ATK, and cap-aware haste are all factored in so
+              melee offhands and haste pieces rank correctly.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Editable weights
+            </h3>
+            <p class="mt-3">
+              The per-class stat weights are yours to tune, and they're saved
+              per character — so a tank and a caster don't have to share one
+              opinion of what "better" means.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Priority focus effects
+            </h3>
+            <p class="mt-3">
+              Mark the focus effects you care about and matching items get a
+              score boost and a badge, so the right clicky or focus piece wins
+              the slot instead of a marginally-higher stat stick.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              All-slots overview &amp; wishlist
+            </h3>
+            <p class="mt-3">
+              An all-slots overview surfaces the single best pick for every
+              slot at once, and any suggestion stars straight onto that
+              character's <a
+                href="#wishlist"
+                class="text-primary hover:text-primary-hover">Wishlist</a
+              >. Planes of Power gear is hidden unless you've turned the PoP
+              preview on in Settings.
             </p>
           </section>
 
@@ -1383,6 +1537,30 @@ const sections = [
               collapse into the right base class automatically, so a
               50+ player isn't filed under a different class from their
               under-50 self.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Notes &amp; PVP flag
+            </h3>
+            <p class="mt-3">
+              Add your own free-text note to any player, and flag the ones
+              you'd rather steer clear of. When a flagged player turns up in a
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              >, you get a sound and an on-screen warning so you notice before
+              they notice you. A global toggle disables the PVP warning if you
+              don't want it. Notes and flags are kept separate from sighting
+              data, so they survive a Clear-all.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Automatic interaction tracking
+            </h3>
+            <p class="mt-3">
+              Tells and group joins are logged as interactions automatically,
+              so the people you actually play with surface alongside the
+              players you've only seen in <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              >.
             </p>
           </section>
 
@@ -1466,6 +1644,51 @@ const sections = [
               </li>
             </ul>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Multiple patterns &amp; GINA tokens
+            </h3>
+            <p class="mt-3">
+              A single trigger can hold several regex patterns, each with its
+              own on/off toggle, so different log lines that mean the same
+              thing all drive one alert. Patterns understand GINA-style
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >&#123;c&#125;</code
+              > (your character name) and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >&#123;target&#125;</code
+              > tokens, so shared community triggers work without rewriting
+              them, and any regex capture group can be substituted into the
+              alert text.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Capturing the target name
+            </h3>
+            <p class="mt-3">
+              A capture group — say, the name of the mob you just mezzed — can
+              flow straight into both the alert text and the timer the trigger
+              starts, so the bar on your buff or detrimental overlay is
+              labelled with the actual target instead of a generic spell name.
+              Per-pattern timer overrides let each pattern start its own
+              capture-keyed timer.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Custom categories
+            </h3>
+            <p class="mt-3">
+              Organise triggers into your own categories and drag to reorder
+              both the categories and the triggers inside them. Triggers that
+              came from a pack keep a pack-origin tag even after you move them,
+              so you always know where one came from.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Alert text style
+            </h3>
+            <p class="mt-3">
+              Customise the on-screen alert text — colour, glow, font, and
+              size — with a positioning card that doubles as a live preview, so
+              you can see exactly how an alert will look before it fires. A
+              one-click Reset Style returns any trigger to the app defaults.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Exclude patterns
             </h3>
             <p class="mt-3">
@@ -1545,8 +1768,20 @@ const sections = [
               events, zoning). Each pack bundles the relevant CC-break
               and cast-failure alerts plus spell timers for the class's
               core buffs, debuffs, roots, mezzes, charms, and pacify
-              lines. Always-on event alerts for deaths, zoning, resists,
-              and interrupts are independent of the trigger system.
+              lines, and seven additional community packs ship built-in with
+              shared crowd-control break alerts. Always-on event alerts for
+              deaths, zoning, resists, and interrupts are independent of the
+              trigger system.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Test with log replay
+            </h3>
+            <p class="mt-3">
+              Replay mode plays a recorded segment of your log back through the
+              live pipeline, so you can confirm a trigger fires (and an overlay
+              behaves) against real lines without being in game. The Log Feed
+              page also has a read-only Browse mode for reading old logs out of
+              game.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               GINA imports
@@ -1581,6 +1816,32 @@ const sections = [
                 </span>
               </li>
             </ul>
+          </section>
+
+          <section id="custom-timers" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Custom Timers
+            </h2>
+            <p class="mt-4">
+              Manual countdown timers with their own dedicated overlay, for the
+              things your combat log won't announce — a spawn window, a
+              click-item cooldown, a raid phase. They sit alongside the rest of
+              the dashboard and pop out as their own overlay window.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Start them by hand or from a trigger
+            </h3>
+            <p class="mt-3">
+              Kick off a timer manually whenever you need one, or let a
+              <a href="#triggers" class="text-primary hover:text-primary-hover"
+                >trigger</a
+              > start it for you. A trigger can even pull the duration from a
+              regex capture group, so a single log line spins up a
+              perfectly-timed countdown — useful when the line itself tells you
+              how long something lasts.
+            </p>
           </section>
 
           <section id="roll-tracker" class="scroll-mt-24">
