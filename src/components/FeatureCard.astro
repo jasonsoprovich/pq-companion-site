@@ -9,6 +9,8 @@ interface Props {
   mediaSlug: string;
   reversed?: boolean;
   alt?: string;
+  /** When true, render the text full-width with no media column/placeholder. */
+  noMedia?: boolean;
 }
 
 const {
@@ -19,6 +21,7 @@ const {
   mediaSlug,
   reversed = false,
   alt,
+  noMedia = false,
 } = Astro.props;
 
 const media = resolveMedia(mediaSlug);
@@ -27,8 +30,8 @@ const altText = alt ?? `${title} demo`;
 
 <article
   class:list={[
-    "grid gap-8 md:grid-cols-2 md:items-center md:gap-12",
-    reversed && "md:[&>*:first-child]:order-2",
+    !noMedia && "grid gap-8 md:grid-cols-2 md:items-center md:gap-12",
+    !noMedia && reversed && "md:[&>*:first-child]:order-2",
   ]}
 >
   <div>
@@ -57,6 +60,7 @@ const altText = alt ?? `${title} demo`;
     }
   </div>
 
+  {!noMedia && (
   <div
     class="aspect-video overflow-hidden rounded-lg border border-border bg-surface shadow-xl shadow-black/40"
   >
@@ -101,6 +105,7 @@ const altText = alt ?? `${title} demo`;
       )
     }
   </div>
+  )}
 </article>
 
 <script>
