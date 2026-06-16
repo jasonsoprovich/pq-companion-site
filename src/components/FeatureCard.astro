@@ -9,8 +9,6 @@ interface Props {
   mediaSlug: string;
   reversed?: boolean;
   alt?: string;
-  /** When true, render the text full-width with no media column/placeholder. */
-  noMedia?: boolean;
 }
 
 const {
@@ -21,17 +19,26 @@ const {
   mediaSlug,
   reversed = false,
   alt,
-  noMedia = false,
 } = Astro.props;
 
 const media = resolveMedia(mediaSlug);
 const altText = alt ?? `${title} demo`;
+
+// Layout is driven entirely by whether media exists for this slug. With media,
+// we render the normal two-column card. Without it, the text goes full-width and
+// no empty placeholder is shown in production — drop a file at
+// public/media/<slug>.{mp4,png,...} and the card automatically switches back to
+// the two-column media layout, no code change needed. The placeholder hint is
+// kept in dev only, so it's a useful reminder locally without looking sloppy on
+// the live site.
+const showPlaceholder = !media && import.meta.env.DEV;
+const showMediaColumn = !!media || showPlaceholder;
 ---
 
 <article
   class:list={[
-    !noMedia && "grid gap-8 md:grid-cols-2 md:items-center md:gap-12",
-    !noMedia && reversed && "md:[&>*:first-child]:order-2",
+    showMediaColumn && "grid gap-8 md:grid-cols-2 md:items-center md:gap-12",
+    showMediaColumn && reversed && "md:[&>*:first-child]:order-2",
   ]}
 >
   <div>
@@ -60,7 +67,7 @@ const altText = alt ?? `${title} demo`;
     }
   </div>
 
-  {!noMedia && (
+  {showMediaColumn && (
   <div
     class="aspect-video overflow-hidden rounded-lg border border-border bg-surface shadow-xl shadow-black/40"
   >
