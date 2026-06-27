@@ -9,6 +9,7 @@ const sections = [
   { id: "quests", label: "Quests" },
   { id: "dps-meter", label: "DPS Meter & Combat Log" },
   { id: "combat-history", label: "Combat History" },
+  { id: "threat-meter", label: "Threat Meter" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
   { id: "respawn-timers", label: "NPC Respawn Timers" },
@@ -17,11 +18,14 @@ const sections = [
   { id: "spell-checklist", label: "Spell Checklist" },
   { id: "spellsets", label: "Spellsets" },
   { id: "inventory-tracker", label: "Inventory Tracker" },
+  { id: "trader-tracker", label: "Trader Tracker" },
   { id: "keys", label: "Keys & Keyring" },
   { id: "lockouts", label: "Lockouts" },
   { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
   { id: "gear-upgrade-finder", label: "Gear Upgrade Finder" },
+  { id: "resist-calc", label: "Resist Calculator" },
+  { id: "charm-pet-finder", label: "Charm Pet Finder" },
   { id: "players", label: "Players Database" },
   { id: "chat-history", label: "Chat History" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
@@ -762,6 +766,64 @@ const sections = [
             </p>
           </section>
 
+          <section id="threat-meter" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Threat Meter
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              A personal, per-mob hate estimator built entirely from your own
+              combat log — no client hooks, no party-wide data. It watches the
+              things you do that generate aggro and keeps a running hate total
+              for each mob you're fighting, so you can see when you're climbing
+              toward the top of a mob's list before you actually rip it off the
+              tank.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              What it counts
+            </h3>
+            <p class="mt-3">
+              Hate is accumulated from the damage you deal, the instant aggro
+              of hate-generating spells, the standard hate every cast carries,
+              healing done, and the smaller adjustments around misses — then
+              scaled by any hate-modifying buffs you have running. Feign death
+              and your own death reset your hate to zero the way the server
+              does, so the estimate tracks the real fight rather than drifting.
+            </p>
+            <p class="mt-3">
+              Because it's modelled from <em>your</em> log lines, the meter only
+              knows your own hate — it can't see what the tank or the rest of
+              the group is generating. Treat it as a personal "how hot am I
+              right now" gauge, not an absolute raid-wide aggro table.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Live rate
+            </h3>
+            <p class="mt-3">
+              Each mob card shows a live hate-per-second rate measured over a
+              rolling window on a receive clock, so a burst of nukes reads as a
+              spike you can feel in the moment and then settles as the window
+              moves on. It's the early-warning signal that you're pulling ahead
+              of the tank's threat generation.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where it lives
+            </h3>
+            <p class="mt-3">
+              The Threat Meter is a first-class panel on the
+              <strong class="text-foreground">Overlays</strong> dashboard with
+              its own toggle, and pops out as its own click-through transparent
+              window to float over the game next to the DPS meter.
+            </p>
+          </section>
+
           <section id="spell-timers" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -982,6 +1044,17 @@ const sections = [
               automatically. The countdown reflects the timer on the
               server you're actually playing on, so you're not mentally
               subtracting from a classic respawn window.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Ready alerts
+            </h3>
+            <p class="mt-3">
+              An optional audio or text-to-speech alert fires the moment a
+              tracked mob's respawn timer is up, scoped to the zone you're
+              currently in so you only hear about camps that matter where you
+              are. DoT and swarm-kited kills count too — a mob that dies with no
+              melee killing blow (a bard kiting a swarm, say) still starts its
+              respawn timer.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
@@ -1246,6 +1319,49 @@ const sections = [
             </p>
           </section>
 
+          <section id="trader-tracker" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Trader Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> Zeal
+              inventory exports while you're set up as a Bazaar trader.
+            </p>
+            <p class="mt-4">
+              Bazaar selling is a black box: you set up a trader, walk away,
+              and come back to a pile of platinum with no idea what actually
+              moved. Trader Tracker infers your sales by comparing your
+              <strong class="text-foreground">Trader's Satchel</strong> between
+              inventory snapshots — anything that left the satchel between two
+              exports is treated as a sale and reconciled against your trader
+              price list, so you can see what sold and for how much.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              How it captures
+            </h3>
+            <p class="mt-3">
+              A background poller picks up new inventory exports automatically,
+              and you can also drop a manual <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/output inventory</code
+              > export in at any time. Each snapshot is diffed against the last,
+              so the sales list builds up over a selling session without any
+              manual bookkeeping.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Why the diff, not the price file
+            </h3>
+            <p class="mt-3">
+              Your Bazaar price file is used only as a price reference — it
+              records what you're <em>asking</em>, not what changed hands. The
+              actual sale signal is the satchel going down by a stack between
+              two snapshots, which is why an inventory export (not the price
+              file) is what drives the tracker.
+            </p>
+          </section>
+
           <section id="keys" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -1477,6 +1593,82 @@ const sections = [
             </p>
           </section>
 
+          <section id="resist-calc" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Resist Calculator
+            </h2>
+            <p class="mt-4">
+              Estimate a spell's chance to land on an NPC before you spend the
+              cast and the mana. The calculator ports Project Quarm's actual
+              resist check and enumerates the full roll distribution, so the
+              number you get is a real land percentage from the server's own
+              math — not a rule of thumb.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              What it accounts for
+            </h3>
+            <p class="mt-3">
+              The estimate factors in the target's resist for the spell's type,
+              your level relative to the target, the spell's own resist
+              modifier, and the era's resist rules. Binary spells (mez, charm,
+              fear) are classified from the spell's first effect rather than a
+              single database flag, so lines that resolve all-or-nothing are
+              treated correctly instead of being shown a partial-resist curve.
+              Immunities and the level caps on charm, mez, and fear are
+              respected — if a target simply can't be affected, the calculator
+              says so and why.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Picking a target
+            </h3>
+            <p class="mt-3">
+              A searchable NPC picker pulls targets straight from the database,
+              so you can check a specific named or trash mob by name. A
+              resist-debuff section lists the tashes, malos, and other resist
+              reducers with level-scaled magnitudes, so you can see how much a
+              debuff shifts the odds before you commit a slot to it.
+            </p>
+          </section>
+
+          <section id="charm-pet-finder" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Charm Pet Finder
+            </h2>
+            <p class="mt-4">
+              For the charm classes, the difference between a good pet and a
+              great one is real DPS. Charm Pet Finder lists every charmable NPC
+              in a zone for your class and charm spell, ranked by damage
+              output, so you can walk into a camp already knowing which mob is
+              worth charming.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              DPS ranking &amp; land chance
+            </h3>
+            <p class="mt-3">
+              Candidates are ranked by estimated damage (derived from the mob's
+              attack values and delay), and each carries the land chance for
+              your charm against it — computed with the same resist engine as
+              the <a href="#resist-calc" class="text-primary hover:text-primary-hover"
+                >Resist Calculator</a
+              >. A target above your charm spell's level cap is flagged with a
+              warning, since no amount of resist luck will hold it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Planning ahead
+            </h3>
+            <p class="mt-3">
+              You can select a charm spell you can't cast yet to see what a
+              future pet pool looks like, so the page doubles as a leveling
+              plan for where to camp once the next charm comes online. Charm
+              spells are gated by their real Quarm class levels rather than a
+              curated guess.
+            </p>
+          </section>
+
           <section id="players" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -1642,6 +1834,14 @@ const sections = [
                   for hands-busy alerts.
                 </span>
               </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Copy to clipboard</strong>
+                  — drop matched text straight onto your clipboard, handy for
+                  capturing a name or a number to paste elsewhere.
+                </span>
+              </li>
             </ul>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Multiple patterns &amp; GINA tokens
@@ -1784,17 +1984,70 @@ const sections = [
               game.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              GINA imports
+              Multi-format import
             </h3>
             <p class="mt-3">
-              Import GINA shares directly as
-              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >.xml</code
-              > or
-              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >.gtp</code
-              >. The app converts the regex patterns and action set so
-              existing community packs work without rewriting them.
+              A unified <strong class="text-foreground">Import Triggers</strong>
+              wizard reads the four common share formats and converts them into
+              PQ Companion triggers, so you don't have to rewrite community
+              packs by hand:
+            </p>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">GINA</strong> shares as
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.xml</code
+                  > or
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.gtp</code
+                  >
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">EQNag</strong> trigger
+                  databases, with
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >&#36;&#123;Var&#125;</code
+                  > placeholders mapped to named captures
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">EQLogParser</strong>
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.tgf</code
+                  > trigger trees
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">PQ Companion</strong> packs
+                  exported as JSON from another install
+                </span>
+              </li>
+            </ul>
+            <p class="mt-3">
+              The wizard detects the format, previews the triggers it found, and
+              lets you commit them into a category you choose — so you see
+              exactly what you're importing before it lands.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Refire cooldowns
+            </h3>
+            <p class="mt-3">
+              A noisy log line can fire the same trigger many times in a second.
+              Each trigger has a <strong class="text-foreground">refire
+              cooldown</strong> (a lockout that suppresses re-fires for a set
+              window) and a separate <strong class="text-foreground">repeat-audio
+              cooldown</strong> that lets the on-screen alert keep up while
+              stopping the sound from stacking on itself — so a burst of
+              matching lines doesn't turn into a wall of overlapping alerts.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -1841,6 +2094,17 @@ const sections = [
               regex capture group, so a single log line spins up a
               perfectly-timed countdown — useful when the line itself tells you
               how long something lasts.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Appearance &amp; overdue reminders
+            </h3>
+            <p class="mt-3">
+              Give a timer its own bar colour from the quick-add form, or set a
+              global timer appearance that every bar inherits. A timer can also
+              <strong class="text-foreground">keep showing after it expires</strong>
+              as an overdue reminder, instead of vanishing the moment it hits
+              zero — useful for a spawn window you don't want to forget about
+              once it opens.
             </p>
           </section>
 

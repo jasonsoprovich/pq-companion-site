@@ -52,6 +52,19 @@ const features = [
     mediaSlug: "combat-history",
   },
   {
+    title: "Threat Meter",
+    tagline: "Watch your aggro before you rip it",
+    description:
+      "A personal, per-mob hate estimator built entirely from your own combat log — no client hooks. It tallies the hate you generate from damage, instant-aggro spells, hate-modifying buffs, heals, and the misses in between, then surfaces a live per-mob reading with a rolling hate-per-second rate so you can feel when you're climbing the aggro list. Feign death and death reset your hate the way the server does.",
+    bullets: [
+      "Per-mob hate cards with a live, rolling hate-per-second rate",
+      "Damage, spell instant-hate, standard hate, and hate-mod buffs all factored in",
+      "Heal and miss hate counted; feign death and death reset your hate",
+      "Dashboard card plus a click-through pop-out overlay",
+    ],
+    mediaSlug: "threat-meter",
+  },
+  {
     title: "Spell Timer Engine",
     tagline: "Never miss a re-cast",
     description:
@@ -182,6 +195,18 @@ const features = [
     mediaSlug: "inventory-tracker",
   },
   {
+    title: "Trader Tracker",
+    tagline: "See what sold while you were AFK",
+    description:
+      "Bazaar selling is a black box — you set up a trader, walk away, and come back to a pile of platinum with no idea what actually moved. Trader Tracker infers your sales by comparing your Trader's Satchel between inventory exports: anything that left the satchel between two snapshots is a sale, reconciled against your trader price list so you can see exactly what sold and for how much.",
+    bullets: [
+      "Infers sales by diffing your Trader's Satchel between snapshots",
+      "Reconciles each sale against your set prices so it shows its value",
+      "Captures automatically in the background, or from a manual export",
+    ],
+    mediaSlug: "trader-tracker",
+  },
+  {
     title: "Keys & Keyring",
     tagline: "Raid keys, parsed and tracked",
     description:
@@ -208,6 +233,31 @@ const features = [
     mediaSlug: "gear-upgrade-finder",
   },
   {
+    title: "Resist Calculator",
+    tagline: "Will it land?",
+    description:
+      "Estimate a spell's chance to land on any NPC before you spend the cast and the mana. The calculator ports Project Quarm's actual resist check and enumerates the full roll distribution, so you get a real land percentage that accounts for the target's resists, your level, spell resist modifiers, and the era's resist rules — not a rule of thumb. A resist-debuff section shows how much a tash or a malo shifts the odds.",
+    bullets: [
+      "Real land percentage from Quarm's own resist formula",
+      "Searchable NPC target picker pulled straight from the database",
+      "Resist-debuff section with level-scaled magnitudes",
+      "Immunity and charm/mez/fear level caps respected",
+    ],
+    mediaSlug: "resist-calculator",
+  },
+  {
+    title: "Charm Pet Finder",
+    tagline: "Find the best pet in the zone",
+    description:
+      "For enchanters, magicians, and the other charm classes, the difference between a good charm and a great one is real DPS. Charm Pet Finder lists every charmable NPC in a zone for your class and charm spell, ranked by damage output, with the land chance for your charm (via the same resist engine as the calculator) and a warning when a target sits above your charm's level cap.",
+    bullets: [
+      "Charmable NPCs per zone, class, and charm spell, ranked by DPS",
+      "Land-chance odds for your charm on each candidate",
+      "Level-cap warnings when a target is out of charm range",
+    ],
+    mediaSlug: "charm-pet-finder",
+  },
+  {
     title: "Wishlist",
     tagline: "Per-character drag-to-reorder upgrade list",
     description:
@@ -229,7 +279,9 @@ const features = [
       "Capture a target's name into the alert and the timer it drives",
       "Custom categories with drag-and-drop reordering and pack-origin tags",
       "Customizable alert text style — colour, glow, font, size — with a live preview and one-click Reset Style",
-      "Seven built-in community packs (plus class crowd-control break alerts) on top of the per-class discipline coverage; import GINA shares as .xml or .gtp",
+      "Seven built-in community packs (plus class crowd-control break alerts) on top of the per-class discipline coverage",
+      "Unified import wizard detects and previews GINA, EQNag, EQLogParser, and PQ Companion packs before committing them into a category",
+      "Per-trigger refire and repeat-audio cooldowns rein in bursts of duplicate alerts; a Copy-to-Clipboard action can fire on a match",
       "Log replay mode plays back recorded log segments so you can test triggers and overlays out of game",
     ],
     mediaSlug: "triggers",
