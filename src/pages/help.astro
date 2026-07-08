@@ -17,13 +17,16 @@ const sections = [
   { id: "character-progression", label: "Character Progression" },
   { id: "spell-checklist", label: "Spell Checklist" },
   { id: "spellsets", label: "Spellsets" },
+  { id: "bandolier-macros", label: "Bandolier & Macro Editors" },
   { id: "inventory-tracker", label: "Inventory Tracker" },
   { id: "trader-tracker", label: "Trader Tracker" },
   { id: "keys", label: "Keys & Keyring" },
   { id: "lockouts", label: "Lockouts" },
+  { id: "pop-flagging", label: "PoP Flagging Tracker" },
   { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
   { id: "gear-upgrade-finder", label: "Gear Upgrade Finder" },
+  { id: "tradeskill-leveling", label: "Tradeskill Leveling & Recipes" },
   { id: "resist-calc", label: "Resist Calculator" },
   { id: "charm-pet-finder", label: "Charm Pet Finder" },
   { id: "players", label: "Players Database" },
@@ -196,6 +199,15 @@ const sections = [
               between individual triggers.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Accessibility
+            </h3>
+            <p class="mt-3">
+              Settings is organized around a grouped side navigation, and
+              an Accessibility section gathers high-contrast text mode,
+              app-wide zoom, and the per-overlay font/zoom sliders (see
+              the Overlay Dashboard section) in one place.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               EQ client version
             </h3>
             <p class="mt-3">
@@ -247,6 +259,32 @@ const sections = [
               tab also surfaces log and Zeal status toggles, wizard
               diagnostics, and notices when an expected log file is
               missing.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Danger zone: app reset
+            </h3>
+            <p class="mt-3">
+              Settings → EQ Config Backups has a "Danger zone" for starting
+              over. <strong class="text-foreground">Reset app data</strong>
+              clears your tracked data — characters, chat, loot, triggers,
+              tasks, notes, flags, combat history — but keeps your settings
+              and EQ folder path. <strong class="text-foreground"
+                >Factory reset</strong
+              > also clears settings and reopens first-time setup. Both
+              require typing <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >RESET</code
+              > to confirm, and your old data is set aside for recovery
+              rather than deleted outright. Your EverQuest game files and
+              logs are never touched.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Moving to a new PC
+            </h3>
+            <p class="mt-3">
+              Exporting your setup for another machine now imports in one
+              "Import & restart" step instead of a multi-stage prompt. See
+              the Backup &amp; Restore section for the export side.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               About
@@ -350,6 +388,26 @@ const sections = [
               out a few seconds after the mouse leaves — timer bars and stats
               stay visible — and reappear when you hover. The fade delay is
               configurable.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Clickable links
+            </h3>
+            <p class="mt-3">
+              Items, spells, and other entities shown across overlays — the
+              NPC overlay, spawn-group members, lockout rows, spell-modifier
+              source and focus spells — open directly in the database
+              explorer when clicked, gated by a "Clickable Links in
+              Overlays" toggle in Settings.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Per-overlay accessibility
+            </h3>
+            <p class="mt-3">
+              Beyond the app-wide zoom, each pop-out overlay has its own
+              font/zoom slider under the Accessibility section of Settings,
+              so you can size an overlay independently of the main window —
+              handy for a spell-timer pop-out you want larger than the DPS
+              meter.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -661,6 +719,18 @@ const sections = [
               recorded, with date-range and per-character filters. See
               the next section for full detail.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              The parse survives zoning and death
+            </h3>
+            <p class="mt-3">
+              Zoning or dying no longer wipes your active parse. A fight
+              only ends when the mob dies, after a configurable inactivity
+              timeout (Settings › Combat, raid encounters get a higher
+              floor), or when you end it yourself with the discard button —
+              which clears the live meter but still archives the fight to
+              Combat History. Return to a mob you left mid-fight and the
+              same fight picks back up instead of starting a new one.
+            </p>
           </section>
 
           <section id="combat-history" class="scroll-mt-24">
@@ -812,6 +882,17 @@ const sections = [
               spike you can feel in the moment and then settles as the window
               moves on. It's the early-warning signal that you're pulling ahead
               of the tank's threat generation.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Solo vs. Raid mode
+            </h3>
+            <p class="mt-3">
+              A Solo/Raid toggle switches how the estimate models taunt: Raid
+              mode drops the default solo tank boost, registers hate-modifying
+              buffs cast on you by other players, and detects successful taunt
+              emotes, so the numbers stay meaningful outside small-group play.
+              Raid mode ships on by default; its settings live under
+              Settings › Overlays.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
@@ -992,6 +1073,25 @@ const sections = [
               mob-specific.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Caster summary
+            </h3>
+            <p class="mt-3">
+              For casting NPCs, the caster signature includes recast time,
+              AE flag, and resist type for each known spell, alongside the
+              spell itself — a fuller at-a-glance read of what to expect
+              from an NPC caster than the name alone gives you.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Copy target stats
+            </h3>
+            <p class="mt-3">
+              A copy button on the overlay puts the current target's stats
+              on your clipboard, formatted to paste straight into EQ chat
+              and capped so it fits the in-game input limit — handy for
+              posting a mob's resists or HP to your group without typing
+              it out by hand.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               With Zeal
             </h3>
             <p class="mt-3">
@@ -1152,7 +1252,12 @@ const sections = [
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
                   <strong class="text-foreground">Stats</strong> — base
-                  HP/Mana, stat caps, worn effects, and softcap AC.
+                  HP/Mana, stat caps, worn effects, and softcap AC. Base
+                  attributes show their base value and green AA bonus
+                  separately, with a tooltip explaining the source. A
+                  Tanking view splits avoidance from mitigation and folds
+                  in the mitigation softcap, melee hit chance, and tanking
+                  AAs.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1268,6 +1373,52 @@ const sections = [
               active character or above the character's level are
               flagged and blocked at import, so you never end up with a
               set you can't actually load in-game.
+            </p>
+          </section>
+
+          <section id="bandolier-macros" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Bandolier & Macro Editors
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              Zeal-exported inventory for the bandolier editor; your live
+              in-game <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >.ini</code
+              > for the macro editor.
+            </p>
+            <p class="mt-4">
+              Two editors for the files Zeal already reads, right inside
+              the app instead of hand-editing an .ini in a text editor.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Bandolier editor
+            </h3>
+            <p class="mt-3">
+              Edit your weapon-swap bandolier sets with a guard that keeps
+              you to gear you actually own and can equip — checked against
+              class, race, and level — with item hover cards and a
+              preferred storage bag per character.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Macro editor
+            </h3>
+            <p class="mt-3">
+              The in-game macro grid mirrors EverQuest's real 2-column
+              social layout, with drag-to-rearrange slots and a one-click
+              reset back to the page 1 defaults. Edits write directly to
+              your character's live <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >[Socials]</code
+              > section without touching the rest of the file. A built-in
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/cancelbuff</code
+              > builder turns a buff-name search into ready-made
+              cancel-by-name macro lines, and macros can be copied from
+              one character to another.
             </p>
           </section>
 
@@ -1458,6 +1609,59 @@ const sections = [
               > whenever you want to refresh — the countdowns update the
               moment the new output lands in the log.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Absolute unlock time
+            </h3>
+            <p class="mt-3">
+              Each active lockout shows the exact date and time it frees
+              up in your local timezone right next to the live countdown
+              (e.g. <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >07/04 3:25 PM</code
+              >), so you can see exactly when something's available without
+              doing the math yourself. Hover the countdown for the full
+              date and time.
+            </p>
+          </section>
+
+          <section id="pop-flagging" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              PoP Flagging Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              Planes of Power flagging is a maze of God flags, trial
+              prerequisites, and multi-step key quests. This tracker turns
+              it into a step-by-step checklist with an interactive
+              dependency graph, so you always know what you have, what you
+              need next, and what's blocking it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Dependency graph
+            </h3>
+            <p class="mt-3">
+              Each flag is classified and colour-coded by how you earn it —
+              kill, turn-in, zone, or key — and locked steps stay visibly
+              locked until their prerequisites are actually met. Any-of
+              groups handle trials and keys with more than one valid path
+              (like the six Plane of Justice trials) so you're never forced
+              to complete every branch.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Seeding your progress
+            </h3>
+            <p class="mt-3">
+              New to the tracker with flags already earned? Seed your
+              starting state from a paste-in, or let the tracker pick up
+              new progress automatically as kills happen in your combat
+              log going forward.
+            </p>
           </section>
 
           <section id="loot-tracker" class="scroll-mt-24">
@@ -1590,6 +1794,52 @@ const sections = [
                 class="text-primary hover:text-primary-hover">Wishlist</a
               >. Planes of Power gear is hidden unless you've turned the PoP
               preview on in Settings.
+            </p>
+          </section>
+
+          <section id="tradeskill-leveling" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Tradeskill Leveling &amp; Recipes
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              Zeal-exported tradeskill values for the Tradeskills tab; no
+              Zeal export needed for the recipe browser or planner
+              themselves.
+            </p>
+            <p class="mt-4">
+              The Recipes browser lets you look up any tradeskill combine,
+              pin favourites, and see every recipe an item is used in from
+              that item's own Tradeskills tab. The leveling planner builds
+              on top of it: pick a tradeskill and a target skill, and it
+              produces a staged, step-by-step plan using only recipes you
+              can actually make.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Fastest vs. cheapest
+            </h3>
+            <p class="mt-3">
+              Choose "fastest" for the fewest total combines, or "cheapest"
+              for the least plat spent — the planner factors in the cost of
+              any sub-combines you'd need to craft along the way, and warns
+              you when a step crosses into a different tradeskill. Paths
+              are derived entirely from the game database, so they stay
+              accurate as recipes and trivials change.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Success chances &amp; skill-ups
+            </h3>
+            <p class="mt-3">
+              Every recipe view shows your live success and failure
+              percentage from your actual skill and crafting-stat gear,
+              including the trivial breakpoint where you can no longer
+              fail and a skill-up chance estimate. Jewelcraft, Alchemy, and
+              Poison Mastery AAs and Maelin Starpyre's skill-up buff are
+              applied automatically. Race-locked cultural recipes are
+              flagged in both the browser and the planner so you're never
+              steered into a combine your character's race can't perform.
             </p>
           </section>
 
@@ -1889,6 +2139,30 @@ const sections = [
               one-click Reset Style returns any trigger to the app defaults.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Voice rate
+            </h3>
+            <p class="mt-3">
+              A global speed control under Settings › Overlays speeds up
+              or slows down every spoken alert, with a Test button that
+              previews the rate live before you save it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Piper TTS — a local neural voice
+            </h3>
+            <p class="mt-3">
+              Text-to-speech alerts can use a locally-installed
+              <strong class="text-foreground">Piper</strong> neural voice
+              instead of the browser's built-in speech synthesis, for a
+              more natural read. PQ Companion detects your Piper install,
+              spawns it to synthesize speech (an optional warm-process
+              mode avoids cold-start lag on every alert), caches generated
+              audio so repeat lines are instant, and automatically falls
+              back to the browser voice if anything goes wrong. Piper
+              itself is a separate, user-installed program — nothing is
+              bundled with the app. Turn it on and point it at your
+              install from Settings → General.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Exclude patterns
             </h3>
             <p class="mt-3">
@@ -1972,6 +2246,27 @@ const sections = [
               shared crowd-control break alerts. Always-on event alerts for
               deaths, zoning, resists, and interrupts are independent of the
               trigger system.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Non-destructive pack updates
+            </h3>
+            <p class="mt-3">
+              When a built-in pack ships changes, a review panel on the
+              Packs tab shows a per-field diff between your installed
+              version and the new default. Apply it install-by-install,
+              and choose per field whether to preserve your own
+              customization or take the new default — an update never
+              silently overwrites edits you made on purpose.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Action templates &amp; bulk editing
+            </h3>
+            <p class="mt-3">
+              Save an action as a template and apply it to many triggers
+              at once instead of editing each one by hand. Bulk editing
+              also covers converting text-to-speech alerts to sound
+              (including timer alerts) across a whole selection, with
+              control over exactly which triggers a bulk edit touches.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Test with log replay
@@ -2211,6 +2506,17 @@ const sections = [
                 </span>
               </li>
             </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Tiered contests
+            </h3>
+            <p class="mt-3">
+              Group related sessions into a tiered contest using a
+              configurable preset (or a custom editor for your own
+              structure), and results render as shareable contest cards
+              instead of raw session lists. Loot items are auto-suggested
+              from nearby chat, and you can add a manual item label and
+              copy a paste-ready result summary for guild chat.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Overlay
             </h3>

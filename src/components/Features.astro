@@ -35,6 +35,7 @@ const features = [
     bullets: [
       "Per-fight and session-wide damage totals, with full combat history",
       "Toggle between fight-duration DPS and active-time DPS (aDPS) — fairer for DoT classes and downtime-heavy roles",
+      "Parse survives zoning and death — it only ends on a kill, a configurable inactivity timeout, or a manual discard",
       "One-click copy of fight or session summary for /gu and /tell",
     ],
     mediaSlug: "dps-meter",
@@ -60,6 +61,7 @@ const features = [
       "Per-mob hate cards with a live, rolling hate-per-second rate",
       "Damage, spell instant-hate, standard hate, and hate-mod buffs all factored in",
       "Heal and miss hate counted; feign death and death reset your hate",
+      "Solo/Raid mode toggle models taunt correctly in raid settings and picks up hate-mod buffs cast on you by others",
       "Dashboard card plus a click-through pop-out overlay",
     ],
     mediaSlug: "threat-meter",
@@ -100,6 +102,8 @@ const features = [
     bullets: [
       "Auto-detects target from melee and spell events; live HP bar and pet-owner badge with Zeal",
       "Special-ability badges, resist breakdown with EQ-convention colours, and humanised body type at a glance",
+      "Caster summary includes recast time, AE flag, and resist type for a fuller read of a mob's spells",
+      "Copy the current target's stats to your clipboard, formatted to paste straight into EQ chat",
       "On-demand loot table with drop rates and zone-wide drops surfaced on every mob in the zone — wishlisted drops highlighted",
       "Same-name NPCs disambiguated by zone and your position, with the variant set surfaced when a target is ambiguous",
     ],
@@ -137,10 +141,23 @@ const features = [
       "Parses your /sll output into live per-character countdowns for loot and legacy lockouts, so you always know when an instance or flagged encounter is available to you again. No spreadsheet, no guesswork — just run /sll and the timers update.",
     bullets: [
       "Live countdowns for both loot lockouts and legacy lockouts",
+      "Absolute unlock date and time shown right next to the live countdown, in your local timezone",
       "Tracked per character, so each alt's lockouts stay separate",
       "Updates the moment you run /sll in-game",
     ],
     mediaSlug: "lockouts",
+  },
+  {
+    title: "PoP Flagging Tracker",
+    tagline: "Plane of Power progression, mapped",
+    description:
+      "Planes of Power flagging is a maze of God flags, trial prerequisites, and multi-step key quests — this tracker turns it into a step-by-step checklist with an interactive dependency graph. Each flag is classified and colour-coded by how you earn it (kill, turn-in, zone, key), locked steps stay locked until their prerequisites are actually met, and any-of groups handle trials with multiple valid paths (like the six Plane of Justice trials) without forcing you to complete every one.",
+    bullets: [
+      "Interactive dependency graph with locked/unlocked state driven by your actual progress",
+      "Any-of groups for trials and keys with more than one valid path, plus non-counting key/keyring rows",
+      "Seed progress from a paste-in, or detect it live from your combat log as kills happen",
+    ],
+    mediaSlug: "pop-flagging",
   },
   {
     title: "Loot Tracker",
@@ -162,6 +179,8 @@ const features = [
     bullets: [
       "Live Buffs panel driven by the spell timer engine, with swappable raid-buff presets per character",
       "Spell Modifiers tab — see every focus and worn effect that's modifying your spells",
+      "Tanking view splits avoidance from mitigation, with the mitigation softcap, melee hit chance, and tanking AAs folded in",
+      "Base attributes show their base value and green AA bonus separately, with a tooltip explaining the source",
       "AA tracking: trained ranks, untrained candidates, and cost-aware planning",
       "Character switcher syncs across the app; sub-tabs on every tracker page",
     ],
@@ -258,6 +277,20 @@ const features = [
     mediaSlug: "charm-pet-finder",
   },
   {
+    title: "Tradeskill Leveling & Recipes",
+    tagline: "Craft your way to max skill",
+    description:
+      "The Recipes browser lets you pin favourite combines and see every recipe an item is used in, but the real work is done by the leveling planner: pick a tradeskill and a target skill, and it builds a staged, step-by-step plan using nothing but recipes you can actually make — choosing 'fastest' (fewest combines) or 'cheapest' (least plat), factoring in the cost of any sub-combines you'd have to craft along the way, and warning you when a step crosses into a different tradeskill. Every recipe view also shows your live success and failure percentage from your actual skill and crafting-stat gear, including the trivial breakpoint where you can no longer fail.",
+    bullets: [
+      "Staged leveling plan to any target skill — fastest or cheapest, derived entirely from the game database",
+      "Per-recipe success/failure percentage from your skill and gear, with the no-fail trivial breakpoint called out",
+      "Jewelcraft, Alchemy, and Poison Mastery AAs plus Maelin Starpyre's skill-up buff applied automatically",
+      "Race-locked cultural recipes flagged so a plan never steers you into a combine you can't perform",
+      "Characters show their trained tradeskill values straight from the Zeal export",
+    ],
+    mediaSlug: "tradeskill-leveling",
+  },
+  {
     title: "Wishlist",
     tagline: "Per-character drag-to-reorder upgrade list",
     description:
@@ -273,12 +306,15 @@ const features = [
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger can hold several regex patterns at once (toggle each on or off) and use GINA-style {c}/{target} tokens, and a matched capture group — like a target's name — flows straight into the alert text and the timer it starts. Fire on-screen text alerts (draggable position and font size), local sound files, or text-to-speech. Organize everything into custom categories you can drag to reorder, customize the alert text style, and replay historical log segments through the live pipeline to test a trigger before you rely on it.",
+      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger can hold several regex patterns at once (toggle each on or off) and use GINA-style {c}/{target} tokens, and a matched capture group — like a target's name — flows straight into the alert text and the timer it starts. Fire on-screen text alerts (draggable position and font size), local sound files, or text-to-speech — including an optional locally-installed Piper neural voice for a more natural read than the browser default. Organize everything into custom categories you can drag to reorder, customize the alert text style, apply a saved action template or bulk edit to many triggers at once, and replay historical log segments through the live pipeline to test a trigger before you rely on it.",
     bullets: [
       "Multiple regex patterns per trigger with per-row toggles; {c}/{target} tokens for GINA compatibility",
       "Capture a target's name into the alert and the timer it drives",
       "Custom categories with drag-and-drop reordering and pack-origin tags",
       "Customizable alert text style — colour, glow, font, size — with a live preview and one-click Reset Style",
+      "Optional Piper local neural voice for text-to-speech alerts, with automatic fallback to the browser voice",
+      "Action templates and bulk editing — apply a saved template or convert TTS to sound across many triggers at once",
+      "Non-destructive pack updates — when a built-in pack changes, review a per-field diff and choose to preserve your edits or take the new default",
       "Seven built-in community packs (plus class crowd-control break alerts) on top of the per-class discipline coverage",
       "Unified import wizard detects and previews GINA, EQNag, EQLogParser, and PQ Companion packs before committing them into a category",
       "Per-trigger refire and repeat-audio cooldowns rein in bursts of duplicate alerts; a Copy-to-Clipboard action can fire on a match",
@@ -338,13 +374,27 @@ const features = [
     mediaSlug: "spellsets",
   },
   {
+    title: "Bandolier & Macro Editors",
+    tagline: "Edit your swaps and socials in-app",
+    description:
+      "Edit your Zeal weapon-swap bandolier sets and your in-game social macros without leaving PQ Companion. The bandolier editor guards you to gear you actually own and can equip — right down to class, race, and level — with item hover cards and a preferred storage bag. The macro editor mirrors EverQuest's real 2-column social layout with drag-to-rearrange slots, writes directly to your live in-game .ini file, and includes a /cancelbuff builder that turns a buff-name search into ready-made cancel-by-name macro lines.",
+    bullets: [
+      "Bandolier sets guarded to gear you own and can equip, with item hover cards",
+      "In-game 2-column macro grid with drag-to-rearrange slots and a one-click reset to defaults",
+      "/cancelbuff builder turns a buff search into cancel-by-name macro lines",
+      "Copy macros from one character to another",
+    ],
+    mediaSlug: "bandolier-macros",
+  },
+  {
     title: "Roll Tracker",
     tagline: "Loot rolls, organized",
     description:
-      "Watches the combat log for /random results and groups them into per-range sessions, so a guild calling Cowl 333, Shard 444, and Heart 666 in overlapping bidding windows ends up with three independent leaderboards instead of one tangled mess. Each session shows every roll with the leader highlighted, marks re-rolls as duplicates, and lets you switch between Highest-wins and Lowest-wins on the fly.",
+      "Watches the combat log for /random results and groups them into per-range sessions, so a guild calling Cowl 333, Shard 444, and Heart 666 in overlapping bidding windows ends up with three independent leaderboards instead of one tangled mess. Each session shows every roll with the leader highlighted, marks re-rolls as duplicates, and lets you switch between Highest-wins and Lowest-wins on the fly. Contests can be grouped with configurable tiered presets, results render as shareable contest cards, and loot items are auto-suggested from chat.",
     bullets: [
       "Per-session Live/Stopped state with Stop, Remove, and global Clear buttons",
       "Manual mode or Timer mode with a 5–600 second auto-stop window (default 45 s) and a live countdown badge",
+      "Tiered contest grouping with a custom preset editor and auto-suggested loot items from chat",
       "Available as a dashboard panel or a frameless pop-out overlay with the mode/duration/winner controls in the header",
     ],
     mediaSlug: "roll-tracker",
@@ -358,6 +408,8 @@ const features = [
       "Manage overlays menu: show/hide, pop out, and reset every window from one place",
       "Global Position-overlays mode makes all open overlays draggable at once, then locks them back",
       "Per-overlay lock behaviour, including a Display-only click-through HUD mode",
+      "Items, spells, and other entities across overlays link straight into the database explorer",
+      "Per-overlay font/zoom sliders size each pop-out independently, under a dedicated Accessibility settings section",
       "One-click reset recovers an overlay that's drifted off-screen; optional fade-out hides overlay chrome when the mouse leaves",
       "Multi-monitor aware — the trigger overlay can span every monitor, and pop-outs drag freely from one screen to another",
     ],
