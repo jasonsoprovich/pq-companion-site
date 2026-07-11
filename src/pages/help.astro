@@ -70,14 +70,41 @@ const sections = [
   <section class="py-16">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-12 lg:grid-cols-[16rem_1fr]">
-        <aside class="lg:sticky lg:top-24 lg:self-start">
+        <aside
+          class="lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto"
+        >
           <p
             class="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-muted"
           >
             Contents
           </p>
+          <div class="relative mb-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              id="help-search"
+              placeholder="Search help..."
+              aria-label="Search help topics"
+              class="w-full rounded-md border border-border-subtle bg-surface py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted focus:border-primary focus:outline-none"
+            />
+          </div>
           <nav>
-            <ul class="space-y-1.5 text-sm">
+            <ul id="help-nav-list" class="space-y-1.5 text-sm">
               {
                 sections.map((s) => (
                   <li>
@@ -91,10 +118,14 @@ const sections = [
                 ))
               }
             </ul>
+            <p id="help-search-empty" class="hidden px-3 py-1.5 text-sm text-muted">
+              No matching topics.
+            </p>
           </nav>
         </aside>
 
         <div
+          id="help-content"
           class="prose-help space-y-16 text-base leading-relaxed text-muted-foreground"
         >
           <section id="getting-started" class="scroll-mt-24">
@@ -2722,3 +2753,29 @@ const sections = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const input = document.getElementById("help-search") as HTMLInputElement | null;
+  const navItems = document.querySelectorAll<HTMLLIElement>("#help-nav-list li");
+  const emptyMsg = document.getElementById("help-search-empty");
+
+  function normalize(value: string) {
+    return value.toLowerCase();
+  }
+
+  input?.addEventListener("input", () => {
+    const query = normalize(input.value.trim());
+    let matchCount = 0;
+
+    navItems.forEach((li) => {
+      const id = li.querySelector("a")?.getAttribute("href")?.slice(1) ?? "";
+      const section = document.getElementById(id);
+      const matches = query === "" || normalize(section?.textContent ?? "").includes(query);
+      li.classList.toggle("hidden", !matches);
+      if (section) section.classList.toggle("hidden", !matches);
+      if (matches) matchCount++;
+    });
+
+    emptyMsg?.classList.toggle("hidden", query === "" || matchCount > 0);
+  });
+</script>
