@@ -273,7 +273,9 @@ const sections = [
               A <strong class="text-foreground">Settings → Navigation</strong>
               tab lets you hide and reorder the sidebar tabs, so you can
               trim the app down to just the features you use and put them
-              in the order that suits how you play.
+              in the order that suits how you play. You can also pin
+              frequently-used nav items so they stay pinned to the top of
+              the sidebar, above the rest of your tabs.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Log Backfill
@@ -367,6 +369,15 @@ const sections = [
               button that opens every standalone overlay in one click (it flips
               to <strong class="text-foreground">Close All Popouts</strong> once
               any are open).
+            </p>
+            <p class="mt-3">
+              For faster access without opening the dashboard at all, a
+              quick <strong class="text-foreground"
+                >pop-out-all-overlays</strong
+              > toggle sits right in the sidebar next to the character
+              switcher — one click pops out every dashboard-visible
+              overlay, the same action as the dashboard's Pop Out All
+              button.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Multiple monitors
@@ -513,6 +524,16 @@ const sections = [
                 </span>
               </li>
             </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Item Compare
+            </h3>
+            <p class="mt-3">
+              From an item's detail view, open Item Compare to line it up
+              side-by-side against other items — or against whatever's
+              currently equipped in that slot on your active character —
+              so you can see exactly which stats change before you decide
+              it's an upgrade.
+            </p>
           </section>
 
           <section id="quests" class="scroll-mt-24">
@@ -1285,10 +1306,12 @@ const sections = [
                   <strong class="text-foreground">Stats</strong> — base
                   HP/Mana, stat caps, worn effects, and softcap AC. Base
                   attributes show their base value and green AA bonus
-                  separately, with a tooltip explaining the source. A
-                  Tanking view splits avoidance from mitigation and folds
-                  in the mitigation softcap, melee hit chance, and tanking
-                  AAs.
+                  separately, with a tooltip explaining the source. When a
+                  piece of gear pushes a stat past your level cap, the
+                  panel shows exactly how far over cap you are instead of
+                  silently clamping the displayed number. A Tanking view
+                  splits avoidance from mitigation and folds in the
+                  mitigation softcap, melee hit chance, and tanking AAs.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1449,7 +1472,12 @@ const sections = [
                 >/cancelbuff</code
               > builder turns a buff-name search into ready-made
               cancel-by-name macro lines, and macros can be copied from
-              one character to another.
+              one character to another. Moving or copying a macro between
+              pages uses an explicit picker instead of cross-page
+              drag-and-drop — pick the destination page and slot, then
+              choose <strong class="text-foreground">Swap</strong> or
+              <strong class="text-foreground">Replace</strong> if that
+              slot is already occupied.
             </p>
           </section>
 
@@ -1768,6 +1796,17 @@ const sections = [
               either view is reflected in the other. Suggestions in the Gear
               Upgrade Finder can be starred straight onto this list.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Log alerts
+            </h3>
+            <p class="mt-3">
+              A synthetic trigger can fire an alert the moment a
+              wishlisted item shows up in your combat log — a drop, a
+              loot message, anything mentioning the item name. The
+              alert's configuration stays hidden until you turn on its
+              master toggle, so it stays out of the way if you don't want
+              it.
+            </p>
           </section>
 
           <section id="gear-upgrade-finder" class="scroll-mt-24">
@@ -1871,6 +1910,15 @@ const sections = [
               applied automatically. Race-locked cultural recipes are
               flagged in both the browser and the planner so you're never
               steered into a combine your character's race can't perform.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Inventory status
+            </h3>
+            <p class="mt-3">
+              Both the Recipes browser and the leveling planner flag each
+              component of a combine as either already in your inventory
+              or still missing, so you can see at a glance what you need
+              to go gather before starting a crafting run.
             </p>
           </section>
 
@@ -2164,10 +2212,12 @@ const sections = [
               Alert text style
             </h3>
             <p class="mt-3">
-              Customise the on-screen alert text — colour, glow, font, and
-              size — with a positioning card that doubles as a live preview, so
-              you can see exactly how an alert will look before it fires. A
-              one-click Reset Style returns any trigger to the app defaults.
+              Customise the on-screen alert text — colour, glow, font,
+              size, and left/center/right text alignment — with a
+              positioning card that doubles as a live preview, so you can
+              see exactly how an alert will look before it fires. A
+              one-click Reset Style returns any trigger to the app
+              defaults.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Voice rate
@@ -2404,10 +2454,10 @@ const sections = [
               Custom Timers
             </h2>
             <p class="mt-4">
-              Manual countdown timers with their own dedicated overlay, for the
-              things your combat log won't announce — a spawn window, a
-              click-item cooldown, a raid phase. They sit alongside the rest of
-              the dashboard and pop out as their own overlay window.
+              Manual countdown timers for the things your combat log won't
+              announce — a spawn window, a click-item cooldown, a raid
+              phase. They sit alongside the rest of the dashboard and pop
+              out as their own overlay windows.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Start them by hand or from a trigger
@@ -2420,6 +2470,33 @@ const sections = [
               regex capture group, so a single log line spins up a
               perfectly-timed countdown — useful when the line itself tells you
               how long something lasts.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Multiple named windows &amp; Timer Groups
+            </h3>
+            <p class="mt-3">
+              Custom Timers has reached full parity with the rest of the
+              overlay dashboard: instead of one shared overlay, you can run
+              several named Custom Timer windows side by side — split raid
+              phase timers from personal cooldowns, or give each alt its
+              own window. A <strong class="text-foreground"
+                >Timer Groups</strong
+              > screen lets you organize which triggers feed which window,
+              so a trigger's countdown always lands on the overlay you
+              intended. Each window pops out independently and has its own
+              working close (X) button on its title bar, so closing one
+              window doesn't take the others down with it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pinning a timer on top
+            </h3>
+            <p class="mt-3">
+              Any individual trigger-driven timer can be
+              <strong class="text-foreground">pinned</strong> to keep it
+              at the top of its window, above the rest of that overlay's
+              bars — handy for the one countdown you never want to lose
+              track of in a crowded window, like a tank cooldown or a
+              raid-wide mechanic.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Appearance &amp; overdue reminders
