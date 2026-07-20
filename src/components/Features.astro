@@ -10,7 +10,7 @@ const features = [
     bullets: [
       "Advanced item filters: race, class, level, slot, type, stat thresholds",
       "Spell filters by class and level; hides NPC-only spells",
-      "Zone tabs for connected zones, drops, ground spawns, and forage",
+      "Zone tabs for connected zones, drops, ground spawns, and forage — the Drops tab pages past its 500-item cap with a Show more button",
       "Duplicate-name items and spells collapse to a single canonical row that links out to every variant",
       "Item Compare: line up an item side-by-side against other items, or against whatever's currently equipped in that slot",
     ],
@@ -126,11 +126,12 @@ const features = [
     title: "CH Chain & Metronome",
     tagline: "Run the heal chain without counting in your head",
     description:
-      "Two overlays for raids that run a Complete Heal chain. The CH Chain panel reads your clerics' heal callouts straight from the log and tracks the whole rotation live — cast-to-land bars for each heal, the measured cadence between casts, and a stall indicator the moment the next healer is late. The personal CH Metronome paces your own slot so you know exactly when to start casting.",
+      "Two overlays for raids that run a Complete Heal chain. The CH Chain panel reads your clerics' heal callouts straight from the log and tracks the whole rotation live — cast-to-land bars for each heal, the measured cadence between casts, and a stall indicator the moment the next healer is late. The personal CH Metronome paces your own slot so you know exactly when to start casting, with optional audio or spoken cues for countdown start and cast-now.",
     bullets: [
       "Callout-driven — reads the heal announcements everyone already sees, no client hooks",
       "Live measured cadence and a stall warning before the chain breaks",
-      "Personal metronome overlay that paces your slot in the rotation",
+      "Possible-miss detection — a chain slot's heal-landed confirmation is watched, and the bar renders red if it never arrives before the cast window elapses, surfacing fizzles, interrupts, and skipped casts (Cleric on by default, Druid Superior Healing opt-in)",
+      "Personal metronome overlay that paces your slot in the rotation, with optional audio/TTS alerts for countdown start and cast-now",
       "Both are first-class dashboard panels with their own Overlays toggles and click-through pop-outs",
     ],
     mediaSlug: "ch-chain",
@@ -147,6 +148,20 @@ const features = [
       "Updates the moment you run /sll in-game",
     ],
     mediaSlug: "lockouts",
+  },
+  {
+    title: "Faction Tracker",
+    tagline: "Know where you stand, without pausing to /con",
+    description:
+      "EQ never logs a faction's absolute value, so this tracker builds the closest thing to one: per-character tracking of every faction you've ever killed toward or considered, the same 'record everything encountered' approach as the Lockout and Player trackers. A running better/worse tally gets a best-effort point estimate whenever a change lines up with a resolved kill or an exact quest-turn-in delta, plus a 9-segment /con disposition bar per faction. Progress persists across restarts and character switches, and Log Backfill can seed a baseline from your existing history.",
+    bullets: [
+      "Automatic tracking — no need to pin a faction first; every kill or /con toward any faction gets recorded",
+      "9-segment /con disposition bucket bar, flagged suspect if the reading was taken while illusioned",
+      "Best-effort point estimates from resolved kills, plus exact deltas from quest turn-ins",
+      "Log Backfill scans your existing /con history to seed a starting baseline",
+      "Available under Settings → Developer → Flags",
+    ],
+    mediaSlug: "faction-tracker",
   },
   {
     title: "PoP Flagging Tracker",
@@ -310,13 +325,13 @@ const features = [
     title: "Custom Triggers & Alerts",
     tagline: "GINA-style, but local",
     description:
-      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger can hold several regex patterns at once (toggle each on or off) and use GINA-style {c}/{target} tokens, and a matched capture group — like a target's name — flows straight into the alert text and the timer it starts. Fire on-screen text alerts (draggable position and font size), local sound files, or text-to-speech — including an optional locally-installed Piper neural voice for a more natural read than the browser default. Organize everything into custom categories you can drag to reorder, customize the alert text style, apply a saved action template or bulk edit to many triggers at once, and replay historical log segments through the live pipeline to test a trigger before you rely on it.",
+      "A regex trigger engine for any log line, plus a typed pipe-source mode that hooks into Zeal state instead of log text. Each trigger can hold several regex patterns at once (toggle each on or off) and use GINA-style {c}/{target} tokens, and a matched capture group — like a target's name — flows straight into the alert text and the timer it starts. Fire on-screen text alerts (draggable position and font size), local sound files, or text-to-speech — including an optional locally-installed Piper neural voice, or a second Kokoro voice via a self-hosted server, for a more natural read than the browser default. Organize everything into custom categories you can drag to reorder, customize the alert text style, apply a saved action template or bulk edit to many triggers at once, and replay historical log segments through the live pipeline to test a trigger before you rely on it.",
     bullets: [
       "Multiple regex patterns per trigger with per-row toggles; {c}/{target} tokens for GINA compatibility",
       "Capture a target's name into the alert and the timer it drives",
       "Custom categories with drag-and-drop reordering and pack-origin tags",
       "Customizable alert text style — colour, glow, font, size, and left/center/right alignment — with a live preview and one-click Reset Style",
-      "Optional Piper local neural voice for text-to-speech alerts, with automatic fallback to the browser voice",
+      "Two optional local neural TTS voices — Piper (installed locally) and Kokoro (a self-hosted server over HTTP) — either can back every text-to-speech alert, with automatic fallback to the browser voice",
       "Action templates and bulk editing — apply a saved template or convert TTS to sound across many triggers at once",
       "Non-destructive pack updates — when a built-in pack changes, review a per-field diff and choose to preserve your edits or take the new default",
       "Seven built-in community packs (plus class crowd-control break alerts) on top of the per-class discipline coverage",

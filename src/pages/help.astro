@@ -22,6 +22,7 @@ const sections = [
   { id: "trader-tracker", label: "Trader Tracker" },
   { id: "keys", label: "Keys & Keyring" },
   { id: "lockouts", label: "Lockouts" },
+  { id: "faction-tracker", label: "Faction Tracker" },
   { id: "pop-flagging", label: "PoP Flagging Tracker" },
   { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
@@ -328,6 +329,18 @@ const sections = [
               GitHub repository, the website, and the project's Ko-fi page if
               you'd like to support development.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Changelog &amp; "What's New"
+            </h3>
+            <p class="mt-3">
+              After an auto-update, a one-time popup lists every release
+              since the version you last had open, with a "don't show this
+              again" checkbox if you'd rather not see it. The full version
+              history is always available in
+              <strong class="text-foreground">Settings → Changelog</strong>
+              — the ten most recent releases are shown by default, with a
+              "Show all" to page back through the rest.
+            </p>
           </section>
 
           <section id="overlay-dashboard" class="scroll-mt-24">
@@ -520,7 +533,9 @@ const sections = [
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
                   <strong class="text-foreground">Zones:</strong> tabs for
-                  connected zones, drops, ground spawns, and forage.
+                  connected zones, drops, ground spawns, and forage. The
+                  Drops tab pages past its 500-item cap with a Show more
+                  button instead of truncating.
                 </span>
               </li>
             </ul>
@@ -1258,13 +1273,51 @@ const sections = [
               your raid uses an unusual format.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Possible-miss detection
+            </h3>
+            <p class="mt-3">
+              Each chain callout's captured target is watched for the
+              spell's own heal-landed confirmation text — Complete
+              Healing's exact bystander line for Clerics. If that
+              confirmation never arrives before the callout's cast window
+              elapses, the timer is flagged and the bar renders
+              <strong class="text-foreground">red</strong> instead of
+              silently expiring, surfacing fizzles, interrupts, and skipped
+              casts that would otherwise slip by unnoticed. It's on by
+              default for Clerics. Druids filling a chain slot can opt in
+              to the same detection for Superior Healing (Settings ›
+              Overlays) — it's opt-in there because Superior Healing's
+              confirmation line is shared with over a dozen unrelated heal
+              spells, so watching it unconditionally risks a filler heal on
+              the same tank masking an actual missed cast.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Personal CH metronome
             </h3>
             <p class="mt-3">
               The metronome overlay is the cleric's-eye view: a standalone
               window that paces <em>your</em> slot in the rotation, so you
               know exactly when to start casting to keep the cadence steady.
-              Pop it out over the game like any other overlay.
+              Pop it out over the game like any other overlay. If the
+              watched cleric misses a cast, the metronome keeps advancing
+              by projecting off whichever other slot's callout is freshest,
+              instead of stalling indefinitely.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Audio &amp; TTS alerts
+            </h3>
+            <p class="mt-3">
+              The metronome can fire an optional sound or spoken cue at two
+              moments — countdown start and "cast now" — reusing the same
+              sound/TTS picker as triggers (including Piper and Kokoro
+              voices, see
+              <a href="#triggers" class="text-primary hover:text-primary-hover"
+                >Custom Triggers &amp; Alerts</a
+              >). Both cues are independently toggleable under
+              <strong class="text-foreground"
+                >Settings › Spell Timers › Metronome alerts</strong
+              >, and fire whether or not either metronome overlay window is
+              open.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
@@ -1679,6 +1732,94 @@ const sections = [
               >), so you can see exactly when something's available without
               doing the math yourself. Hover the countdown for the full
               date and time.
+            </p>
+          </section>
+
+          <section id="faction-tracker" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Faction Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >, and enable the Faction Tracker toggle on the hidden
+              Developer tab (<kbd
+                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
+                >Ctrl + Shift + D</kbd
+              > — see
+              <a href="#developer-mode" class="text-primary hover:text-primary-hover"
+                >Developer mode</a
+              >) — off by default.
+            </p>
+            <p class="mt-4">
+              EverQuest never logs a faction's absolute value or the exact
+              point amount a change moved it by, so this tracker builds the
+              closest thing to one from what actually is logged: every
+              "Your faction standing with X got better/worse" line, plus
+              every <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > result. It uses the same "record everything encountered"
+              approach as the Lockout and Player trackers — no need to pin a
+              faction before it starts tracking; every faction you've ever
+              killed toward or considered gets a persisted tally
+              automatically.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Estimates, not exact values
+            </h3>
+            <p class="mt-3">
+              The running better/worse tally gets a best-effort point
+              estimate whenever a change correlates to a resolved kill
+              (matched against the database's faction hit tables), and an
+              exact numeric delta when it correlates to a quest turn-in
+              (parsed from the quest script's own dialogue). Everything
+              else stays direction-only. A faction with no recorded
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > shows "Needs /con" — that's the prompt to set a baseline.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              /con disposition bar
+            </h3>
+            <p class="mt-3">
+              Each tracked faction shows a 9-segment bar spanning the full
+              disposition spectrum (scowls → ally) built from your most
+              recent <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > reading. A reading taken while you had an illusion active is
+              flagged suspect, since illusions can shift how an NPC
+              considers you.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pinning &amp; search
+            </h3>
+            <p class="mt-3">
+              Pinning a faction (search + star) is purely a display
+              favorite — unpinning never deletes its tracked history.
+              Searching surfaces any faction's known data whether pinned or
+              not, even for a character other than the active one.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Log Backfill
+            </h3>
+            <p class="mt-3">
+              Faction Tracker is included in <strong class="text-foreground"
+                >Settings → Logs → Log Backfill</strong
+              >, so existing <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > history already in a character's log can seed a starting
+              baseline. Backfill only scans <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > lines and keeps the most recent reading per faction — it
+              doesn't replay kill or quest history into the better/worse
+              counters, since a static log replay can't reconstruct the
+              buff-timer state (like an active illusion) needed to flag a
+              backfilled reading suspect. Re-running backfill is always
+              safe.
             </p>
           </section>
 
@@ -2228,20 +2369,141 @@ const sections = [
               previews the rate live before you save it.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Piper TTS — a local neural voice
+              Local TTS voices — Piper &amp; Kokoro
             </h3>
             <p class="mt-3">
-              Text-to-speech alerts can use a locally-installed
-              <strong class="text-foreground">Piper</strong> neural voice
-              instead of the browser's built-in speech synthesis, for a
-              more natural read. PQ Companion detects your Piper install,
-              spawns it to synthesize speech (an optional warm-process
-              mode avoids cold-start lag on every alert), caches generated
-              audio so repeat lines are instant, and automatically falls
-              back to the browser voice if anything goes wrong. Piper
-              itself is a separate, user-installed program — nothing is
-              bundled with the app. Turn it on and point it at your
-              install from Settings → General.
+              Text-to-speech alerts can use one of two locally-run neural
+              voices instead of the browser's built-in speech synthesis,
+              for a more natural read. Both live under
+              <strong class="text-foreground">Settings → Audio</strong>,
+              and once enabled and ready, their voice shows up in every
+              alert and trigger voice dropdown alongside the browser
+              voices. PQ Companion bundles neither — you install or host
+              them yourself.
+            </p>
+            <h4 class="mt-6 text-base font-semibold text-foreground">
+              Piper — a locally-installed executable
+            </h4>
+            <p class="mt-3">
+              Piper runs as a program on your machine that PQ Companion
+              spawns to synthesize speech. To set it up:
+            </p>
+            <ol class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">1.</span>
+                <span>
+                  Install Piper — grab the
+                  <a
+                    href="https://github.com/rhasspy/piper/releases/tag/2023.11.14-2"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-primary hover:text-primary-hover"
+                    >standalone executable</a
+                  > (no Python needed) or follow the
+                  <a
+                    href="https://github.com/OHF-Voice/piper1-gpl"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-primary hover:text-primary-hover"
+                    >full install guide</a
+                  >.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">2.</span>
+                <span>
+                  Download a voice from the
+                  <a
+                    href="https://huggingface.co/rhasspy/piper-voices/tree/main"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-primary hover:text-primary-hover"
+                    >voice catalog</a
+                  > — you need both the
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.onnx</code
+                  > model file and its matching
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >.onnx.json</code
+                  > config, kept side by side.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">3.</span>
+                <span>
+                  In <strong class="text-foreground">Settings → Audio →
+                  Local TTS (Piper)</strong>, turn it on and point the
+                  executable and voice-model fields at the files from
+                  steps 1–2 (use Browse, or paste the paths). Green dots
+                  confirm each path resolves; a readiness banner confirms
+                  the voice is usable, and Test Voice plays a sample line.
+                </span>
+              </li>
+            </ol>
+            <p class="mt-3">
+              Choose a synthesis mode: <strong class="text-foreground"
+                >Spawn per phrase</strong
+              > is simple but a brand-new phrase may lag briefly, while
+              <strong class="text-foreground">Keep Piper running (warm)</strong>
+              keeps the model loaded in the background for near-instant
+              synthesis at the cost of a bit of memory. Generated audio is
+              cached so repeat lines are instant either way, and PQ
+              Companion falls back to the browser voice automatically if
+              anything goes wrong. The Piper engine (GPL) and voice models
+              (usually CC-BY) are licensed separately from PQ Companion.
+            </p>
+            <h4 class="mt-6 text-base font-semibold text-foreground">
+              Kokoro — a self-hosted server
+            </h4>
+            <p class="mt-3">
+              Kokoro is a second local voice option with its own catalog.
+              Unlike Piper, PQ Companion doesn't spawn it — instead it
+              talks to a
+              <a
+                href="https://github.com/remsky/Kokoro-FastAPI"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover"
+                >Kokoro-FastAPI</a
+              > server you run yourself (for example via
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >docker run</code
+              >) over plain HTTP, so there's nothing to download into the
+              app itself. To set it up:
+            </p>
+            <ol class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">1.</span>
+                <span>
+                  Start a Kokoro-FastAPI server (see the project's own
+                  instructions for Docker or a bare-metal install).
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">2.</span>
+                <span>
+                  In <strong class="text-foreground">Settings → Audio →
+                  Local TTS (Kokoro)</strong>, turn it on and enter the
+                  server's URL (e.g.
+                  <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >http://localhost:8880</code
+                  >).
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">3.</span>
+                <span>
+                  Once connected, the voice dropdown populates live from
+                  the server's own voice catalog — pick one and hit Test
+                  Voice to confirm.
+                </span>
+              </li>
+            </ol>
+            <p class="mt-3">
+              Generated audio is cached (the same cache Piper uses — Clear
+              TTS Cache on either card clears both), and it falls back to
+              the browser voice automatically if the server becomes
+              unreachable.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Exclude patterns
@@ -2729,6 +2991,15 @@ const sections = [
               spells). Queries run through a guarded backend endpoint
               that enforces read-only access — no write or schema
               statements are accepted.
+            </p>
+            <p class="mt-4">
+              The same tab also hosts toggles for features still being
+              proven out before they ship on by default — currently the
+              <a href="#faction-tracker" class="text-primary hover:text-primary-hover"
+                >Faction Tracker</a
+              >. Once a feature has had enough real-world use, its
+              toggle graduates out of Developer mode and it becomes a
+              normal always-on feature.
             </p>
             <p class="mt-4">
               You can save queries you reuse, give them names, and
