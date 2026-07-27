@@ -16,6 +16,7 @@ const sections = [
   { id: "ch-chain", label: "CH Chain & Metronome" },
   { id: "character-progression", label: "Character Progression" },
   { id: "spell-checklist", label: "Spell Checklist" },
+  { id: "spell-emote-customizer", label: "Spell Emote Customizer" },
   { id: "spellsets", label: "Spellsets" },
   { id: "bandolier-macros", label: "Bandolier & Macro Editors" },
   { id: "inventory-tracker", label: "Inventory Tracker" },
@@ -1450,6 +1451,70 @@ const sections = [
             </p>
           </section>
 
+          <section id="spell-emote-customizer" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Spell Emote Customizer
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <a href="#developer-mode" class="text-primary hover:text-primary-hover"
+                >Developer mode</a
+              > — gated behind Settings › Developer › Flags, off by default.
+            </p>
+            <p class="mt-4">
+              Edit the client-visible chat emotes in your
+              <code class="rounded bg-surface-2 px-1 py-0.5 text-sm text-primary"
+                >spells_en.txt</code
+              > file from Settings › Developer › Spell Emotes, or inline on
+              the Spells page. Some spells share an identical emote — every
+              slow in the game says " yawns." on landing — which makes it
+              impossible to tell from a bystander message alone which spell
+              actually landed. The customizer lets you rewrite one spell's
+              emote to disambiguate it, or add an emote to a spell that ships
+              with none (Divine Aura has no cast-on-other text by default).
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Survives server patches
+            </h3>
+            <p class="mt-3">
+              Your edits are stored structurally in the app's own database,
+              not as a raw diff of the file. When Project Quarm patches and
+              republishes <code class="rounded bg-surface-2 px-1 py-0.5 text-sm text-primary"
+                >spells_en.txt</code
+              >, a watcher detects the external change and offers to
+              re-apply your customizations on top of the new file, with a
+              per-spell field-level diff so you can see exactly what
+              changed.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Import existing hand-edits
+            </h3>
+            <p class="mt-3">
+              If you'd already been hand-editing <code class="rounded bg-surface-2 px-1 py-0.5 text-sm text-primary"
+                >spells_en.txt</code
+              > before trying this feature, the app detects those changes
+              the first time it runs and offers to import them — review each
+              one with a red/green diff, import all at once, or dismiss the
+              prompt for now. Nothing is silently adopted or overwritten.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Linked trigger warnings
+            </h3>
+            <p class="mt-3">
+              Editing an emote can break a trigger whose regex pattern was
+              written against the old text — the built-in Caustic Mist /
+              Putrefy Flesh alert is a real example, since both spells share
+              the same landed-on-other line. The customizer scans your
+              triggers for any pattern that references the emote you're
+              changing and proposes a diff to apply, one match at a time —
+              it never rewrites a pattern automatically, since a trigger
+              deliberately matching several spells that share an emote
+              should stay untouched.
+            </p>
+          </section>
+
           <section id="spellsets" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -2347,7 +2412,10 @@ const sections = [
               Organise triggers into your own categories and drag to reorder
               both the categories and the triggers inside them. Triggers that
               came from a pack keep a pack-origin tag even after you move them,
-              so you always know where one came from.
+              so you always know where one came from. An Export button next to
+              rename/delete on each category turns just that category into its
+              own shareable trigger pack — no need to export everything to
+              hand a guild your "Raid Triggers" category.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Alert text style
@@ -2997,6 +3065,9 @@ const sections = [
               proven out before they ship on by default — currently the
               <a href="#faction-tracker" class="text-primary hover:text-primary-hover"
                 >Faction Tracker</a
+              > and the
+              <a href="#spell-emote-customizer" class="text-primary hover:text-primary-hover"
+                >Spell Emote Customizer</a
               >. Once a feature has had enough real-world use, its
               toggle graduates out of Developer mode and it becomes a
               normal always-on feature.

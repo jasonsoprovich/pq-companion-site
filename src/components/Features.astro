@@ -217,6 +217,20 @@ const features = [
     mediaSlug: "spell-checklist",
   },
   {
+    title: "Spell Emote Customizer",
+    tagline: "Fix the spell text the client won't",
+    description:
+      "Some spells share an identical chat emote — every slow in the game says \" yawns.\" on landing, so a bystander message alone can't tell you which one hit. This developer-mode tool lets you rewrite a spell's emote to disambiguate it, or add one to a spell that ships with none, like Divine Aura. Edits are stored structurally rather than as a raw file diff, so a server patch that republishes spells_en.txt doesn't wipe them — a watcher offers to re-apply your customizations on top of the new file.",
+    bullets: [
+      "Edit client-visible chat emotes inline on the Spells page or from Settings › Developer › Spell Emotes",
+      "Overrides survive server patches — a watcher re-applies them on top of the freshly republished file",
+      "Detects pre-existing hand-edits to spells_en.txt on first run and offers to import them, never silently",
+      "Flags any trigger whose pattern was written against the old emote text and proposes a diff, one match at a time",
+      "Gated behind Settings › Developer › Flags, off by default",
+    ],
+    mediaSlug: "spell-emote-customizer",
+  },
+  {
     title: "Inventory Tracker",
     tagline: "Across all your characters",
     description:
@@ -329,7 +343,7 @@ const features = [
     bullets: [
       "Multiple regex patterns per trigger with per-row toggles; {c}/{target} tokens for GINA compatibility",
       "Capture a target's name into the alert and the timer it drives",
-      "Custom categories with drag-and-drop reordering and pack-origin tags",
+      "Custom categories with drag-and-drop reordering, pack-origin tags, and a per-category Export button to share just that category",
       "Customizable alert text style — colour, glow, font, size, and left/center/right alignment — with a live preview and one-click Reset Style",
       "Two optional local neural TTS voices — Piper (installed locally) and Kokoro (a self-hosted server over HTTP) — either can back every text-to-speech alert, with automatic fallback to the browser voice",
       "Action templates and bulk editing — apply a saved template or convert TTS to sound across many triggers at once",
