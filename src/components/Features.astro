@@ -111,6 +111,20 @@ const features = [
     mediaSlug: "npc-info",
   },
   {
+    title: "Live Maps",
+    tagline: "Never get lost in a zone again",
+    description:
+      "Rendered zone maps parsed directly from your EQ client files — walls, floors, and depth-tinted contours, not a scanned-in image. A standalone Maps page and a Map tab on every zone share one panel, with Outline and Detailed display modes, live player position tracking, and a pop-out overlay window you can float over the game. Mark your own annotations that write straight back to the in-game /map, and if you've already got a Brewall-style map pack installed, render it as a third display mode instead.",
+    bullets: [
+      "Outline and Detailed display modes, with depth-tinted height contours",
+      "Live player position tracking and a pop-out overlay window",
+      "User-authored annotations and markers that write back to the in-game /map",
+      "NPC spawn points with patrol routes and trap markers",
+      "Render a user-installed Brewall-style map pack as a third display mode",
+    ],
+    mediaSlug: "live-maps",
+  },
+  {
     title: "NPC Respawn Timers",
     tagline: "Know when it's back up",
     description:
@@ -146,6 +160,7 @@ const features = [
       "Absolute unlock date and time shown right next to the live countdown, in your local timezone",
       "Tracked per character, so each alt's lockouts stay separate",
       "Updates the moment you run /sll in-game",
+      "Zone Loot Lockouts sub-tab shows every character's status for a zone at a glance",
     ],
     mediaSlug: "lockouts",
   },
@@ -334,6 +349,19 @@ const features = [
       "Optional log-triggered alert fires the moment a wishlisted item appears in the combat log, with its own master toggle in settings",
     ],
     mediaSlug: "wishlist",
+  },
+  {
+    title: "Discord Voice Overlay",
+    tagline: "See who's talking, without alt-tabbing",
+    description:
+      "A pop-out overlay that embeds Discord's own hosted StreamKit Overlay page — the same tool people paste into OBS — showing a live voice-channel roster with a speaking highlight, right on top of the game. No Discord API integration on our end; just paste your StreamKit URL into Settings and it's live. Off by default.",
+    bullets: [
+      "Embeds Discord's own StreamKit Overlay via a popout window",
+      "Multiple named voice links supported at once",
+      "Adjustable content-area transparency",
+      "Full Pop Out All / Close All Popouts integration",
+    ],
+    mediaSlug: "discord-voice",
   },
   {
     title: "Custom Triggers & Alerts",

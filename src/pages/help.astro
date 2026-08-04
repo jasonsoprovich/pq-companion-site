@@ -12,6 +12,7 @@ const sections = [
   { id: "threat-meter", label: "Threat Meter" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
+  { id: "live-maps", label: "Live Maps" },
   { id: "respawn-timers", label: "NPC Respawn Timers" },
   { id: "ch-chain", label: "CH Chain & Metronome" },
   { id: "character-progression", label: "Character Progression" },
@@ -34,6 +35,7 @@ const sections = [
   { id: "players", label: "Players Database" },
   { id: "chat-history", label: "Chat History" },
   { id: "triggers", label: "Custom Triggers & Alerts" },
+  { id: "discord-voice", label: "Discord Voice Overlay" },
   { id: "custom-timers", label: "Custom Timers" },
   { id: "roll-tracker", label: "Roll Tracker" },
   { id: "backups", label: "Backup & Restore" },
@@ -1184,6 +1186,95 @@ const sections = [
             </p>
           </section>
 
+          <section id="live-maps" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Live Maps
+            </h2>
+            <p class="mt-4">
+              Rendered zone maps, built from the same client files the
+              actual game reads — not a scanned-in image. Walls, floors,
+              and depth are extracted directly from EQ's .s3d/WLD zone
+              geometry and shown as depth-tinted contours, so the shape on
+              screen genuinely matches the zone you're standing in.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where to find it
+            </h3>
+            <p class="mt-3">
+              A standalone <strong class="text-foreground">Maps</strong>
+              page and a <strong class="text-foreground">Map</strong> tab
+              on every zone in the Database Explorer share the same panel,
+              so you can browse a zone's layout without leaving the zone
+              page, or jump straight to the dedicated Maps page for a
+              bigger view.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Display modes
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Outline</strong> mode shows
+              a clean floor/ceiling silhouette; <strong
+                class="text-foreground">Detailed</strong
+              > mode adds a full height legend with depth-tinted geometry
+              sliced by elevation, so multi-level zones read correctly
+              instead of collapsing into one flat layer.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Live player position
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <a
+                href="https://github.com/iamclint/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              >. With Zeal connected, your position renders live on the
+              map as you move, with auto-depth so the visible layer
+              tracks the floor you're actually standing on.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Annotations &amp; markers
+            </h3>
+            <p class="mt-3">
+              Drop your own markers and notes directly on the map — they
+              write back to the in-game <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/map</code
+              > file, so they show up on EverQuest's own map display too,
+              not just in the app.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              NPC spawn points
+            </h3>
+            <p class="mt-3">
+              Named and notable spawns render on the map with patrol
+              routes for mobs that walk a path, and trap markers where the
+              zone has them, pulled from the same database that backs the
+              NPC Info Overlay.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              User-installed map packs
+            </h3>
+            <p class="mt-3">
+              If you already have a Brewall-style map pack installed for
+              EverQuest, PQ Companion can render it as a third display
+              mode alongside Outline and Detailed — the app reads your
+              existing pack in place, it isn't bundled with the app.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pop-out window
+            </h3>
+            <p class="mt-3">
+              Like the other overlays, Live Maps pops out as its own
+              window you can float over the game — handy for keeping an
+              eye on a patrol route or your position mid-pull without
+              tabbing back to the main window.
+            </p>
+          </section>
+
           <section id="respawn-timers" class="scroll-mt-24">
             <h2
               class="text-2xl font-semibold text-foreground md:text-3xl"
@@ -1798,6 +1889,18 @@ const sections = [
               doing the math yourself. Hover the countdown for the full
               date and time.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Zone Loot Lockouts
+            </h3>
+            <p class="mt-3">
+              A per-zone <strong class="text-foreground"
+                >Loot Lockouts</strong
+              > sub-tab shows every one of your characters' lockout status
+              for that zone side by side, so you can see at a glance which
+              alts are clear to go back in instead of checking each
+              character one at a time. Log backfill can also seed lockout
+              history from your existing logs, the same as other trackers.
+            </p>
           </section>
 
           <section id="faction-tracker" class="scroll-mt-24">
@@ -2377,6 +2480,15 @@ const sections = [
                   capturing a name or a number to paste elsewhere.
                 </span>
               </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Discord webhook</strong>
+                  — post the matched alert straight to a Discord channel via
+                  a webhook URL you paste in, for alerts you want your raid
+                  or guild to see outside the game.
+                </span>
+              </li>
             </ul>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Multiple patterns &amp; GINA tokens
@@ -2775,6 +2887,76 @@ const sections = [
                 </span>
               </li>
             </ul>
+          </section>
+
+          <section id="discord-voice" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Discord Voice Overlay
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> a
+              Discord
+              <a
+                href="https://streamkit.discord.com/overlay"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover"
+                >StreamKit Overlay</a
+              > URL for your voice channel. Off by default.
+            </p>
+            <p class="mt-4">
+              A pop-out overlay showing a live roster of who's in your
+              Discord voice channel, with a speaking highlight, floating
+              on top of the game. PQ Companion doesn't integrate with
+              Discord's API directly — instead it embeds Discord's own
+              hosted StreamKit Overlay page, the same tool people paste
+              into OBS, inside a popout window with the usual overlay
+              chrome (lock/close).
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Setup
+            </h3>
+            <p class="mt-3">
+              Generate a StreamKit Overlay URL for your server's voice
+              channel from Discord's own
+              <a
+                href="https://streamkit.discord.com/overlay"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover"
+                >StreamKit page</a
+              >, then paste it into the
+              <strong class="text-foreground">Discord Voice</strong> card
+              under <strong class="text-foreground">Settings → Overlays</strong>.
+              The overlay goes live as soon as a URL is saved.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Multiple links
+            </h3>
+            <p class="mt-3">
+              Save more than one named link if you jump between voice
+              channels or servers — a main raid Discord and a guild-only
+              channel, say — and switch which one the overlay shows
+              without re-pasting a URL each time.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Transparency
+            </h3>
+            <p class="mt-3">
+              The overlay's content-area transparency is a toggle in
+              Settings, so the roster can sit cleanly over the game
+              without a solid background box behind it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where it lives
+            </h3>
+            <p class="mt-3">
+              Discord Voice shows up in the Manage overlays menu and the
+              dashboard like any other panel, and is included in Pop Out
+              All / Close All Popouts.
+            </p>
           </section>
 
           <section id="custom-timers" class="scroll-mt-24">
