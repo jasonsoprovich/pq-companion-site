@@ -8,7 +8,7 @@ const features = [
     description:
       "Every item, spell, NPC, and zone in the Project Quarm database — fully searchable with filters that actually work. Item icons, spell icons, click-through cross-references between scrolls and the spells they teach, NPC drops linking to source mobs, and full zone NPC rosters. Press Ctrl-K from anywhere for global search.",
     bullets: [
-      "Advanced item filters: race, class, level, slot, type, stat thresholds",
+      "Advanced item filters: race, class, level, slot, type, stat thresholds, and a hide-NO-DROP toggle",
       "Spell filters by class and level; hides NPC-only spells",
       "Zone tabs for connected zones, drops, ground spawns, and forage — the Drops tab pages past its 500-item cap with a Show more button",
       "Duplicate-name items and spells collapse to a single canonical row that links out to every variant",
@@ -99,14 +99,15 @@ const features = [
     title: "NPC Info Overlay",
     tagline: "Know your target",
     description:
-      "The moment you consider a mob, the overlay shows its level, class, HP and max mana, colour-coded MR/CR/FR/DR/PR resists, body type, and special abilities — Summon, Unmezzable, Uncharmable, See Invis, Enrage, Flurry. Pulled straight from the database via your combat log; corpse targets resolve back to the underlying NPC so the panel stays useful after the kill.",
+      "The moment you consider a mob, the overlay shows its level, class, HP and max mana, colour-coded MR/CR/FR/DR/PR resists, body type, swing timer, aggro and assist radius, and special abilities — Summon, Unmezzable, Uncharmable, See Invis, Enrage, Flurry. Pulled straight from the database via your combat log; corpse targets resolve back to the underlying NPC so the panel stays useful after the kill.",
     bullets: [
       "Auto-detects target from melee and spell events; live HP bar and pet-owner badge with Zeal",
       "Special-ability badges, resist breakdown with EQ-convention colours, and humanised body type at a glance",
+      "Behavior section — aggro radius, assist radius, and base swing timer — with its own on/off toggle",
       "Caster summary includes recast time, AE flag, and resist type for a fuller read of a mob's spells",
-      "Copy the current target's stats to your clipboard, formatted to paste straight into EQ chat",
+      "Copy the current target's stats to your clipboard, formatted to paste straight into EQ chat, swing timer included",
       "On-demand loot table with drop rates and zone-wide drops surfaced on every mob in the zone — wishlisted drops highlighted",
-      "Same-name NPCs disambiguated by zone and your position, with the variant set surfaced when a target is ambiguous",
+      "Same-name NPCs disambiguated by zone and your position, and — with a current Zeal — pinned to the specific creature so the pick stays put across re-targets",
     ],
     mediaSlug: "npc-info",
   },
@@ -114,10 +115,11 @@ const features = [
     title: "Live Maps",
     tagline: "Never get lost in a zone again",
     description:
-      "Rendered zone maps parsed directly from your EQ client files — walls, floors, and depth-tinted contours, not a scanned-in image. A standalone Maps page and a Map tab on every zone share one panel, with Outline and Detailed display modes, live player position tracking, and a pop-out overlay window you can float over the game. Mark your own annotations that write straight back to the in-game /map, and if you've already got a Brewall-style map pack installed, render it as a third display mode instead.",
+      "Rendered zone maps parsed directly from your EQ client files — walls, floors, and depth-tinted contours, not a scanned-in image. A standalone Maps page and a Map tab on every zone share one panel, with Outline and Detailed display modes, live player and groupmate position tracking, and a pop-out overlay window you can float over the game. Mark your own annotations that write straight back to the in-game /map, and if you've already got a Brewall-style map pack installed, render it as a third display mode instead.",
     bullets: [
       "Outline and Detailed display modes, with depth-tinted height contours",
       "Live player position tracking and a pop-out overlay window",
+      "Faint arrows for groupmates in your zone (Zeal), toggleable in Settings → Maps",
       "User-authored annotations and markers that write back to the in-game /map",
       "NPC spawn points with patrol routes and trap markers",
       "Render a user-installed Brewall-style map pack as a third display mode",
@@ -206,17 +208,31 @@ const features = [
     title: "Character Progression",
     tagline: "Stats, gear, AAs, buffs, to-dos",
     description:
-      "A full per-character workspace driven by Zeal exports. Stats panel computed from Project Quarm's real HP/Mana/AC/resist formulas — including AA passive bonuses — with stat caps, worn effects, and softcap AC. Paper-doll gear view with bag and bank cards. AA tracking split into trained vs. available, with descriptions. A per-character to-do list with subtasks for tracking goals.",
+      "A full per-character workspace driven by Zeal exports. Stats panel computed from Project Quarm's real HP/Mana/AC/resist formulas — including AA passive bonuses — with stat caps, worn effects, and softcap AC. Paper-doll gear view with bag and bank cards. AA tracking split into trained vs. available, plus how many points you have left to spend. A Recap tab with a rolling level/AA/spell/skill journal, and a per-character to-do list with subtasks.",
     bullets: [
       "Live Buffs panel driven by the spell timer engine, with swappable raid-buff presets per character",
       "Spell Modifiers tab — see every focus and worn effect that's modifying your spells",
       "Tanking view splits avoidance from mitigation, with the mitigation softcap, melee hit chance, and tanking AAs folded in",
       "Base attributes show their base value and green AA bonus separately, with a tooltip explaining the source",
       "Stat overage display shows how far a piece of gear pushes a stat past the level cap instead of silently capping the number",
-      "AA tracking: trained ranks, untrained candidates, and cost-aware planning",
+      "AA tracking: trained ranks, untrained candidates, cost-aware planning, and your unspent (bankable) point pool",
+      "Recap tab: rolling 7/30/90-day level/AA/spell/skill milestones, coin change, and a \"Camped in …\" line for where you last left this character",
       "Character switcher syncs across the app; sub-tabs on every tracker page",
     ],
     mediaSlug: "character-progression",
+  },
+  {
+    title: "Stat Snapshots",
+    tagline: "Capture /mystats, compare two builds",
+    description:
+      "With logging on, running Zeal's /mystats in game is captured automatically as a timestamped snapshot. Pick any two — before and after a gear or bandolier swap, say — and the Character Info tab lays them out side-by-side with a plain-English label on every stat and the change between them, so the in-game wall of numbers actually means something.",
+    bullets: [
+      "Automatic capture from the log — no button to press in game beyond /mystats",
+      "Side-by-side diff of any two captures with per-field deltas and plain-language labels",
+      "Mitigation, avoidance, offense, to-hit, display ATK, and per-weapon DPS with and without haste",
+      "Numbers are Zeal's own client-side estimate (its /mystats is still Beta upstream)",
+    ],
+    mediaSlug: "stat-snapshots",
   },
   {
     title: "Spell Checklist",
@@ -314,9 +330,10 @@ const features = [
     title: "Charm Pet Finder",
     tagline: "Find the best pet in the zone",
     description:
-      "For enchanters, magicians, and the other charm classes, the difference between a good charm and a great one is real DPS. Charm Pet Finder lists every charmable NPC in a zone for your class and charm spell, ranked by damage output, with the land chance for your charm (via the same resist engine as the calculator) and a warning when a target sits above your charm's level cap.",
+      "For enchanters, druids, necromancers and bards, the difference between a good charm and a great one is real DPS. Charm Pet Finder lists every charmable NPC in a zone for your class and charm spell, ranked by damage output, with the land chance for your charm (via the same resist engine as the calculator) and a warning when a target sits above your charm's level cap.",
     bullets: [
       "Charmable NPCs per zone, class, and charm spell, ranked by DPS",
+      "Every charm in the line, including Dire Charm (Dru/Nec/Enc, level 59)",
       "Land-chance odds for your charm on each candidate",
       "Level-cap warnings when a target is out of charm range",
     ],
@@ -401,9 +418,9 @@ const features = [
     title: "Players Database",
     tagline: "A /who history that remembers",
     description:
-      "Every player you see in /who output gets persisted to a searchable, sortable database — name, class, race, guild, last-seen level, last-seen zone, and a per-character level history. Anonymous sightings preserve the data you already knew. /guildstat output is captured too. Add your own notes to anyone, flag the players you'd rather avoid, and get a heads-up the moment one shows up. Filter by class, guild, or zone; click any row for level progression.",
+      "Every player you see in /who output gets persisted to a searchable, sortable database — name, class, race, guild, last-seen level, last-seen zone, and a per-character level history. With Zeal, your raid roster feeds it too, so a raid fills the database with names, levels and classes without anyone typing /who. Anonymous sightings preserve the data you already knew. /guildstat output is captured too. Add your own notes to anyone, flag the players you'd rather avoid, and get a heads-up the moment one shows up. Filter by class, guild, or zone; click any row for level progression.",
     bullets: [
-      "Auto-captures /who, /who all, /who guild, and /guildstat output",
+      "Auto-captures /who, /who all, /who guild, and /guildstat output — plus the raid roster via Zeal",
       "Per-player notes and a PVP flag, with a sound + on-screen warning when a flagged player appears in /who",
       "Automatically logs tells and group joins as player interactions",
       "Anonymous-aware upsert keeps class/level/race from the last non-anonymous sighting",

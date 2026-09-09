@@ -520,8 +520,9 @@ const sections = [
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
                   <strong class="text-foreground">Items:</strong> race,
-                  class, level, slot, type, and stat thresholds (HP, mana,
-                  AC, resists, etc.).
+                  class, level, slot, type, stat thresholds (HP, mana,
+                  AC, resists, etc.), and a hide-NO-DROP toggle for when
+                  you're only after tradeable gear.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1106,10 +1107,13 @@ const sections = [
             <p class="mt-4">
               The moment you consider a mob, the overlay shows its level,
               class, HP (and max mana when it has any), resists, body
-              type, faction, and special abilities — Summon, Unmezzable,
-              Uncharmable, See Invis, Enrage, Flurry, and so on. Pulled
-              straight from the database via your combat log, so it works
-              for any mob the database knows about.
+              type, faction, base swing timer, aggro and assist radius,
+              and special abilities — Summon, Unmezzable, Uncharmable, See
+              Invis, Enrage, Flurry, and so on. Pulled straight from the
+              database via your combat log, so it works for any mob the
+              database knows about. The aggro radius, assist radius, and
+              swing timer sit in their own Behavior section with a
+              Settings toggle to hide it if you don't want it.
             </p>
             <p class="mt-4">
               The overlay also auto-detects your target from melee and
@@ -1159,7 +1163,10 @@ const sections = [
               on your clipboard, formatted to paste straight into EQ chat
               and capped so it fits the in-game input limit — handy for
               posting a mob's resists or HP to your group without typing
-              it out by hand.
+              it out by hand. The damage line carries the swing timer too
+              (<code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >DMG: 294-1054 @1.8s</code
+              >).
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               With Zeal
@@ -1183,6 +1190,16 @@ const sections = [
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >#</code
               >-prefixed same-name rows and their special abilities too.
+            </p>
+            <p class="mt-3">
+              With a current Zeal build the overlay also pins its pick to
+              the specific creature you're fighting, so the panel stops
+              flipping between candidates each time you re-target the same
+              mob (or it gets dragged). This tells two live same-name mobs
+              apart within a fight — it does not read a spawn's exact
+              class or level, or pick one of two same-name bosses' loot
+              tables, so when a name maps to several database rows the
+              full set is still listed.
             </p>
           </section>
 
@@ -1222,7 +1239,7 @@ const sections = [
               instead of collapsing into one flat layer.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Live player position
+              Live player &amp; group position
             </h3>
             <p class="mt-3">
               <strong class="text-foreground">Prerequisite:</strong>
@@ -1233,7 +1250,11 @@ const sections = [
                 class="text-primary hover:text-primary-hover">Zeal</a
               >. With Zeal connected, your position renders live on the
               map as you move, with auto-depth so the visible layer
-              tracks the floor you're actually standing on.
+              tracks the floor you're actually standing on. Groupmates in
+              your zone show as faint secondary arrows alongside yours;
+              turn them off under Settings &rarr; Maps &rarr;
+              &ldquo;Show groupmates on the map&rdquo; if you'd rather
+              just see your own.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Annotations &amp; markers
@@ -1472,7 +1493,38 @@ const sections = [
                 <span>
                   <strong class="text-foreground">AAs</strong> — split
                   into trained and available, with descriptions and
-                  cost-aware planning.
+                  cost-aware planning, plus your unspent (bankable) point
+                  pool. The unspent count comes from Zeal while the game
+                  is running (or a &ldquo;you have gained an ability
+                  point&rdquo; log line), shown with an &ldquo;as
+                  of&rdquo; time since spending points isn't logged.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Stat Snapshots</strong>
+                  — with logging on, running Zeal's <code
+                    class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                    >/mystats</code
+                  > in game is captured automatically as a timestamped
+                  snapshot. Pick any two and this tab lays them out
+                  side-by-side with a plain-English label on every stat
+                  (mitigation, avoidance, offense, to-hit, per-weapon
+                  DPS…) and the change between them — handy for
+                  A/B-testing a gear or bandolier swap. The numbers are
+                  Zeal's own client-side estimate.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Recap</strong> — a
+                  rolling 7/30/90-day journal of level, AA, spell and
+                  skill milestones for this character (or ranked
+                  most-active-first across all of them), with coin change
+                  and a &ldquo;Camped in …&rdquo; line showing the zone
+                  you last left this character in.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1687,6 +1739,18 @@ const sections = [
               choose <strong class="text-foreground">Swap</strong> or
               <strong class="text-foreground">Replace</strong> if that
               slot is already occupied.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Hiding mule tabs
+            </h3>
+            <p class="mt-3">
+              The character ribbon here (and on every other per-character
+              page, plus the sidebar switcher) can be trimmed of mules
+              and alts you never play. The show/hide control lives on the
+              Active Characters page — toggling a character there removes
+              it everywhere. A character that only has a macro file on
+              disk and no log yet still shows up there so its tab can be
+              hidden.
             </p>
           </section>
 
@@ -2348,6 +2412,18 @@ const sections = [
                 >/guildstat</code
               > output. Filter by class, guild, or zone; click any row
               for the full level progression.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Raid roster (with Zeal)
+            </h3>
+            <p class="mt-3">
+              While you're in a raid, Zeal reports the full roster over
+              the pipe, so every raid member's name, level and class is
+              added to the database without anyone running
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/who</code
+              >. The same data also feeds class attribution in the raid
+              threat estimate.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Anonymous-aware
