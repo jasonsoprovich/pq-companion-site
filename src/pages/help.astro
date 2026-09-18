@@ -26,6 +26,7 @@ const sections = [
   { id: "lockouts", label: "Lockouts" },
   { id: "faction-tracker", label: "Faction Tracker" },
   { id: "pop-flagging", label: "PoP Flagging Tracker" },
+  { id: "raid-composition", label: "Raid Composition" },
   { id: "loot-tracker", label: "Loot Tracker" },
   { id: "wishlist", label: "Wishlist" },
   { id: "gear-upgrade-finder", label: "Gear Upgrade Finder" },
@@ -1977,14 +1978,7 @@ const sections = [
               <strong class="text-foreground">Prerequisite:</strong>
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >/log on</code
-              >, and enable the Faction Tracker toggle on the hidden
-              Developer tab (<kbd
-                class="rounded border border-border bg-surface-2 px-1.5 py-0.5 text-xs text-primary"
-                >Ctrl + Shift + D</kbd
-              > — see
-              <a href="#developer-mode" class="text-primary hover:text-primary-hover"
-                >Developer mode</a
-              >) — off by default.
+              >.
             </p>
             <p class="mt-4">
               EverQuest never logs a faction's absolute value or the exact
@@ -2093,6 +2087,58 @@ const sections = [
               starting state from a paste-in, or let the tracker pick up
               new progress automatically as kills happen in your combat
               log going forward.
+            </p>
+          </section>
+
+          <section id="raid-composition" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Raid Composition
+            </h2>
+            <p class="mt-4">
+              A user-editable role taxonomy, a normalized encounter
+              knowledge base, and a live MIN/REC composition checker run
+              against your current Zeal raid roster — or a
+              manually-entered one if Zeal isn't connected. Contributed by
+              Kav (Intervention), ported from his eqmon project.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Composition checker
+            </h3>
+            <p class="mt-3">
+              Pick an encounter and the checker maps your live roster
+              against its minimum and recommended staffing per role,
+              showing a GAP figure and class-eligible candidate names for
+              every short row. Candidate names are class-eligible members,
+              not actual assignments — the same person can be counted
+              toward more than one role's need at once, so treat the
+              report as a staffing guide rather than a final call. The
+              encounter picker orders by proximity to your live zone, and
+              the pick stays in sync across the check page, the dashboard
+              panel, and the popout overlay.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Role taxonomy &amp; encounter knowledge base
+            </h3>
+            <p class="mt-3">
+              The Raid Editor lets you add, edit, and delete roles and
+              encounters yourself — the knowledge base ships with a single
+              seeded encounter (Avatar of War), so most raids will want to
+              build out their own. Encounters can be exported and imported
+              as JSON packs to share between officers, auto-provisioning
+              any taxonomy roles a pack references that don't exist
+              locally yet.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Raid Summary &amp; Raid Readiness
+            </h3>
+            <p class="mt-3">
+              A Raid Summary dashboard tab shows encounter-agnostic
+              per-class coverage for the current roster, and a Raid
+              Readiness overlay (dashboard panel and popout window)
+              surfaces missing MIN-role classes at a glance without
+              leaving the game.
             </p>
           </section>
 
@@ -3324,14 +3370,23 @@ const sections = [
             <p class="mt-4">
               The same tab also hosts toggles for features still being
               proven out before they ship on by default — currently the
-              <a href="#faction-tracker" class="text-primary hover:text-primary-hover"
-                >Faction Tracker</a
-              > and the
               <a href="#spell-emote-customizer" class="text-primary hover:text-primary-hover"
                 >Spell Emote Customizer</a
-              >. Once a feature has had enough real-world use, its
-              toggle graduates out of Developer mode and it becomes a
-              normal always-on feature.
+              >, a Planes of Power preview (raises the level cap and
+              reveals PoP content ahead of the expansion's actual launch
+              on Project Quarm), and an experimental raid-wide Threat
+              Meter mode. Once a feature has had enough real-world use,
+              its toggle graduates out of Developer mode and it becomes a
+              normal always-on feature — the
+              <a href="#faction-tracker" class="text-primary hover:text-primary-hover"
+                >Faction Tracker</a
+              >,
+              <a href="#pop-flagging" class="text-primary hover:text-primary-hover"
+                >PoP Flagging Tracker</a
+              >, and
+              <a href="#raid-composition" class="text-primary hover:text-primary-hover"
+                >Raid Composition</a
+              > all started here.
             </p>
             <p class="mt-4">
               You can save queries you reuse, give them names, and

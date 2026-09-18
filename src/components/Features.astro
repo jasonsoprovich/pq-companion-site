@@ -176,7 +176,6 @@ const features = [
       "9-segment /con disposition bucket bar, flagged suspect if the reading was taken while illusioned",
       "Best-effort point estimates from resolved kills, plus exact deltas from quest turn-ins",
       "Log Backfill scans your existing /con history to seed a starting baseline",
-      "Available under Settings → Developer → Flags",
     ],
     mediaSlug: "faction-tracker",
   },
@@ -191,6 +190,19 @@ const features = [
       "Seed progress from a paste-in, or detect it live from your combat log as kills happen",
     ],
     mediaSlug: "pop-flagging",
+  },
+  {
+    title: "Raid Composition",
+    tagline: "Know your gaps before you pull",
+    description:
+      "A user-editable role taxonomy and a normalized encounter knowledge base power a live MIN/REC composition checker: point it at your current Zeal raid roster (or enter one by hand) and see exactly which roles are short, with class-eligible candidates for each gap. A Raid Summary dashboard tab shows encounter-agnostic per-class coverage, and a Raid Readiness overlay surfaces missing MIN-role classes without leaving the game. Contributed by Kav (Intervention), ported from his eqmon project.",
+    bullets: [
+      "Live MIN/REC composition checker against the current Zeal raid roster, or a manually-entered one",
+      "User-editable role taxonomy and encounter knowledge base — add your own encounters via the Raid Editor",
+      "Raid Readiness overlay (dashboard panel + popout window) flags missing MIN-role classes at a glance",
+      "Encounter packs export/import as JSON, auto-provisioning any roles they reference",
+    ],
+    mediaSlug: "raid-composition",
   },
   {
     title: "Loot Tracker",
