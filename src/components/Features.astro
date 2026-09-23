@@ -156,12 +156,13 @@ const features = [
     title: "Lockouts Tracker",
     tagline: "Never walk up to a locked zone",
     description:
-      "Parses your /sll output into live per-character countdowns for loot and legacy lockouts, so you always know when an instance or flagged encounter is available to you again. No spreadsheet, no guesswork — just run /sll and the timers update.",
+      "Parses your /sll output into live per-character countdowns for loot and legacy lockouts, so you always know when an instance or flagged encounter is available to you again. No spreadsheet, no guesswork — just run /sll and the timers update. A Plane of Time section syncs the same way from #timelockout.",
     bullets: [
       "Live countdowns for both loot lockouts and legacy lockouts",
+      "Plane of Time encounter availability from #timelockout",
       "Absolute unlock date and time shown right next to the live countdown, in your local timezone",
       "Tracked per character, so each alt's lockouts stay separate",
-      "Updates the moment you run /sll in-game",
+      "Updates the moment you run /sll or #timelockout in-game",
       "Zone Loot Lockouts sub-tab shows every character's status for a zone at a glance",
     ],
     mediaSlug: "lockouts",
@@ -187,7 +188,7 @@ const features = [
     bullets: [
       "Interactive dependency graph with locked/unlocked state driven by your actual progress",
       "Any-of groups for trials and keys with more than one valid path, plus non-counting key/keyring rows",
-      "Seed progress from a paste-in, or detect it live from your combat log as kills happen",
+      "Syncs from the Seer's guided meditation, Quarm's #popflags command, a paste-in, or live kill detection",
     ],
     mediaSlug: "pop-flagging",
   },

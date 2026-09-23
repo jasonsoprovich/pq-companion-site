@@ -1966,6 +1966,21 @@ const sections = [
               character one at a time. Log backfill can also seed lockout
               history from your existing logs, the same as other trackers.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Plane of Time
+            </h3>
+            <p class="mt-3">
+              Run <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >#timelockout</code
+              > (or <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >#timelockout 1</code
+              > through <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >6</code
+              > for one phase's detail) and a Plane of Time section
+              appears alongside your loot and legacy lockouts, showing
+              which encounters are available now and when a defeated one
+              resets.
+            </p>
           </section>
 
           <section id="faction-tracker" class="scroll-mt-24">
@@ -2083,10 +2098,22 @@ const sections = [
               Seeding your progress
             </h3>
             <p class="mt-3">
-              New to the tracker with flags already earned? Seed your
-              starting state from a paste-in, or let the tracker pick up
-              new progress automatically as kills happen in your combat
-              log going forward.
+              New to the tracker with flags already earned? Sit near Seer
+              Mal Nae`Shi in the Plane of Knowledge and say <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >guided meditation</code
+              >, or run <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >#popflags</code
+              > (or <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >#popflags 1</code
+              > through <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >5</code
+              > for one tier at a time) — the tracker can scan your log for
+              either one automatically, or you can paste the output in by
+              hand. It also picks up new progress automatically as kills
+              happen in your combat log going forward. Manual toggles
+              always take priority over anything auto-detected.
             </p>
           </section>
 
