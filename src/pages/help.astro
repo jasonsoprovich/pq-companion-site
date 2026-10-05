@@ -1091,6 +1091,22 @@ const sections = [
               "fading soon" alerts — handy for one-off cooldowns or
               specific mez/charm timers.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Mute or hide one detrimental
+            </h3>
+            <p class="mt-3">
+              The default detrimental alert fires for every debuff, DoT,
+              mez and stun the engine tracks, which is more than you want
+              for a spell like Tashanian. Each row on the Detrimental
+              overlay has a bell and an eye button: the bell mutes the
+              fading-soon alert for that spell (the timer still shows),
+              and the eye hides that spell's timer altogether. Both are
+              remembered by spell name and listed under Settings › Spell Timers
+              › Detrimental timer alerts › Per-spell exceptions, where you
+              can add a spell, switch it between mute and hide, or remove
+              it. A trigger's own alerts are never muted by this — they're
+              your explicit choice.
+            </p>
           </section>
 
           <section id="npc-info" class="scroll-mt-24">
@@ -1338,6 +1354,53 @@ const sections = [
               respawn timer.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pinning a camp timer
+            </h3>
+            <p class="mt-3">
+              Click the pin on any row to flag it as your priority: it
+              sorts to the top, gets a gold marker, and stays visible at
+              <strong class="text-foreground">POP</strong> instead of
+              clearing after the normal grace window, so you can tell which
+              timer is the one you're camping amid a pile of trash kills.
+              A pinned row also takes a short click-to-edit label such as
+              &ldquo;named PH&rdquo;. A &ldquo;pinned only&rdquo; filter and
+              an unpin-all button keep the list tidy. Zeal users can pin
+              from the keyboard with <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/pipe respawn pin</code
+              >, <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/pipe respawn unpin</code
+              > and <code
+                class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/pipe respawn clearpins</code
+              >.
+            </p>
+            <p class="mt-3">
+              By default a pin stays on the timer you set it on. Turn on
+              <strong class="text-foreground">Settings › Spell Timers ›
+              Auto-hand off pinned respawns</strong> and a popped pin moves
+              to the next kill at the same spot (matched by your position
+              when Zeal is connected, otherwise by name). It's a guess —
+              spawn ids rotate and placeholders spawn different mobs — so
+              it's off unless you want it. Pins and timers don't survive an
+              app restart.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Fast vs. normal timers
+            </h3>
+            <p class="mt-3">
+              Zones flagged for reduced respawns use Quarm's fast timers in
+              the open world and in ordinary guild instances, and the
+              overlay applies them automatically. The one exception is the
+              PvP instance, which uses the raw database timer. The app
+              can't tell which instance you're in, so the shield button in
+              the overlay header lets you switch new kills to normal
+              (unreduced) timers when you're there. Raid-target spawn
+              points are never shortened in the open world, so they always
+              show their real timer.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
             </h3>
             <p class="mt-3">
@@ -1476,7 +1539,11 @@ const sections = [
                   separately, with a tooltip explaining the source. When a
                   piece of gear pushes a stat past your level cap, the
                   panel shows exactly how far over cap you are instead of
-                  silently clamping the displayed number. A Tanking view
+                  silently clamping the displayed number. The Planes of
+                  Power AAs that raise your stat caps (Planar Power for
+                  every stat, Innate Enlightenment for INT and WIS) lift
+                  the cap shown per stat, and Flowing Thought shows how far
+                  your gear is over its cap of 15. A Tanking view
                   splits avoidance from mitigation and folds in the
                   mitigation softcap, melee hit chance, and tanking AAs.
                 </span>
@@ -1533,7 +1600,19 @@ const sections = [
                 <span>
                   <strong class="text-foreground">Spell Modifiers</strong>
                   — every focus and worn effect that's modifying your
-                  spells, in one tab.
+                  spells, in one tab, plus the focus types your class could
+                  use but has nothing equipped for (Spell Haste, Affliction
+                  Efficiency, Extended Range, and so on). Click a missing
+                  type — or the Upgrades button on any worn focus — to
+                  browse the items your class and level can wear for it,
+                  best first, with your current item, real upgrades, and
+                  anything you already own on another character marked.
+                  Damage foci are split by resist school, and a focus's max
+                  spell level counts as a hard limit, so a level-65 caster
+                  is shown Spell Haste IV rather than a level-60 III with a
+                  higher percent. Mana, damage, healing, duration and
+                  reagent foci roll a random 1% to their listed maximum on
+                  each cast; spell haste and range are fixed.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1590,8 +1669,25 @@ const sections = [
               so nearby vendors are preferred, with Druid and Wizard ports
               modelled as a Nexus hub. Route controls let you exclude
               specific spells, filter towns (handy for alignment-restricted
-              characters), toggle a Plane of Knowledge stop, and set the
-              start zone so the route begins where you actually are.
+              characters), and set the start zone so the route begins where
+              you actually are. Whatever the start zone sells is bought
+              there first, so starting in Plane of Knowledge keeps
+              everything PoK carries in the first stop instead of spreading
+              it across other towns.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Passing on a spell
+            </h3>
+            <p class="mt-3">
+              Spellbook full, or a scroll your class will never use (the
+              cleric Imbue spells)? Click the eye icon on a missing spell to
+              <strong class="text-foreground">pass</strong> on it: it drops
+              out of the missing count, your route selection, and the
+              shopping route. Passed spells are remembered per character and
+              collected under the <strong class="text-foreground"
+                >Passed</strong
+              > filter, where the same icon un-passes one if you change your
+              mind.
             </p>
           </section>
 
@@ -2444,6 +2540,17 @@ const sections = [
               plan for where to camp once the next charm comes online. Charm
               spells are gated by their real Quarm class levels rather than a
               curated guess.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Charisma
+            </h3>
+            <p class="mt-3">
+              For enchanters, charisma nudges the charm land chance, so the
+              Charisma field defaults to your active character's real value
+              — base stat plus worn gear and AAs — rather than a generic
+              number. It stays editable if you want to test a different
+              value, and a reset button next to it returns to your
+              character's.
             </p>
           </section>
 
