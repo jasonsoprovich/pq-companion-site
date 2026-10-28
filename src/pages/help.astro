@@ -28,6 +28,7 @@ const sections = [
   { id: "pop-flagging", label: "PoP Flagging Tracker" },
   { id: "raid-composition", label: "Raid Composition" },
   { id: "loot-tracker", label: "Loot Tracker" },
+  { id: "kill-tracker", label: "Kill Tracker" },
   { id: "wishlist", label: "Wishlist" },
   { id: "gear-upgrade-finder", label: "Gear Upgrade Finder" },
   { id: "tradeskill-leveling", label: "Tradeskill Leveling & Recipes" },
@@ -200,7 +201,7 @@ const sections = [
                   <strong class="text-foreground">Character name</strong>
                   — used to pick the right log file
                   (<code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                    >eqlog_&lt;Character&gt;_quarm.txt</code
+                    >eqlog_&lt;Character&gt;_pq.proj.txt</code
                   >) and to tag Zeal exports per character.
                 </span>
               </li>
@@ -233,6 +234,18 @@ const sections = [
               on top of each action's per-trigger volume — dampen
               everything together without losing the relative balance
               between individual triggers.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Alert output device
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Settings → Audio → Alert Output
+              Device</strong> sends trigger sounds and spoken alerts to a
+              speaker or headset you choose, separate from the Windows default —
+              for example alerts in your headset alongside Discord while the
+              game stays on speakers. A Test button plays a sample, and if the
+              chosen device is unplugged, alerts fall back to the default
+              device.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Accessibility
@@ -292,11 +305,28 @@ const sections = [
               history — combat, chat, loot, and the rest — for events that
               happened before you installed the app. It runs in the
               background with a progress bar along the bottom so you can
-              keep using the app while it catches up, and a 30-day log trim
-              keeps the log directory from growing without bound. The Logs
+              keep using the app while it catches up. The Logs
               tab also surfaces log and Zeal status toggles, wizard
               diagnostics, and notices when an expected log file is
               missing.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Archive &amp; Trim
+            </h3>
+            <p class="mt-3">
+              EverQuest log files grow forever. <strong
+              class="text-foreground">Archive &amp; Trim</strong> on the Logs
+              tab zips up the old part of a log and keeps either the last N days
+              or the newest N MB, so the app (and the game) aren't working with
+              a multi-gigabyte file. Running it twice in one day keeps both
+              archives.
+            </p>
+            <p class="mt-3">
+              When a log gets large, an orange dot appears on the sidebar
+              <strong class="text-foreground">Settings</strong> button. Clicking
+              it opens Settings → Logs, where the Logs tab carries a matching
+              dot. The warning size can be changed or turned off on the same
+              tab.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Danger zone: app reset
@@ -378,6 +408,12 @@ const sections = [
               the game when you alt-tab in.
             </p>
             <p class="mt-3">
+              Overlays have no taskbar button, so they can't be minimized — one
+              that gets minimized anyway is restored right away. Waking the
+              display, resuming from sleep or unlocking Windows brings every
+              overlay back on top of the game.
+            </p>
+            <p class="mt-3">
               The dashboard toolbar's <strong
                 class="text-foreground">Manage overlays</strong
               > menu is the control panel for every window: show or hide each
@@ -448,6 +484,13 @@ const sections = [
               stay visible — and reappear when you hover. The fade delay is
               configurable.
             </p>
+            <p class="mt-3">
+              Each overlay in Settings → Overlays also has its own <strong
+              class="text-foreground">Fade</strong> setting (Default / On / Off)
+              and its own <strong class="text-foreground">Opacity</strong>, so
+              overlays sitting over the game window can fade and go see-through
+              while ones on a second monitor stay solid.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Clickable links
             </h3>
@@ -467,6 +510,11 @@ const sections = [
               so you can size an overlay independently of the main window —
               handy for a spell-timer pop-out you want larger than the DPS
               meter.
+            </p>
+            <p class="mt-3">
+              Hold <strong class="text-foreground">Ctrl</strong> and scroll over
+              any pop-out overlay to resize it in 5% steps. The Settings sliders
+              range from 50% to 200%.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -531,16 +579,24 @@ const sections = [
                 <span>
                   <strong class="text-foreground">Spells:</strong> by
                   class and level range. NPC-only spells are hidden by
-                  default.
+                  default. A collapsible <strong class="text-foreground">More
+                  filters</strong> section narrows results by
+                  beneficial/detrimental, target type (including Any PB AE
+                  and Any Targeted AE groups), resist type, spell school,
+                  and whether the spell has a given effect in any slot.
                 </span>
               </li>
               <li class="flex gap-3">
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
                   <strong class="text-foreground">Zones:</strong> tabs for
-                  connected zones, drops, ground spawns, and forage. The
-                  Drops tab pages past its 500-item cap with a Show more
-                  button instead of truncating.
+                  connected zones, NPCs, drops, ground spawns, and forage,
+                  each sortable and filterable. The NPCs tab shows each
+                  NPC's chance to spawn and hides NPCs that can't
+                  currently spawn on Quarm behind a Show inactive toggle.
+                  The Drops tab shows the real drop rate (matching the
+                  item page) and pages past its 500-item cap with a Show
+                  more button instead of truncating.
                 </span>
               </li>
             </ul>
@@ -553,6 +609,22 @@ const sections = [
               currently equipped in that slot on your active character —
               so you can see exactly which stats change before you decide
               it's an upgrade.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              NPC zones, scrolls &amp; spell components
+            </h3>
+            <p class="mt-3">
+              Every NPC shows the zones it spawns in right under its name, in
+              NPC search results (including <strong class="text-foreground">Ctrl
+              + K</strong>), and on item drop and vendor sources. NPCs spawned
+              by events or scripts, such as the Plane of Time bosses, show the
+              zone their NPC id belongs to, marked with * (hover for details).
+            </p>
+            <p class="mt-3">
+              Scroll, song, tome and ancient items have a Teaches row linking to
+              the spell, and the spell page links back to its scroll. The spell
+              page also lists the reagents a spell consumes, the focus items it
+              needs, and the instrument type for bard songs.
             </p>
           </section>
 
@@ -764,6 +836,18 @@ const sections = [
               over.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Bar scaling &amp; your own row
+            </h3>
+            <p class="mt-3">
+              In a big raid fight, share-of-total bars sit nearly empty. Bars
+              scale to the top damage dealer by default, with a header toggle to
+              switch back to <strong class="text-foreground">share of
+              total</strong> — the % column always shows share of total. If your
+              own row is scrolled out of view, a copy with your rank stays
+              pinned under the table. Both work the same on the dashboard panel
+              and the pop-out overlay.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
               Sharing fights
             </h3>
             <p class="mt-3">
@@ -959,12 +1043,15 @@ const sections = [
               Solo vs. Raid mode
             </h3>
             <p class="mt-3">
-              A Solo/Raid toggle switches how the estimate models taunt: Raid
-              mode drops the default solo tank boost, registers hate-modifying
-              buffs cast on you by other players, and detects successful taunt
-              emotes, so the numbers stay meaningful outside small-group play.
-              Raid mode ships on by default; its settings live under
-              Settings › Overlays.
+              The personal (Solo) meter is always available. An experimental
+              Raid mode, switched on under Settings › Developer › Flags, adds
+              a Solo/Raid toggle that tries to estimate every nearby player's
+              hate from the damage in your log. It's unreliable — out-of-range
+              players, other players' DoTs, heals, taunts and utility casts
+              aren't in your log, so DoT and healer classes read far too low —
+              so treat it as an experiment. Its per-class and per-player tuning
+              appears in Settings › Overlays once enabled. Evac, Succor, Call of
+              the Hero and circle ports zero the departing player's hate.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
@@ -997,6 +1084,14 @@ const sections = [
               Durations are extended automatically by the focus items and
               AAs your character actually has equipped — pulled from your
               latest Zeal export.
+            </p>
+            <p class="mt-4">
+              Durations follow the server's formulas, including the roughly 165
+              spells that keep lengthening from level 60 to 65: your own casts
+              use your level, and other players' casts use their level from your
+              /who history when the caster can be identified. When a new buff
+              overwrites a conflicting one (Tranquility over Koadic's Endless
+              Intellect, say), the old timer is removed.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Buffs vs detrimentals
@@ -1107,6 +1202,39 @@ const sections = [
               it. A trigger's own alerts are never muted by this — they're
               your explicit choice.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Row controls
+            </h3>
+            <p class="mt-3">
+              The mute, hide and remove buttons on buff, detrimental and custom
+              timer rows appear when you hover a row, leaving more width for the
+              spell name and countdown. Settings → Spell Timers → "Always show
+              row controls" restores the old layout.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Keeping expired timers
+            </h3>
+            <p class="mt-3">
+              With <strong class="text-foreground">Keep expired timers until
+              refreshed</strong> on, a timer that runs out stays on the overlay
+              as an overdue reminder until you recast it. Set separate Buff and
+              Detrimental linger times for how long an expired row stays, plus
+              per-spell overrides (for example Quiescence 1 minute, raid buffs
+              30 minutes, or 0 to drop it on expiry), so tracking raid-wide
+              buffs with Anyone scope doesn't flood the overlays.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Filtered Timers overlay
+            </h3>
+            <p class="mt-3">
+              A third timer window you filter by spell, player or mob —
+              including <strong class="text-foreground">Me</strong> and your
+              current target — alongside the Buff and Detrimental overlays. The
+              beneficial by-spell view can list group or raid members who are
+              missing a buff (needs Zeal), and the window can optionally apply
+              the display thresholds. It has a dashboard panel and a pop-out
+              like the other overlays.
+            </p>
           </section>
 
           <section id="npc-info" class="scroll-mt-24">
@@ -1212,11 +1340,84 @@ const sections = [
               With a current Zeal build the overlay also pins its pick to
               the specific creature you're fighting, so the panel stops
               flipping between candidates each time you re-target the same
-              mob (or it gets dragged). This tells two live same-name mobs
-              apart within a fight — it does not read a spawn's exact
-              class or level, or pick one of two same-name bosses' loot
-              tables, so when a name maps to several database rows the
-              full set is still listed.
+              mob (or it gets dragged). With a Zeal build that reports target
+              info (the release after 1.4.7), the overlay also reads the
+              spawn's real level, class and race, so it can tell apart
+              duplicate-named NPCs such as the Vex Thal bosses, Shissar
+              Revenant and the Plane of Fear named, and show only the right
+              loot table. On older Zeal the full set is still listed.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Version labels
+            </h3>
+            <p class="mt-3">
+              When a target matches several database rows, each version shows
+              its spawn chance and what sets it apart: texture, gender, size, or
+              an ability the others lack (summons, enrages, rampages, flurries).
+              In Halls of Honor A, for example, the 90% Valiant Spirit doesn't
+              summon and the 10% one does.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Customizing the overlay
+            </h3>
+            <p class="mt-3">
+              All NPC overlay settings live on their own <strong
+              class="text-foreground">Settings → NPC Overlay</strong> tab, next
+              to a live preview of the real overlay for any NPC you search for
+              (Lord Nagafen by default). Changes show in the preview before you
+              save.
+            </p>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Tag colors</strong> — recolor
+                  special-ability tags by category or one at a time, and make key
+                  ones like Immune to Charm/Mez stand out with a glow.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Layout</strong> — drag to reorder
+                  the Stats sections, and to put the tags you care about first.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Display card</strong> — choose
+                  what shows on the dashboard panel and on the pop-out, separately,
+                  for every section and item, and per character if you want.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Outline rules</strong> — outline
+                  the overlay when the target has (or lacks) chosen abilities or is
+                  one of chosen classes, for example can't be mezzed, rampages,
+                  summons, or is a caster. Each rule has its own color and optional
+                  flash, labels show which rules matched, and characters can have
+                  their own rule list.
+                </span>
+              </li>
+            </ul>
+            <p class="mt-3">
+              The dashboard panel and the pop-out each reopen on Stats, Loot or
+              Timers, whichever you left them on.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Distance &amp; range
+            </h3>
+            <p class="mt-3">
+              With a Zeal build that reports target info, a distance chip shows
+              how far away the target is, colored against your cast range and
+              ranged range, and enemy spells that can reach you are marked. Both
+              ranges are worked out from the active character's latest Quarmy
+              export — cast range includes an Extended Range focus, ranged range
+              is your bow plus arrow. Choose "Set manually" to type your own
+              values instead.
             </p>
           </section>
 
@@ -1310,6 +1511,15 @@ const sections = [
               window you can float over the game — handy for keeping an
               eye on a patrol route or your position mid-pull without
               tabbing back to the main window.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Map search
+            </h3>
+            <p class="mt-3">
+              Map search groups each NPC or point of interest into one result.
+              One with several spawn points shows a ×N count and lights up all
+              of them, and "Show all N" highlights every match at once — every
+              trap in a zone, for example.
             </p>
           </section>
 
@@ -1612,7 +1822,17 @@ const sections = [
                   is shown Spell Haste IV rather than a level-60 III with a
                   higher percent. Mana, damage, healing, duration and
                   reagent foci roll a random 1% to their listed maximum on
-                  each cast; spell haste and range are fixed.
+                  each cast; spell haste and range are fixed. An
+                  <strong class="text-foreground">Equipped focus
+                  types</strong> strip lists what you're wearing next to
+                  what you're missing, each opening its focus card with the
+                  slot each item goes in. In
+                  <strong class="text-foreground">Test Resolution</strong>,
+                  build a what-if loadout — swap worn items slot by slot,
+                  empty slots, or change the ranks of the AAs that feed
+                  focus effects — and see a spell resolve against it next
+                  to your real gear. Loadouts save per character, and
+                  mocked items can be added to your wishlist.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -1632,6 +1852,17 @@ const sections = [
                   <strong class="text-foreground">To-dos</strong> —
                   per-character checklist with subtasks for goals (epic
                   pieces, key quests, AA targets).
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Blocked Buffs</strong>
+                  — keeps the list of other players' buffs you want refused
+                  with <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">#blockbuff</code>.
+                  The server stores that list itself, so the page reads its
+                  replies from your log to track what is actually applied
+                  and shows the exact commands needed to close the gap.
                 </span>
               </li>
             </ul>
@@ -1701,7 +1932,7 @@ const sections = [
               <strong class="text-foreground">Prerequisite:</strong>
               <a href="#developer-mode" class="text-primary hover:text-primary-hover"
                 >Developer mode</a
-              > — gated behind Settings › Developer › Flags, off by default.
+              > — the customizer is available once Developer mode is unlocked.
             </p>
             <p class="mt-4">
               Edit the client-visible chat emotes in your
@@ -1836,6 +2067,18 @@ const sections = [
               choose <strong class="text-foreground">Swap</strong> or
               <strong class="text-foreground">Replace</strong> if that
               slot is already occupied.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Page 10 keybinds
+            </h3>
+            <p class="mt-3">
+              The Macros tab shows each Page 10 social slot's keybind as a
+              badge, and you can edit its primary and alternate keys there.
+              Binds are read from and saved to <code class="rounded bg-surface-2
+              px-1.5 py-0.5 text-primary">eqclient.ini</code>, per-character
+              keybinds from Zeal are respected, your config is backed up before
+              saving, and you're warned if a key is already used by another
+              bind.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Hiding mule tabs
@@ -2175,12 +2418,12 @@ const sections = [
             <p class="mt-4">
               Planes of Power flagging is a maze of God flags, trial
               prerequisites, and multi-step key quests. This tracker turns
-              it into a step-by-step checklist with an interactive
-              dependency graph, so you always know what you have, what you
-              need next, and what's blocking it.
+              it into a step-by-step checklist and a tiered flow chart, so
+              you always know what you have, what you need next, and what's
+              blocking it.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              Dependency graph
+              Checklist &amp; flow chart
             </h3>
             <p class="mt-3">
               Each flag is classified and colour-coded by how you earn it —
@@ -2189,6 +2432,13 @@ const sections = [
               groups handle trials and keys with more than one valid path
               (like the six Plane of Justice trials) so you're never forced
               to complete every branch.
+            </p>
+            <p class="mt-3">
+              The Flow view lays the same steps out as a tiered chart: one band
+              per tier, one card per zone in reading order, with arrows showing
+              what each zone unlocks. Rows that no sync can ever check off are
+              marked <strong class="text-foreground">Manual</strong>, so you
+              know to tick them yourself.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Seeding your progress
@@ -2210,6 +2460,15 @@ const sections = [
               hand. It also picks up new progress automatically as kills
               happen in your combat log going forward. Manual toggles
               always take priority over anything auto-detected.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              All characters
+            </h3>
+            <p class="mt-3">
+              The All characters tab puts every character's zone progress on one
+              grid, with a copy-as-text summary for pasting into Discord. Export
+              JSON is on every tab — the All tab exports everyone, and each
+              character tab exports just that character.
             </p>
           </section>
 
@@ -2258,8 +2517,10 @@ const sections = [
             </h3>
             <p class="mt-3">
               A Raid Summary dashboard tab shows encounter-agnostic
-              per-class coverage for the current roster, and a Raid
-              Readiness overlay (dashboard panel and popout window)
+              per-class coverage for the current roster — its Members list
+              has a Groups view with one card per raid group, every column
+              sorts, and a Snapshot button saves the roster for attendance
+              history — and a Raid Readiness overlay (dashboard panel and popout window)
               surfaces missing MIN-role classes at a glance without
               leaving the game.
             </p>
@@ -2293,6 +2554,54 @@ const sections = [
               click the zone to jump straight to that zone in the Database
               Explorer. Handy for checking an unfamiliar drop's stats or
               seeing what else the zone holds, without leaving the page.
+            </p>
+          </section>
+
+          <section id="kill-tracker" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Kill Tracker
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              Parsing → Kill Tracker records every kill your log shows and
+              counts kills toward the milestones that drive scripted Planes of
+              Power raids.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Kill Log
+            </h3>
+            <p class="mt-3">
+              Every kill with the time to the second, the killer and the zone.
+              Sort by any column, filter by zone, time window or named mobs
+              only, or switch to By mob for kill counts and how long ago each
+              mob last died. Backfill fills in kills from your old logs.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Kill Counters &amp; event presets
+            </h3>
+            <p class="mt-3">
+              Count kills toward milestones, with an on-screen or spoken alert
+              as each one approaches, and follow them in game with the Kill
+              Counters overlay (dashboard panel and pop-out). One-click presets
+              are built from Project Quarm's own quest scripts: Bertoxxulous
+              (trash toward each of the eight Adan kings, kings toward the final
+              four and Bertox, and the 123-minute event clock), Coirnav, Fennin
+              Ro, the Plane of Earth Stone Ring, Ston`Ruak, Drornok, and Plane
+              of Time phase 3. You can also build your own from mob names or any
+              log line.
+            </p>
+            <p class="mt-3">
+              Counters correct themselves from the server's own announcements,
+              such as the boss-spawn emotes, so kills your log didn't see don't
+              throw them off. For raid timers that run on a server clock rather
+              than a kill count, see the Raid Event Timers trigger pack.
             </p>
           </section>
 
@@ -2407,8 +2716,18 @@ const sections = [
               character's <a
                 href="#wishlist"
                 class="text-primary hover:text-primary-hover">Wishlist</a
-              >. Planes of Power gear is hidden unless you've turned the PoP
-              preview on in Settings.
+              >.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              By zone
+            </h3>
+            <p class="mt-3">
+              The By zone tab lists every upgrade that drops in one zone, ranked
+              by score, with the NPCs that drop it and their drop rates. It
+              follows your current zone or any zone you pick, and includes
+              script-spawned bosses (like the Plane of Time gods) and zone-wide
+              loot such as Vex Thal's. Group the list by slot, or show one list
+              sorted by score for raid bidding.
             </p>
           </section>
 
@@ -2539,7 +2858,8 @@ const sections = [
               future pet pool looks like, so the page doubles as a leveling
               plan for where to camp once the next charm comes online. Charm
               spells are gated by their real Quarm class levels rather than a
-              curated guess.
+              curated guess. Magicians are included too, with Call of the Arch
+              Mage, the level 65 charm for summoned creatures.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Charisma
@@ -2955,7 +3275,7 @@ const sections = [
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >Master.</code
               > responses or merchant/banker/trainer canned phrases."
-              The Group Awareness pack's Incoming Tell trigger ships
+              The General Triggers pack's Incoming Tell trigger ships
               with sensible defaults; add bazaar trader names you
               recognise to silence those too.
             </p>
@@ -3017,17 +3337,29 @@ const sections = [
               Built-in packs
             </h3>
             <p class="mt-3">
-              Class packs ship for all 14 classes (Bard, Beastlord,
+              Class packs ship for all 15 classes (Bard, Beastlord,
               Cleric, Druid, Enchanter, Magician, Monk, Necromancer,
               Paladin, Ranger, Rogue, Shadowknight, Shaman, Warrior,
-              Wizard) plus a Group Awareness pack (incoming tells, death
-              events, zoning). Each pack bundles the relevant CC-break
-              and cast-failure alerts plus spell timers for the class's
-              core buffs, debuffs, roots, mezzes, charms, and pacify
-              lines, and seven additional community packs ship built-in with
-              shared crowd-control break alerts. Always-on event alerts for
-              deaths, zoning, resists, and interrupts are independent of the
-              trigger system.
+              Wizard). Each bundles the relevant CC-break and cast-failure
+              alerts plus spell timers for the class's core buffs, debuffs,
+              roots, mezzes, charms, and pacify lines — including their
+              Planes of Power upgrades, such as Command of Druzzil, Voice of
+              Quellious, Tranquility, Virtue and Seduction of Saryrn. Ten
+              general packs sit alongside them: General Triggers (incoming
+              tells, deaths, zoning), Caster Alerts, Crit Alerts, Spell
+              Breaks, Group Alerts, Raid Alerts, Raid Event Timers, Tracking,
+              Misc Alerts and Slows.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Raid Event Timers pack
+            </h3>
+            <p class="mt-3">
+              Countdown timers for scripted raid events that run on a server
+              clock: Paffa's waves, Coirnav's final-phase reinforcements, the
+              Plane of Time instance clock, Plane of Air boss despawns, the
+              Emperor and his room curse, Doomshade, Ring of Fear, the Great
+              Divide Ring War, Hollowshade invasions and the Grimling war.
+              Install it from the built-in packs on the Triggers page.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Non-destructive pack updates
@@ -3056,9 +3388,12 @@ const sections = [
             <p class="mt-3">
               Replay mode plays a recorded segment of your log back through the
               live pipeline, so you can confirm a trigger fires (and an overlay
-              behaves) against real lines without being in game. The Log Feed
-              page also has a read-only Browse mode for reading old logs out of
-              game.
+              behaves) against real lines without being in game. Triggers,
+              timers, meters and overlays all run during a replay, but it never
+              re-records old events — kill counts, loot, lockouts, PoP flags and
+              the like stay as they were — and Discord webhook actions don't
+              fire. The Log Feed page also has a read-only Browse mode for
+              reading old logs out of game.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Multi-format import
@@ -3125,6 +3460,22 @@ const sections = [
               cooldown</strong> that lets the on-screen alert keep up while
               stopping the sound from stacking on itself — so a burst of
               matching lines doesn't turn into a wall of overlapping alerts.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Repeat count: &#123;repeated&#125;
+            </h3>
+            <p class="mt-3">
+              A per-trigger <strong class="text-foreground">Repeat count
+              window</strong> counts matches that land within N seconds of each
+              other, so a PBAE trigger can show how many mobs it hit. <code
+              class="rounded bg-surface-2 px-1.5 py-0.5
+              text-primary">&#123;repeated&#125;</code> and <code class="rounded
+              bg-surface-2 px-1.5 py-0.5 text-primary">&#123;count&#125;</code>
+              work in action and timer-alert text, and follow-up matches update
+              the existing on-screen alert instead of stacking a new one. The
+              EQLogParser importer maps RepeatedResetTime for triggers that use
+              <code class="rounded bg-surface-2 px-1.5 py-0.5
+              text-primary">&#123;REPEATED&#125;</code>.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Tips
@@ -3280,6 +3631,14 @@ const sections = [
               zero — useful for a spawn window you don't want to forget about
               once it opens.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Repeating timers
+            </h3>
+            <p class="mt-3">
+              Turn on Repeat and a trigger's timer restarts each time it runs
+              out, until its worn-off line clears it — useful for raid waves on
+              a fixed cadence.
+            </p>
           </section>
 
           <section id="roll-tracker" class="scroll-mt-24">
@@ -3394,7 +3753,11 @@ const sections = [
               structure), and results render as shareable contest cards
               instead of raw session lists. Loot items are auto-suggested
               from nearby chat, and you can add a manual item label and
-              copy a paste-ready result summary for guild chat.
+              copy a paste-ready result summary for guild chat. Name and save
+              your own custom groupings and they stay in the Grouping list.
+              A roll that falls outside every tier (a parchment called as 444,
+              say) still shows as its own card, listed by time alongside the
+              contests, newest first.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Overlay
@@ -3502,14 +3865,14 @@ const sections = [
               statements are accepted.
             </p>
             <p class="mt-4">
-              The same tab also hosts toggles for features still being
-              proven out before they ship on by default — currently the
-              <a href="#spell-emote-customizer" class="text-primary hover:text-primary-hover"
+              The <a href="#spell-emote-customizer" class="text-primary hover:text-primary-hover"
                 >Spell Emote Customizer</a
-              >, a Planes of Power preview (raises the level cap and
-              reveals PoP content ahead of the expansion's actual launch
-              on Project Quarm), and an experimental raid-wide Threat
-              Meter mode. Once a feature has had enough real-world use,
+              > has its own Spell Emotes sub-tab here, and a Flags sub-tab
+              hosts features still being proven out — currently the
+              experimental raid-wide
+              <a href="#threat-meter" class="text-primary hover:text-primary-hover"
+                >Threat Meter</a
+              > mode. Once a feature has had enough real-world use,
               its toggle graduates out of Developer mode and it becomes a
               normal always-on feature — the
               <a href="#faction-tracker" class="text-primary hover:text-primary-hover"
@@ -3549,7 +3912,7 @@ const sections = [
               Settings points to the right Project Quarm folder. The log
               file lives in your Project Quarm folder as
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >eqlog_&lt;Character&gt;_quarm.txt</code
+                >eqlog_&lt;Character&gt;_pq.proj.txt</code
               >.
             </p>
             <h3 class="mt-6 text-lg font-semibold text-foreground">
@@ -3574,6 +3937,37 @@ const sections = [
               restore the most recent snapshot. If you had auto-backups
               enabled (recommended), there's almost always a clean copy
               from before the change.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              The app warns that another copy is running
+            </h3>
+            <p class="mt-3">
+              An older copy of PQ Companion in a different folder — often an
+              unzipped or copied one — is already running and blocking launch.
+              The warning names its version and location, with a <strong
+              class="text-foreground">Show in Explorer</strong> button so you
+              can close or delete it. Portable or copied folders offer updates
+              as a manual download instead of installing a second copy into the
+              default location.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold text-foreground">
+              Running on Linux (Wine / Proton)
+            </h3>
+            <p class="mt-3">
+              The installer doesn't work under Wine, so every release also ships
+              a portable <code class="rounded bg-surface-2 px-1.5 py-0.5
+              text-primary">.zip</code>: unzip it and run <code class="rounded
+              bg-surface-2 px-1.5 py-0.5 text-primary">PQ Companion.exe</code>
+              directly. It doesn't auto-update, so grab the new zip from the
+              releases page each time. Under Wine the main window uses the
+              native title bar and display scaling is fixed at 1× so clicks land
+              where you point; <code class="rounded bg-surface-2 px-1.5 py-0.5
+              text-primary">PQC_NATIVE_FRAME=0</code> and <code class="rounded
+              bg-surface-2 px-1.5 py-0.5 text-primary">PQC_SCALE_FACTOR</code>
+              (a number, or <code class="rounded bg-surface-2 px-1.5 py-0.5
+              text-primary">auto</code>) override these. Overlays and
+              text-to-speech don't work on Linux — use sound-file alerts
+              instead.
             </p>
             <h3 class="mt-6 text-lg font-semibold text-foreground">
               Still stuck?
