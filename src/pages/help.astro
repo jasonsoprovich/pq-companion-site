@@ -9,10 +9,14 @@ const sections = [
   { id: "quests", label: "Quests" },
   { id: "dps-meter", label: "DPS Meter & Combat Log" },
   { id: "combat-history", label: "Combat History" },
+  { id: "death-recap", label: "Death Recap" },
   { id: "threat-meter", label: "Threat Meter" },
   { id: "spell-timers", label: "Spell Timers" },
   { id: "npc-info", label: "NPC Info Overlay" },
+  { id: "pet-overlay", label: "Pet Overlay" },
+  { id: "item-info", label: "Item Info Overlay" },
   { id: "live-maps", label: "Live Maps" },
+  { id: "raid-replay", label: "Raid Replay" },
   { id: "respawn-timers", label: "NPC Respawn Timers" },
   { id: "ch-chain", label: "CH Chain & Metronome" },
   { id: "character-progression", label: "Character Progression" },
@@ -990,7 +994,73 @@ const sections = [
               non-blocking even when the rest of the app is touching the
               same database for triggers, character data, and backups.
             </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Finishing blows
+            </h3>
+            <p class="mt-3">
+              Instant-kill specials — finishing blow, slay, assassinate — log as
+              an ordinary hit of about 32,000 damage, far more than the mob had
+              left. Hits of 32,000 or more are counted as finishing blows on the
+              attacker's row (shown in its tooltip) instead of as damage, so one
+              of them can't double a player's total for the fight. The Threat
+              Meter ignores them too.
+            </p>
           </section>
+
+          <section id="death-recap" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Death Recap
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong>
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/log on</code
+              >.
+            </p>
+            <p class="mt-4">
+              Every death records the 20 seconds before it, so after a wipe you
+              can see exactly what happened instead of scrolling back through the
+              log.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              What a recap shows
+            </h3>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Damage taken</strong> — every hit and miss on you, with the biggest hit called out.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Healing received</strong> — heals that landed, including Complete Heals, and the time since your last CH.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Killer</strong> — the mob that killed you, or the last thing that hit you when the log only says &ldquo;You died.&rdquo;
+                </span>
+              </li>
+            </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where to find it
+            </h3>
+            <p class="mt-3">
+              The <strong class="text-foreground">Combat Log</strong> page lists
+              deaths from the last 30 days, grouped by raid night (6am to 6am).
+              Click a death to expand its recap. The <strong
+              class="text-foreground">Death Recap</strong> overlay shows your latest
+              death as a dashboard card with a pop-out window. Recaps follow your
+              combat history retention, and deaths aren't saved during log
+              replay.
+            </p>
+          </section>
+
 
           <section id="threat-meter" class="scroll-mt-24">
             <h2
@@ -1235,6 +1305,51 @@ const sections = [
               the display thresholds. It has a dashboard panel and a pop-out
               like the other overlays.
             </p>
+            <p class="mt-3">
+              Its current-target <strong class="text-foreground">Target
+              debuffs</strong> view is spawn-aware: when two mobs share a name,
+              debuffs are pinned to the one they landed on, and debuffs only
+              known by name get a dimmed &ldquo;?&rdquo;. A Clear button handles
+              leash and evade resets, which strip a mob's debuffs without a log
+              line.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Buff timers synced to Zeal
+            </h3>
+            <p class="mt-3">
+              With <a
+                href="https://github.com/CoastalRedwood/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              > connected, your own buff timers check
+              themselves against the client's remaining tick count for each buff
+              and move when they're off. That fixes buffs other players cast on
+              you, whose duration depends on their AAs and focus items. Fades are
+              also placed on your own server tick, so a buff drops off the overlay
+              when it actually drops in game.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Charm timers
+            </h3>
+            <p class="mt-3">
+              Charms
+              log no land line for their caster, so the engine starts a charm
+              timer once the cast time passes without a resist, interrupt or
+              &ldquo;did not take hold&rdquo; line. No trigger pack is needed. With
+              Zeal it also waits for a pet to appear, so a silent failure doesn't
+              start a phantom timer. Buffs on a charmed pet survive when a
+              same-named mob dies elsewhere in the zone.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Bard songs
+            </h3>
+            <p class="mt-3">
+              Short-buff-box
+              spells (mostly bard songs) fade one tick after their duration runs
+              out, and their timers now include that tick. Pack song timers
+              default to 24 seconds.
+            </p>
           </section>
 
           <section id="npc-info" class="scroll-mt-24">
@@ -1322,6 +1437,47 @@ const sections = [
               badge that names the player a charmed or summoned pet
               belongs to.
             </p>
+            <p class="mt-3">
+              If Zeal stops confirming the target, the card and pop-out dim with
+              a &ldquo;Zeal stale · 12s&rdquo; badge so an old reading never looks
+              live. The target stays until Zeal or the log changes it, and the
+              distance chip dims and then hides after 20 seconds. Targets picked
+              from the log alone never dim.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Live /con border
+            </h3>
+            <p class="mt-3">
+              When you <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >/con</code
+              > a mob, the overlay frames itself by how it regards you: red for
+              scowls, amber for threatening, faint for dubious and apprehensive,
+              and a standing label otherwise. The reading clears when you
+              retarget or zone, or when your invisibility, hide, illusion, feign
+              death or faction buffs change, since any of those can change the
+              answer. Turn it off under NPC Overlay → Display.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Target debuffs &amp; timers
+            </h3>
+            <p class="mt-3">
+              A
+              strip of the target's debuff icons with time left sits under the
+              header on the Stats and Loot tabs; click it to open Timers. The
+              Timers tab only shows timers for the exact spawn you're fighting,
+              splits debuffs from buffs and cooldowns, and has a Clear button for
+              leash and evade resets.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Upgrade scores on loot
+            </h3>
+            <p class="mt-3">
+              Each
+              item in the loot list shows its gear-upgrade score for your active
+              character, the same score the <a href="#gear-upgrade-finder"
+              class="text-primary hover:text-primary-hover">Gear Upgrade
+              Finder</a> uses.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Same-name disambiguation
             </h3>
@@ -1340,12 +1496,20 @@ const sections = [
               With a current Zeal build the overlay also pins its pick to
               the specific creature you're fighting, so the panel stops
               flipping between candidates each time you re-target the same
-              mob (or it gets dragged). With a Zeal build that reports target
-              info (the release after 1.4.7), the overlay also reads the
-              spawn's real level, class and race, so it can tell apart
+              mob (or it gets dragged). With Zeal 1.4.8 or later, the overlay
+              also reads the spawn's real level, class and race, so it can tell apart
               duplicate-named NPCs such as the Vex Thal bosses, Shissar
               Revenant and the Plane of Fear named, and show only the right
               loot table. On older Zeal the full set is still listed.
+            </p>
+            <p class="mt-3">
+              With the Zeal 1.5 pipe data (see <a href="#pet-overlay"
+              class="text-primary hover:text-primary-hover">Zeal 1.5
+              features</a>), the overlay also narrows same-named versions by the
+              target's texture, gender and size. Script-spawned raid bosses such
+              as the upstairs Rallos Zek, Jeplak, Foreman Gworknop and Emperor
+              Ssraeshza show their real stats instead of the untargetable
+              placeholder the zone places.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Version labels
@@ -1411,13 +1575,137 @@ const sections = [
               Distance &amp; range
             </h3>
             <p class="mt-3">
-              With a Zeal build that reports target info, a distance chip shows
+              With Zeal 1.4.8 or later, a distance chip shows
               how far away the target is, colored against your cast range and
               ranged range, and enemy spells that can reach you are marked. Both
               ranges are worked out from the active character's latest Quarmy
               export — cast range includes an Extended Range focus, ranged range
               is your bow plus arrow. Choose "Set manually" to type your own
               values instead.
+            </p>
+          </section>
+
+          <section id="pet-overlay" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Pet Overlay
+            </h2>
+            <p class="mt-4">
+              One card for your charmed or summoned pet. It switches between three
+              modes on its own:
+            </p>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Pet</strong> — name, level and class, an HP bar (live from Zeal, or from <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">/pet health</code> with the reading's age), the charm countdown pinned on top, the timers on the pet, its DPS, max hit, delay and magic resist, and badges for summoning, gating and immunities.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Charm broke</strong> — a red card with the mob's magic resist and your re-charm odds, counting down before it swaps to the finder.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Finder</strong> — with no pet, the zone's charmable NPCs ranked by DPS with land chance, using your strongest scribed charm (or one you pick), like the <a href="#charm-pet-finder" class="text-primary hover:text-primary-hover">Charm Pet Finder</a>.
+                </span>
+              </li>
+            </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Pet DPS
+            </h3>
+            <p class="mt-3">
+              A live line shows the pet's damage in the current fight (or the last
+              one, dimmed) and its share of yours, following the DPS meter's
+              Personal / Raid / Encounter mode so the two agree. It works even
+              when you haven't dealt any damage yourself.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Summoned pets
+            </h3>
+            <p class="mt-3">
+              A summoned pet is matched to its database row from the summoning
+              cast, or from targeting it with Zeal. A magician's four elementals
+              differ only by texture, so telling them apart needs the Zeal 1.5
+              pipe data described below; without it the pick is marked
+              ambiguous.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Alerts &amp; settings
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Settings → Pet</strong> sets the swap
+              delay, the finder's row count, and three alerts, each with its own
+              text, sound or TTS: charm expiring (default 30 seconds left), pet low
+              HP (default 30%), and buff missing, checked against a watch list you
+              keep per character for charmed and summoned pets.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Zeal 1.5 features
+            </h3>
+            <p class="mt-3">
+              A few features use pipe data added in the Zeal <a
+                href="https://github.com/CoastalRedwood/Zeal/releases/tag/v1.5.0-alpha0"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">v1.5.0-alpha0</a
+              >
+              test build: the <a href="#item-info"
+              class="text-primary hover:text-primary-hover">Item Info overlay</a>,
+              telling a magician's elementals apart, telling same-named NPCs apart
+              by their look, and catching deaths your log doesn't show (for kill
+              counts and clearing timers). They switch on by themselves when you
+              run that alpha, or the official Zeal 1.5 release once it's out —
+              there's nothing to change in PQ Companion.
+            </p>
+          </section>
+
+          <section id="item-info" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Item Info Overlay
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> Zeal 1.5 (the
+              <a
+                href="https://github.com/CoastalRedwood/Zeal/releases/tag/v1.5.0-alpha0"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">v1.5.0-alpha0</a
+              > test build, or the official 1.5
+              release once it's out).
+            </p>
+            <p class="mt-4">
+              Open an item's display window in game and the Item Info overlay shows
+              that item: key facts picked by item type, its effects, which of your
+              characters hold it, its gear-upgrade score, tradeskill uses grouped
+              by discipline, quests, vendors, drops and other sources. Sources in
+              your current zone are listed first, long lists collapse to a count
+              you can expand, and the header has an open-in-app link.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Where to find it
+            </h3>
+            <p class="mt-3">
+              The overlay stays out of the Overlays list and Settings until Zeal
+              reports your first item, then appears like any other dashboard panel
+              with a pop-out.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Customizing
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Settings → Item Info</strong> has a live
+              preview and controls for each section and row, separately for the
+              dashboard and the pop-out: show or hide, drag to reorder, list
+              limits, and whether an empty section says so or hides. You can also
+              have the pop-out open by itself when you click an item, without
+              taking focus, and hide again after a delay.
             </p>
           </section>
 
@@ -1433,6 +1721,11 @@ const sections = [
               and depth are extracted directly from EQ's .s3d/WLD zone
               geometry and shown as depth-tinted contours, so the shape on
               screen genuinely matches the zone you're standing in.
+            </p>
+            <p class="mt-4">
+              Every map has a <strong class="text-foreground">2D / 3D</strong>
+              switch. 3D is the default, and your map toggles are kept across
+              restarts.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where to find it
@@ -1472,7 +1765,72 @@ const sections = [
               your zone show as faint secondary arrows alongside yours;
               turn them off under Settings &rarr; Maps &rarr;
               &ldquo;Show groupmates on the map&rdquo; if you'd rather
-              just see your own.
+              just see your own. Your arrow eases between Zeal's updates
+              instead of stepping.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Raid &amp; target
+            </h3>
+            <p class="mt-3">
+              With Zeal, the <strong class="text-foreground">Group</strong>
+              and <strong class="text-foreground">Raid</strong> toggles show every
+              raider in your zone, coloured by raid group or by class, with your
+              group drawn on top. A dashed line runs to your target: to their
+              arrow for a raider, or to a marker with the name for anything else,
+              and an NPC target gets its aggro ring. <strong
+              class="text-foreground">Fit group</strong> frames you, your group and
+              the raid at once, and <strong class="text-foreground">Heading
+              up</strong> turns the 2D map so the way you face is up, with a
+              compass for north.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              3D view
+            </h3>
+            <p class="mt-3">
+              The 3D view is built from your
+              own client files, so no game geometry ships with the app. The View
+              menu offers:
+            </p>
+            <ul class="mt-3 space-y-2">
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Style</strong> — Textured (the zone's own textures), Height, or Plain, with trees, buildings, furniture, animated objects like torches, and the zone's doors.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">See-through</strong> — a wall opacity slider and Hide ceilings, so enclosed zones don't look like a solid box.
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Cut-away</strong> — Top and Chase cameras clip the zone just above you, so stacked zones like Bastion of Thunder don't hide your floor, and a <em>Slice from top</em> slider clips above any height you pick (useful in Akheva Ruins).
+                </span>
+              </li>
+              <li class="flex gap-3">
+                <span aria-hidden="true" class="text-primary">▸</span>
+                <span>
+                  <strong class="text-foreground">Cameras</strong> — Top looks straight down, Chase rides behind whoever is followed, and you can drag or free-fly anywhere.
+                </span>
+              </li>
+            </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Aggro rings &amp; respawn dots
+            </h3>
+            <p class="mt-3">
+              <strong class="text-foreground">Aggro rings</strong>
+              draw each spawn point's aggro radius, con-coloured against your
+              level using the most dangerous NPC the spawn can roll. An eye marks
+              mobs that see invisible, and greens under level 18 that won't attack
+              on sight get a dashed ring. Rings can be Off, Near (fading out past a
+              distance you set), or All. <strong class="text-foreground">Respawn
+              dots</strong> colour every spawn point by its respawn timer: red on
+              cooldown (with a countdown when zoomed in), amber up within two
+              minutes, green popped, and grey when no kill has been seen. Spawns
+              known to be dead lose their ring, and Hide killed removes them.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Annotations &amp; markers
@@ -1512,6 +1870,13 @@ const sections = [
               eye on a patrol route or your position mid-pull without
               tabbing back to the main window.
             </p>
+            <p class="mt-3">
+              The overlay draws everything the Live Map page does: 2D or 3D, your
+              group and the raid, aggro rings, spawn points and labels. A row of
+              toggles shows while it's unlocked, and the same row is under
+              Settings → Maps for when it's locked. Layers you turn on in the Live
+              Map, like doors and zone lines, show on the overlay too.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Map search
             </h3>
@@ -1520,6 +1885,61 @@ const sections = [
               One with several spawn points shows a ×N count and lights up all
               of them, and "Show all N" highlights every match at once — every
               trap in a zone, for example.
+            </p>
+          </section>
+
+          <section id="raid-replay" class="scroll-mt-24">
+            <h2
+              class="text-2xl font-semibold text-foreground md:text-3xl"
+            >
+              Raid Replay
+            </h2>
+            <p class="mt-4">
+              <strong class="text-foreground">Prerequisite:</strong> <a
+                href="https://github.com/CoastalRedwood/Zeal"
+                target="_blank"
+                rel="noopener"
+                class="text-primary hover:text-primary-hover">Zeal</a
+              >, in a raid.
+            </p>
+            <p class="mt-4">
+              While Zeal sends raid frames, PQ Companion records every raider's
+              position in your zone once a second, along with the kills and deaths
+              your log shows. <strong class="text-foreground">Parsing → Raid
+              Replay</strong> lists the recordings (zone, date, length, peak
+              raiders, kills and deaths) and plays one back on the zone map.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Playback
+            </h3>
+            <p class="mt-3">
+              Raiders show as class-coloured arrows, and anyone who died shows as a
+              cross where they fell. Play, pause, run at 1× to 60×, or drag the
+              scrubber, which is marked with kills, deaths and a lane for CH calls.
+              Switch between the 2D map and a 3D view built from your client
+              files.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Side panel &amp; events
+            </h3>
+            <p class="mt-3">
+              The side panel switches between the raider list and the raid's groups
+              at the playhead, laid out like Raid Composition; click a raider to
+              highlight them. A dashed line runs from the recorder to their
+              target. The event list covers kills, deaths, CH calls, enrage,
+              rampage and flurry (with who was hit), casts started by the target,
+              NPC shouts, raid says and shouts, loot, and the recorder's own rez.
+              Click an event to jump to it.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Recording &amp; storage
+            </h3>
+            <p class="mt-3">
+              Recording and how long recordings are kept (30 days by default) are
+              set on the Raid Replay page and under Settings → Logs. A session ends
+              when you zone or Zeal stops sending frames for two minutes, and
+              sessions under a minute are dropped. Recordings are compact — about
+              1.4&nbsp;MB for a four-hour, 54-raider night.
             </p>
           </section>
 
@@ -1604,11 +2024,22 @@ const sections = [
               the open world and in ordinary guild instances, and the
               overlay applies them automatically. The one exception is the
               PvP instance, which uses the raw database timer. The app
-              can't tell which instance you're in, so the shield button in
+              can't tell which kind of instance you're in, so the shield button in
               the overlay header lets you switch new kills to normal
               (unreduced) timers when you're there. Raid-target spawn
               points are never shortened in the open world, so they always
               show their real timer.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Zone copies
+            </h3>
+            <p class="mt-3">
+              The app follows the client's <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >dbg.txt</code
+              > to learn which copy of a zone you're in. Kills are tagged with
+              that copy, so timers from another copy of the current zone are
+              marked, sort after yours, don't hold spawn points, and don't colour
+              the map's respawn dots.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Where it lives
@@ -1690,6 +2121,13 @@ const sections = [
               by projecting off whichever other slot's callout is freshest,
               instead of stalling indefinitely.
             </p>
+            <p class="mt-3">
+              When a cleric drops out for good, the raid compresses the chain.
+              Once the clerics on both sides of a slot have kept calling for
+              about two missed turns, the metronome treats that slot as out and
+              follows the compressed chain, instead of cueing everyone behind it
+              a beat late.
+            </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Audio &amp; TTS alerts
             </h3>
@@ -1756,6 +2194,10 @@ const sections = [
                   your gear is over its cap of 15. A Tanking view
                   splits avoidance from mitigation and folds in the
                   mitigation softcap, melee hit chance, and tanking AAs.
+                  With Zeal, measured HP and mana regen per tick sit next
+                  to the computed values: the median of your last four
+                  clean ticks, where nothing hit you, you hit nothing, no
+                  heal landed and you didn't cast, zone or die.
                 </span>
               </li>
               <li class="flex gap-3">
@@ -2603,6 +3045,14 @@ const sections = [
               throw them off. For raid timers that run on a server clock rather
               than a kill count, see the Raid Event Timers trigger pack.
             </p>
+            <p class="mt-3">
+              A counter tied to a zone keeps a separate count for each copy of
+              that zone (read from <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
+                >dbg.txt</code
+              >): entering a different copy starts the count over, and coming
+              back to the same copy picks it up again. Counters without a zone
+              stay global.
+            </p>
           </section>
 
           <section id="wishlist" class="scroll-mt-24">
@@ -2871,6 +3321,11 @@ const sections = [
               number. It stays editable if you want to test a different
               value, and a reset button next to it returns to your
               character's.
+            </p>
+            <p class="mt-3">
+              The same ranking appears in the <a href="#pet-overlay"
+              class="text-primary hover:text-primary-hover">Pet Overlay</a>
+              whenever you don't have a pet.
             </p>
           </section>
 
@@ -3497,6 +3952,38 @@ const sections = [
                 </span>
               </li>
             </ul>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Target HP filters, Enrage Soon &amp; strip callouts
+            </h3>
+            <p class="mt-3">
+              Target HP
+              pipe triggers can be narrowed to a mob name or to targets with a
+              chosen special ability. The Raid Alerts pack uses this for
+              <strong class="text-foreground">Enrage Soon</strong>, a banner and
+              spoken alert when a mob that enrages drops to 12%, just ahead of its
+              10% enrage (needs Zeal for target HP).
+            </p>
+            <p class="mt-3">
+              Two
+              conditions call out dispels: <strong class="text-foreground">buff
+              stripped</strong> fires when one of your buffs that Zeal has
+              confirmed leaves early and stays gone (clicking a buff off counts
+              too, since the pipe can't tell them apart), and <strong
+              class="text-foreground">debuff stripped</strong> fires when one of
+              your detrimentals wears off early alongside a dispel on that mob,
+              from the log alone. Both take an optional spell filter, and the
+              alert text can use <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">&#123;spell&#125;</code> and <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">&#123;target&#125;</code>.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Lookarounds &amp; backreferences
+            </h3>
+            <p class="mt-3">
+              GINA,
+              EQLogParser and EQNag exports use .NET regular expressions. Patterns
+              with lookahead, lookbehind or backreferences, which used to import
+              disabled, now run as written. Pipe triggers can be saved without a
+              regex pattern.
+            </p>
           </section>
 
           <section id="discord-voice" class="scroll-mt-24">
@@ -3781,14 +4268,28 @@ const sections = [
               Backup & Restore
             </h2>
             <p class="mt-4">
-              Settings → Backups groups two independent backup systems —
-              one for PQ Companion itself, one for your Project Quarm
-              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
-                >.ini</code
-              > files.
+              <strong class="text-foreground">Settings → Backup &amp;
+              Restore</strong> has one tab per job: Character files, Snapshots,
+              Move to another PC, and Reset.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              App Backup & Restore
+              Character files
+            </h3>
+            <p class="mt-3">
+              Each EQ settings
+              file keeps its own last 30 versions: per character, spellsets,
+              bandolier, hotkeys and macros, UI layout and bazaar, plus the shared
+              <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">eqclient.ini</code>, <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">zeal.ini</code>
+              and <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary">quarmclient.ini</code>. A version is captured within
+              a minute of a change and stored compressed in the app's database,
+              so it also travels in the app export. Pick a character, open any
+              file's history, and view or restore one version on its own. Before
+              restoring, the current file is saved as a version, so a restore can
+              be undone. History is on by default, with the toggle and the
+              per-file version count on the same tab.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              Move to another PC
             </h3>
             <p class="mt-3">
               Exports your entire PQ Companion state — settings, triggers,
@@ -3798,7 +4299,8 @@ const sections = [
               > bundle. Drop the bundle on another machine, import, and
               you're exactly where you left off. The panel is always
               visible under Settings → Backups so it's there when you need
-              to move to a new PC.
+              to move to a new PC. It carries your blocked buffs, snapshots and
+              file history too.
             </p>
             <p class="mt-3">
               The bundle carries a manifest with a version and schema
@@ -3808,7 +4310,7 @@ const sections = [
               if anything goes wrong you have a clean rollback path.
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
-              EQ Config Backups
+              Snapshots
             </h3>
             <p class="mt-3">
               One-click backup and restore for every Project Quarm
@@ -3816,6 +4318,9 @@ const sections = [
                 >.ini</code
               > file — UI, hotkeys, socials, the lot. Snapshot before a
               risky UI overhaul, roll back instantly if something breaks.
+              A new snapshot can include your log files, and a restore lets
+              you pick which files to put back (logs are unticked by
+              default).
             </p>
             <h3 class="mt-8 text-lg font-semibold text-foreground">
               Auto-backups
