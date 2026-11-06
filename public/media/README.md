@@ -26,6 +26,11 @@ If nothing matches, the card shows a placeholder block.
 | `triggers` | Features card |
 | `overlays-dashboard` | Features card |
 | `backup-manager` | Features card |
+| `live-maps` | Features card |
+| `pet-overlay` | Features card |
+| `item-info` | Features card |
+| `death-recap` | Features card |
+| `raid-replay` | Features card (no media yet) |
 
 ## Recommended specs
 
