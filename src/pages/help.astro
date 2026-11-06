@@ -1017,7 +1017,7 @@ const sections = [
               <strong class="text-foreground">Prerequisite:</strong>
               <code class="rounded bg-surface-2 px-1.5 py-0.5 text-primary"
                 >/log on</code
-              >.
+              > and PQ Companion v0.33.1 or later.
             </p>
             <p class="mt-4">
               Every death records the 20 seconds before it, so after a wipe you
@@ -1043,7 +1043,7 @@ const sections = [
               <li class="flex gap-3">
                 <span aria-hidden="true" class="text-primary">▸</span>
                 <span>
-                  <strong class="text-foreground">Killer</strong> — the mob that killed you, or the last thing that hit you when the log only says &ldquo;You died.&rdquo;
+                  <strong class="text-foreground">Killer</strong> — the mob named in &ldquo;You have been slain by &hellip;!&rdquo;, or the last thing that hit you when the log only says &ldquo;You died.&rdquo;
                 </span>
               </li>
             </ul>
@@ -1058,6 +1058,18 @@ const sections = [
               death as a dashboard card with a pop-out window. Recaps follow your
               combat history retention, and deaths aren't saved during log
               replay.
+            </p>
+            <h3 class="mt-8 text-lg font-semibold text-foreground">
+              No recaps in v0.33.0
+            </h3>
+            <p class="mt-3">
+              v0.33.0 only recognised a death line ending in a period, but
+              Project Quarm writes &ldquo;You have been slain by &hellip;!&rdquo;,
+              so most deaths were never recorded and the Combat Log and overlay
+              stayed empty. v0.33.1 fixes this. Deaths from before the update
+              can't be added afterwards, since replaying old logs doesn't save
+              deaths. The same fix means your buff timers clear, the Threat Meter
+              resets your hate and the NPC overlay drops its target when you die.
             </p>
           </section>
 
